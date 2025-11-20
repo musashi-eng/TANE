@@ -113,7 +113,7 @@
   - **プロパティ5: ソースコードマウントの正確性（Frontend部分）**
   - **検証要件: 要件2.4, 11.9**
 
-- [ ] 9. Backend Dockerfileの作成
+- [x] 9. Backend Dockerfileの作成
   - docker/backend/Dockerfileを作成
   - Node.js 22の公式イメージ（node:22-alpine）をベースとする
   - マルチステージビルドを使用（開発ステージ）
@@ -125,20 +125,20 @@
   - 起動コマンド（npm run start:dev）を設定
   - _要件: 10.2, 10.4, 10.5_
 
-- [ ] 10. Backend .dockerignoreの作成
+- [x] 10. Backend .dockerignoreの作成
   - docker/backend/.dockerignoreを作成
   - node_modules、dist、.git、ログファイルを除外
   - _要件: 設計書の実装上の注意事項_
 
-- [ ] 10.1 プロパティテスト: Dockerfileの存在と配置（Backend）
+- [x] 10.1 プロパティテスト: Dockerfileの存在と配置（Backend）
   - **プロパティ10: Dockerfileの存在と配置（Backend部分）**
   - **検証要件: 要件11.4**
 
-- [ ] 10.2 プロパティテスト: Dockerfileのベースイメージ（Backend）
+- [x] 10.2 プロパティテスト: Dockerfileのベースイメージ（Backend）
   - **プロパティ11: Dockerfileのベースイメージ（Backend部分）**
   - **検証要件: 要件10.2**
 
-- [ ] 11. Backend Container設定
+- [x] 11. Backend Container設定
   - docker-compose.ymlにbackendサービスを設定
   - docker/backend/Dockerfileからビルド
   - ポート3000と9229をホストにバインド
@@ -149,19 +149,19 @@
   - 再起動ポリシー（unless-stopped）を設定
   - _要件: 3.1, 3.2, 3.4, 3.5, 3.6, 8.4, 9.2, 9.5_
 
-- [ ] 11.1 プロパティテスト: ポートマッピングの正確性（Backend）
+- [x] 11.1 プロパティテスト: ポートマッピングの正確性（Backend）
   - **プロパティ3: ポートマッピングの正確性（Backend部分）**
   - **検証要件: 要件3.1, 9.2**
 
-- [ ] 11.2 プロパティテスト: ソースコードマウントの正確性（Backend）
+- [x] 11.2 プロパティテスト: ソースコードマウントの正確性（Backend）
   - **プロパティ5: ソースコードマウントの正確性（Backend部分）**
   - **検証要件: 要件3.4, 11.9**
 
-- [ ] 11.3 プロパティテスト: 環境変数の提供
+- [x] 11.3 プロパティテスト: 環境変数の提供
   - **プロパティ7: 環境変数の提供**
   - **検証要件: 要件3.6, 6.2**
 
-- [ ] 11.4 プロパティテスト: サービス依存関係の定義
+- [x] 11.4 プロパティテスト: サービス依存関係の定義
   - **プロパティ9: サービス依存関係の定義**
   - **検証要件: 要件8.4**
 

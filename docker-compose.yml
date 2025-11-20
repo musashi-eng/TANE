@@ -16,9 +16,8 @@ services:
     networks:
       - app-network
     restart: unless-stopped
-    # 注意: backendが未実装の場合は、以下の依存関係をコメントアウトしてください
-    # depends_on:
-    #   - backend
+    depends_on:
+      - backend
 
   # Backend Container - NestJS 11
   backend:
