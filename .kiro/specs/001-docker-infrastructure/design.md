@@ -98,7 +98,7 @@ graph TB
 **責務**: Angular20アプリケーションの実行環境を提供
 
 **技術スタック**:
-- ベースイメージ: `node:20-alpine`
+- ベースイメージ: `node:22-alpine`
 - フレームワーク: Angular 20
 - パッケージマネージャー: npm
 
@@ -111,6 +111,7 @@ graph TB
 **環境変数**:
 - `NODE_ENV`: 実行環境（development/production）
 - `API_URL`: バックエンドAPIのURL
+- `TZ`: タイムゾーン（デフォルト: Asia/Tokyo）
 
 **起動コマンド**: `npm start` (Angular開発サーバーの起動)
 
@@ -123,7 +124,7 @@ graph TB
 **責務**: NestJS11アプリケーションの実行環境を提供
 
 **技術スタック**:
-- ベースイメージ: `node:20-alpine`
+- ベースイメージ: `node:22-alpine`
 - フレームワーク: NestJS 11
 - パッケージマネージャー: npm
 
@@ -141,6 +142,7 @@ graph TB
 - `DATABASE_USER`: データベースユーザー名
 - `DATABASE_PASSWORD`: データベースパスワード
 - `DATABASE_NAME`: データベース名
+- `TZ`: タイムゾーン（デフォルト: Asia/Tokyo）
 
 **起動コマンド**: `npm run start:dev` (NestJS開発サーバーの起動)
 
@@ -155,8 +157,9 @@ graph TB
 **責務**: PostgreSQL17データベースの実行環境を提供
 
 **技術スタック**:
-- ベースイメージ: `postgres:17-alpine`
+- ベースイメージ: `postgres:17`（Debianベース、カスタムDockerfileでビルド）
 - データベース: PostgreSQL 17
+- ロケール: 日本語ロケール（ja_JP.UTF-8）対応
 
 **ポート**:
 - 5432: PostgreSQLサーバー（ホストにバインド）
@@ -169,6 +172,21 @@ graph TB
 - `POSTGRES_USER`: データベースユーザー名
 - `POSTGRES_PASSWORD`: データベースパスワード
 - `POSTGRES_DB`: データベース名
+- `POSTGRES_INITDB_ARGS`: 初期化オプション（`--encoding=UTF8 --lc-collate=C --lc-ctype=C`）
+- `TZ`: タイムゾーン（デフォルト: Asia/Tokyo）
+- `PGTZ`: PostgreSQL用タイムゾーン（デフォルト: Asia/Tokyo）
+
+**ロケール設定**:
+- `LC_COLLATE`: `C`（バイナリソート、パフォーマンス重視）
+- `LC_CTYPE`: `C`（バイナリ文字分類、パフォーマンス重視）
+- `LC_MESSAGES`: `ja_JP.UTF-8`（日本語エラーメッセージ）
+- `LC_MONETARY`: `ja_JP.UTF-8`（日本語通貨表示）
+- `LC_NUMERIC`: `ja_JP.UTF-8`（日本語数値表示）
+- `LC_TIME`: `ja_JP.UTF-8`（日本語日時表示）
+
+**タイムゾーン設定**:
+- データベースタイムゾーン: `Asia/Tokyo`（初期化スクリプトで設定）
+- コンテナタイムゾーン: `Asia/Tokyo`（環境変数で設定）
 
 **ヘルスチェック**:
 - コマンド: `pg_isready -U ${POSTGRES_USER}`
@@ -210,6 +228,9 @@ graph TB
 # Node環境
 NODE_ENV=development
 
+# タイムゾーン設定
+TZ=Asia/Tokyo
+
 # データベース接続情報
 DATABASE_HOST=database
 DATABASE_PORT=5432
@@ -233,7 +254,9 @@ project-root/
 │   │   ├── Dockerfile          # Backend用Dockerfile
 │   │   └── .dockerignore       # Backend用除外設定
 │   └── postgres/
+│       ├── Dockerfile          # PostgreSQL用カスタムDockerfile
 │       └── init/               # データベース初期化スクリプト
+│           ├── 00-set-timezone.sh  # タイムゾーン設定
 │           └── 01-init.sql     # 初期スキーマ
 ├── frontend/                    # Angularソースコード
 │   ├── src/
@@ -611,7 +634,49 @@ docker compose logs -f
 docker compose logs --tail=100
 ```
 
-### 5. セキュリティ考慮事項
+### 5. ロケールとタイムゾーンの設定
+
+**データベースロケール設定の理由**:
+
+本プロジェクトでは、PostgreSQLのロケール設定を以下のように構成しています：
+
+- `LC_COLLATE=C` と `LC_CTYPE=C`: パフォーマンス重視の設定
+  - バイナリソートと文字分類により、インデックスの効率が向上
+  - 本番環境との整合性を保つための設定
+  - 日本語データの保存・検索は問題なく動作
+
+- その他のロケール（LC_MESSAGES、LC_MONETARY等）: `ja_JP.UTF-8`
+  - エラーメッセージやログが日本語で表示される
+  - 開発時のデバッグが容易になる
+
+**カスタムDockerfileの必要性**:
+
+PostgreSQLの公式Dockerイメージ（Debianベース）には、デフォルトで日本語ロケールがインストールされていません。そのため、以下の対応を実施しています：
+
+1. `docker/postgres/Dockerfile`でカスタムイメージを作成
+2. `locales`パッケージをインストール
+3. `ja_JP.UTF-8`ロケールを生成
+4. 環境変数`LANG`と`LC_ALL`を設定
+
+**タイムゾーン設定**:
+
+全てのコンテナで統一されたタイムゾーン（デフォルト: Asia/Tokyo）を使用します：
+
+- Frontend/Backend: `TZ`環境変数で設定
+- Database: `TZ`と`PGTZ`環境変数、および初期化スクリプト（`00-set-timezone.sh`）で設定
+
+タイムゾーンは`.env`ファイルの`TZ`変数で一括変更可能です。
+
+**初期化スクリプト**:
+
+データベースの初期化は、`docker/postgres/init/`ディレクトリ内のスクリプトで実行されます：
+
+1. `00-set-timezone.sh`: タイムゾーンをpostgresql.confに設定
+2. `01-init.sql`: スキーマ作成とUUID拡張機能の有効化
+
+これらのスクリプトは、データベースコンテナの初回起動時に自動的に実行されます。
+
+### 6. セキュリティ考慮事項
 
 **開発環境**:
 - デフォルトのパスワードを使用（.envで変更可能）
