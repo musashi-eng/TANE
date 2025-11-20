@@ -97,6 +97,8 @@ docker compose ps
 | **フロントエンド** | http://localhost:4200 | Angularアプリケーション |
 | **バックエンドAPI** | http://localhost:3000 | NestJS RESTful API |
 | **ヘルスチェック** | http://localhost:3000/health | バックエンドの健全性確認 |
+| **Swagger UI** | http://localhost:3000/api | APIドキュメント（開発環境のみ） |
+| **OpenAPI JSON** | http://localhost:3000/api-json | OpenAPI仕様（開発環境のみ） |
 | **データベース** | localhost:5432 | PostgreSQL（psqlやGUIツールで接続） |
 | **デバッグポート** | localhost:9229 | Node.jsデバッガー（バックエンド） |
 
@@ -324,7 +326,7 @@ docker compose exec frontend npx tsc --noEmit
 
 | 変数名 | デフォルト値 | 説明 |
 |--------|-------------|------|
-| `NODE_ENV` | development | Node.js実行環境（development/production） |
+| `NODE_ENV` | development | Node.js実行環境（development: Swagger有効、production: Swagger無効） |
 | `TZ` | Asia/Tokyo | タイムゾーン設定 |
 | `DATABASE_HOST` | database | データベースホスト名（コンテナ名） |
 | `DATABASE_PORT` | 5432 | データベースポート |
@@ -598,6 +600,7 @@ docker compose exec frontend npm test
 
 - [開発ガイド](.kiro/steering/development-guide.md) - 開発コマンドとテスト方法
 - [Angularガイドライン](.kiro/steering/angular-guidelines.md) - Angular 20の開発ガイドライン
+- [Swaggerガイドライン](.kiro/steering/swagger-guidelines.md) - Swagger/OpenAPIの使用方法
 - [プロジェクト規約](.kiro/steering/project-conventions.md) - コーディング規約とプロジェクトルール
 
 ## 参考リンク

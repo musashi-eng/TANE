@@ -163,17 +163,74 @@ docker compose ps
 
 ## コマンド実行方法
 
-Docker環境でコマンドを実行する場合は、必ず `docker compose exec frontend` を先頭に付けてください。
+**🚨 重要**: このプロジェクトはDocker環境で動作しています。**全てのnpmコマンドは必ずDockerコンテナ内で実行してください。**
+
+### ❌ 間違った実行方法
+
+```bash
+# ❌ ローカル環境で直接実行しない
+npm install
+npm test
+npm run build
+
+# ❌ cdコマンドを使用しない
+cd backend && npm test
+```
+
+### ✅ 正しい実行方法
+
+```bash
+# ✅ Dockerコンテナ内で実行
+docker compose exec backend npm install
+docker compose exec backend npm test
+docker compose exec backend npm run build
+```
 
 ### 基本パターン
 
 ```bash
+# フロントエンドのコマンド実行
 docker compose exec frontend <コマンド>
+
+# バックエンドのコマンド実行
+docker compose exec backend <コマンド>
+
+# データベースのコマンド実行
+docker compose exec postgres <コマンド>
+```
+
+### コンテナ別の実行ルール
+
+- **フロントエンド関連**: `docker compose exec frontend` を使用
+- **バックエンド関連**: `docker compose exec backend` を使用
+- **データベース関連**: `docker compose exec postgres` を使用
+
+### よく使うコマンドの例
+
+```bash
+# フロントエンドのテスト実行
+docker compose exec frontend npm test
+
+# バックエンドのテスト実行
+docker compose exec backend npm test
+
+# バックエンドのビルド
+docker compose exec backend npm run build
+
+# パッケージのインストール
+docker compose exec backend npm install <パッケージ名>
+docker compose exec frontend npm install <パッケージ名>
+
+# 開発サーバーの起動
+docker compose exec backend npm run start:dev
+docker compose exec frontend npm start
 ```
 
 ### よく使うコマンド
 
-#### 開発サーバーの起動（自動起動されます）
+#### フロントエンド
+
+##### 開発サーバーの起動（自動起動されます）
 
 ```bash
 # docker-compose.ymlで自動的に実行されます
@@ -183,13 +240,13 @@ docker compose exec frontend npm start
 
 開発サーバーは `http://localhost:4200` でアクセスできます。
 
-#### 依存パッケージのインストール
+##### 依存パッケージのインストール
 
 ```bash
 docker compose exec frontend npm install
 ```
 
-#### ビルド
+##### ビルド
 
 ```bash
 # 開発ビルド
@@ -199,10 +256,64 @@ docker compose exec frontend npm run build
 docker compose exec frontend npm run build -- --configuration production
 ```
 
-#### コードフォーマット
+##### コードフォーマット
 
 ```bash
 docker compose exec frontend npx prettier --write "src/**/*.{ts,html,css,scss}"
+```
+
+#### バックエンド
+
+##### 開発サーバーの起動
+
+```bash
+# 開発モード（ホットリロード）
+docker compose exec backend npm run start:dev
+
+# 通常起動
+docker compose exec backend npm start
+```
+
+バックエンドサーバーは `http://localhost:3000` でアクセスできます。
+
+##### APIドキュメント（Swagger）
+
+開発環境では、Swagger UIを使用してAPIドキュメントを確認できます：
+
+- **Swagger UI**: http://localhost:3000/api
+- **OpenAPI JSON**: http://localhost:3000/api-json
+
+Swagger UIでは、以下のことができます：
+- 全てのAPIエンドポイントの確認
+- リクエスト/レスポンスの構造確認
+- 「Try it out」機能で直接APIをテスト
+- バリデーションルールの確認
+
+**注意**: 本番環境（NODE_ENV=production）では、Swaggerは無効化されます。
+
+##### 依存パッケージのインストール
+
+```bash
+docker compose exec backend npm install
+```
+
+##### ビルド
+
+```bash
+docker compose exec backend npm run build
+```
+
+##### テスト実行
+
+```bash
+# 全テスト実行
+docker compose exec backend npm test
+
+# 特定のテストファイル実行
+docker compose exec backend npm test -- <ファイル名>
+
+# カバレッジなしで実行
+docker compose exec backend npm test -- --no-coverage
 ```
 
 ## テスト方法
@@ -222,6 +333,8 @@ docker compose exec frontend npm test -- --watch=false --browsers=ChromeHeadless
 
 #### テストファイルの構文チェック
 
+#### フロントエンド
+
 ```bash
 # TypeScriptコンパイラで型チェック
 docker compose exec frontend npx tsc --noEmit
@@ -233,7 +346,11 @@ docker compose exec frontend npx tsc --noEmit src/app/integration.spec.ts
 #### Lintチェック
 
 ```bash
+# フロントエンド
 docker compose exec frontend npx eslint "src/**/*.ts"
+
+# バックエンド
+docker compose exec backend npm run lint
 ```
 
 ### テストファイルの場所
@@ -288,8 +405,15 @@ runIntegrationTests();
 # フロントエンドコンテナのログを表示
 docker compose logs -f frontend
 
+# バックエンドコンテナのログを表示
+docker compose logs -f backend
+
 # 最新100行のログを表示
 docker compose logs --tail=100 frontend
+docker compose logs --tail=100 backend
+
+# 全コンテナのログを表示
+docker compose logs -f
 ```
 
 ## トラブルシューティング
@@ -307,9 +431,13 @@ docker compose restart frontend
 ### node_modulesの問題
 
 ```bash
-# node_modulesを削除して再インストール
+# フロントエンドのnode_modulesを削除して再インストール
 docker compose exec frontend rm -rf node_modules package-lock.json
 docker compose exec frontend npm install
+
+# バックエンドのnode_modulesを削除して再インストール
+docker compose exec backend rm -rf node_modules package-lock.json
+docker compose exec backend npm install
 ```
 
 ### コンテナの完全リセット
@@ -330,34 +458,52 @@ docker compose up -d
 ### TypeScriptの型チェック
 
 ```bash
+# フロントエンド
 docker compose exec frontend npx tsc --noEmit
+
+# バックエンド
+docker compose exec backend npx tsc --noEmit
 ```
 
 ### コードスタイルのチェック
 
 ```bash
+# フロントエンド
 docker compose exec frontend npx prettier --check "src/**/*.{ts,html,css,scss}"
+
+# バックエンド
+docker compose exec backend npx prettier --check "src/**/*.ts"
 ```
 
 ### 自動フォーマット
 
 ```bash
+# フロントエンド
 docker compose exec frontend npx prettier --write "src/**/*.{ts,html,css,scss}"
+
+# バックエンド
+docker compose exec backend npm run format
 ```
 
 ## ベストプラクティス
 
-1. **コミット前のチェック**
+1. **Docker環境でのコマンド実行**
+   - 全てのコマンドは必ず `docker compose exec` を使用
+   - フロントエンド: `docker compose exec frontend`
+   - バックエンド: `docker compose exec backend`
+   - ローカル環境で直接コマンドを実行しない
+
+2. **コミット前のチェック**
    - TypeScriptの型チェックを実行
    - コードフォーマットを実行
    - テストファイルの構文チェックを実行
 
-2. **テスト駆動開発**
+3. **テスト駆動開発**
    - 新機能を実装する前にテストを書く
    - テストが失敗することを確認
    - 実装してテストを通す
 
-3. **コードレビュー**
+4. **コードレビュー**
    - 変更内容が要件を満たしているか確認
    - テストが適切に書かれているか確認
    - コードスタイルが統一されているか確認

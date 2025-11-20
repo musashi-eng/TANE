@@ -16,6 +16,7 @@ NestJS 11を使用したバックエンドAPIサーバー
 - ✅ ヘルスチェックエンドポイント
 - ✅ CORS設定
 - ✅ 環境変数による設定管理
+- ✅ Swagger/OpenAPI ドキュメント（開発環境のみ）
 
 ## 開発環境のセットアップ
 
@@ -37,6 +38,8 @@ docker compose up -d
 
 - **API**: http://localhost:3000
 - **ヘルスチェック**: http://localhost:3000/health
+- **Swagger UI**: http://localhost:3000/api（開発環境のみ）
+- **OpenAPI JSON**: http://localhost:3000/api-json（開発環境のみ）
 - **デバッグポート**: 9229
 
 ## 環境変数
@@ -45,6 +48,8 @@ docker compose up -d
 
 ```env
 # Node環境
+# development: Swaggerが有効化されます
+# production: Swaggerが無効化されます
 NODE_ENV=development
 
 # データベース接続
@@ -60,6 +65,18 @@ FRONTEND_URL=http://localhost:4200
 # サーバーポート
 PORT=3000
 ```
+
+### 環境別の動作
+
+- **開発環境（NODE_ENV=development）**:
+  - Swagger UIが有効化されます
+  - `/api`でSwagger UIにアクセス可能
+  - `/api-json`でOpenAPI仕様JSONを取得可能
+
+- **本番環境（NODE_ENV=production）**:
+  - Swaggerは完全に無効化されます
+  - `/api`と`/api-json`は404を返します
+  - セキュリティリスクを回避
 
 ## 開発コマンド
 
@@ -101,6 +118,70 @@ backend/
 ├── tsconfig.json         # TypeScript設定
 └── README.md
 ```
+
+## Swagger/OpenAPI ドキュメント
+
+開発環境では、Swagger UIを使用してAPIドキュメントを確認し、インタラクティブにAPIをテストできます。
+
+### アクセス方法
+
+開発環境でアプリケーションを起動後、以下のURLにアクセスできます：
+
+- **Swagger UI**: http://localhost:3000/api
+- **OpenAPI JSON**: http://localhost:3000/api-json
+
+### Swagger UIの使い方
+
+1. ブラウザで http://localhost:3000/api を開く
+2. エンドポイント一覧が表示されます
+3. 各エンドポイントをクリックして詳細を確認
+4. 「Try it out」ボタンでAPIを直接テスト可能
+
+### 機能
+
+- **自動ドキュメント生成**: コードから自動的にAPIドキュメントを生成
+- **インタラクティブテスト**: Swagger UIから直接APIをテスト
+- **OpenAPI 3.0準拠**: 標準仕様に準拠したAPI定義
+- **リクエスト/レスポンス例**: 各エンドポイントの使用例を表示
+- **バリデーションルール**: 入力値の制約を明示
+
+### 環境別の動作
+
+- **開発環境**: Swaggerが有効（NODE_ENV=development）
+- **本番環境**: Swaggerが無効（NODE_ENV=production）
+
+本番環境では、セキュリティのためSwaggerは完全に無効化されます。
+
+### APIドキュメントの更新
+
+新しいエンドポイントやDTOを追加する際は、以下のデコレーターを使用してドキュメント化してください：
+
+```typescript
+// コントローラー
+@ApiTags('Tasks')
+@Controller('tasks')
+export class TasksController {
+  @Get()
+  @ApiOperation({ summary: 'タスク一覧取得' })
+  @ApiResponse({ status: 200, description: '成功', type: [TaskDto] })
+  findAll() {
+    // 実装
+  }
+}
+
+// DTO
+export class CreateTaskDto {
+  @ApiProperty({
+    description: 'タスク名',
+    example: 'プロジェクト計画書の作成',
+  })
+  @IsString()
+  @IsNotEmpty()
+  name: string;
+}
+```
+
+詳細は `.kiro/steering/swagger-guidelines.md` を参照してください。
 
 ## ヘルスチェック
 
