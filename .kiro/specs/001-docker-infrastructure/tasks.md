@@ -67,7 +67,7 @@
   - **プロパティ15: 再起動ポリシー**
   - **検証要件: 要件9.5**
 
-- [ ] 5. PostgreSQL初期化スクリプトの作成
+- [x] 5. PostgreSQL初期化スクリプトの作成
   - docker/postgres/init/ディレクトリを作成
   - 01-init.sqlファイルを作成し、基本的なスキーマを定義
   - docker-compose.ymlで初期化スクリプトをマウント
