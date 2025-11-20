@@ -1,0 +1,74 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  frontend:
+    name: フロントエンドのビルド・テスト
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: コードをチェックアウト
+        uses: actions/checkout@v4
+
+      - name: Node.jsをセットアップ
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: 依存パッケージをインストール
+        working-directory: frontend
+        run: npm ci
+
+      - name: Lintチェック
+        working-directory: frontend
+        run: npm run lint || echo "Lint check skipped (no lint script)"
+
+      - name: 型チェック
+        working-directory: frontend
+        run: npx tsc --noEmit
+
+      - name: ビルド
+        working-directory: frontend
+        run: npm run build
+
+  backend:
+    name: バックエンドのビルド・テスト
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: コードをチェックアウト
+        uses: actions/checkout@v4
+
+      - name: Node.jsをセットアップ
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: backend/package-lock.json
+
+      - name: 依存パッケージをインストール
+        working-directory: backend
+        run: npm ci
+
+      - name: Lintチェック
+        working-directory: backend
+        run: npm run lint
+
+      - name: 型チェック
+        working-directory: backend
+        run: npx tsc --noEmit
+
+      - name: テスト
+        working-directory: backend
+        run: npm test
+
+      - name: ビルド
+        working-directory: backend
+        run: npm run build

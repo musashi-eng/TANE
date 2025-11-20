@@ -1,0 +1,135 @@
+name: 本番環境デプロイ
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: 本番環境へデプロイ
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: コードをチェックアウト
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # タグ作成のため全履歴を取得
+
+      - name: AWS認証情報を設定
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Session Manager Pluginをインストール
+        run: |
+          curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb" -o "session-manager-plugin.deb"
+          sudo dpkg -i session-manager-plugin.deb
+
+      - name: EC2に接続してデプロイスクリプトを実行
+        run: |
+          COMMAND_ID=$(aws ssm send-command \
+            --instance-ids "${{ secrets.PROD_EC2_INSTANCE_ID }}" \
+            --document-name "AWS-RunShellScript" \
+            --timeout-seconds 3600 \
+            --parameters 'commands=["set -e","sudo -u ubuntu bash -c \"cd ${{ secrets.PROD_DEPLOY_PATH }} && git pull origin main && echo ========================================= && echo 本番環境デプロイを開始します && echo ========================================= && ./scripts/deploy.sh prod && echo ========================================= && echo デプロイが正常に完了しました && echo ==========================================\""]' \
+            --output text \
+            --query "Command.CommandId")
+          
+          echo "コマンドID: $COMMAND_ID"
+          
+          # コマンドの完了を待つ（最大60分、30秒ごとにチェック）
+          echo "デプロイの完了を待っています..."
+          MAX_ATTEMPTS=120
+          ATTEMPT=0
+          
+          while [ $ATTEMPT -lt $MAX_ATTEMPTS ]; do
+            ATTEMPT=$((ATTEMPT + 1))
+            
+            STATUS=$(aws ssm get-command-invocation \
+              --command-id "$COMMAND_ID" \
+              --instance-id "${{ secrets.PROD_EC2_INSTANCE_ID }}" \
+              --query 'Status' \
+              --output text 2>/dev/null || echo "Pending")
+            
+            echo "[$ATTEMPT/$MAX_ATTEMPTS] ステータス: $STATUS"
+            
+            if [ "$STATUS" = "Success" ] || [ "$STATUS" = "Failed" ] || [ "$STATUS" = "Cancelled" ] || [ "$STATUS" = "TimedOut" ]; then
+              break
+            fi
+            
+            sleep 30
+          done
+          
+          # コマンドの結果を取得
+          echo "========================================="
+          echo "デプロイ結果:"
+          echo "========================================="
+          aws ssm get-command-invocation \
+            --command-id "$COMMAND_ID" \
+            --instance-id "${{ secrets.PROD_EC2_INSTANCE_ID }}" \
+            --query '[Status,StandardOutputContent,StandardErrorContent]' \
+            --output text
+          
+          # ステータスを確認
+          if [ "$STATUS" != "Success" ]; then
+            echo "❌ デプロイが失敗しました (ステータス: $STATUS)"
+            exit 1
+          fi
+
+      - name: デプロイ成功を記録
+        run: |
+          echo "✅ 本番環境へのデプロイが成功しました"
+          echo "デプロイ日時: $(date)"
+          echo "コミット: ${{ github.sha }}"
+
+      - name: Gitタグを作成
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          
+          # バージョン番号を生成（日付ベース）
+          TAG_NAME="v$(date +%Y.%m.%d)-$(git rev-parse --short HEAD)"
+          
+          # 既存のタグを確認
+          if git rev-parse "$TAG_NAME" >/dev/null 2>&1; then
+            echo "⚠️ タグ $TAG_NAME は既に存在します。スキップします。"
+          else
+            git tag -a "$TAG_NAME" -m "Production deployment"
+            git push origin "$TAG_NAME"
+            echo "✅ タグ $TAG_NAME を作成しました"
+          fi
+
+      - name: GitHubリリースを作成
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ github.run_number }}
+          release_name: Release v${{ github.run_number }}
+          body: |
+            ## 🚀 本番環境デプロイ
+            
+            本番環境への自動デプロイが完了しました。
+            
+            ### デプロイ情報
+            - **環境**: 本番環境
+            - **デプロイ日時**: ${{ github.event.head_commit.timestamp }}
+            - **コミット**: ${{ github.sha }}
+            - **コミットメッセージ**: ${{ github.event.head_commit.message }}
+            
+            ### 変更内容
+            ${{ github.event.head_commit.message }}
+          draft: false
+          prerelease: false
+        continue-on-error: true # リリースが既に存在する場合はスキップ
+
+      - name: デプロイ失敗時の通知
+        if: failure()
+        run: |
+          echo "❌ 本番環境へのデプロイが失敗しました"
+          echo "デプロイ日時: $(date)"
+          echo "コミット: ${{ github.sha }}"
+          echo "ログを確認してください: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
