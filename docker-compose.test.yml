@@ -1,0 +1,56 @@
+services:
+  # Frontend Container - Angular 20 (Test Environment)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ../docker/frontend/Dockerfile.prod
+    container_name: tane-frontend-test
+    ports:
+      - "80:80"
+    environment:
+      - NODE_ENV=test
+      - API_URL=${API_URL:-http://backend:3000}
+      - TZ=${TZ:-Asia/Tokyo}
+    depends_on:
+      - backend
+    networks:
+      - app-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # Backend Container - NestJS (Test Environment)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: ../docker/backend/Dockerfile.prod
+    container_name: tane-backend-test
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=test
+      - DATABASE_HOST=${DATABASE_HOST}
+      - DATABASE_PORT=${DATABASE_PORT:-5432}
+      - DATABASE_USER=${DATABASE_USER}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_NAME=${DATABASE_NAME}
+      - JWT_SECRET=${JWT_SECRET}
+      - TZ=${TZ:-Asia/Tokyo}
+    networks:
+      - app-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+# ネットワーク定義
+networks:
+  app-network:
+    driver: bridge

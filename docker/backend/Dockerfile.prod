@@ -1,0 +1,43 @@
+# ビルドステージ
+FROM node:22-alpine AS builder
+
+WORKDIR /app
+
+# package.jsonとpackage-lock.jsonをコピー
+COPY package*.json ./
+
+# 依存パッケージをインストール
+RUN npm ci
+
+# ソースコードをコピー
+COPY . .
+
+# 本番用ビルド
+RUN npm run build
+
+# 実行ステージ
+FROM node:22-alpine
+
+# タイムゾーン設定
+RUN apk add --no-cache tzdata
+ENV TZ=Asia/Tokyo
+
+WORKDIR /app
+
+# package.jsonとpackage-lock.jsonをコピー
+COPY package*.json ./
+
+# 本番用の依存パッケージのみインストール
+RUN npm ci --only=production
+
+# ビルド成果物をコピー
+COPY --from=builder /app/dist ./dist
+
+# ポート3000を公開
+EXPOSE 3000
+
+# ヘルスチェック用にwgetをインストール
+RUN apk add --no-cache wget
+
+# アプリケーションを起動
+CMD ["node", "dist/main"]
