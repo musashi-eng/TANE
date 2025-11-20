@@ -107,7 +107,6 @@ graph TB
 
 **ボリューム**:
 - `./frontend:/app`: ソースコードのマウント
-- `frontend-node-modules:/app/node_modules`: 依存パッケージの永続化
 
 **環境変数**:
 - `NODE_ENV`: 実行環境（development/production）
@@ -134,7 +133,6 @@ graph TB
 
 **ボリューム**:
 - `./backend:/app`: ソースコードのマウント
-- `backend-node-modules:/app/node_modules`: 依存パッケージの永続化
 
 **環境変数**:
 - `NODE_ENV`: 実行環境（development/production）
@@ -196,23 +194,13 @@ graph TB
 
 ### 6. ボリューム
 
-**責務**: データの永続化とパフォーマンスの最適化
+**責務**: データの永続化
 
 **ボリューム一覧**:
 
 1. **postgres-data**
    - 用途: PostgreSQLデータの永続化
    - マウント先: `/var/lib/postgresql/data`
-
-2. **frontend-node-modules**
-   - 用途: Frontendの依存パッケージの管理
-   - マウント先: `/app/node_modules`
-   - 理由: ホストとコンテナ間のファイルシステムの違いによるパフォーマンス問題を回避
-
-3. **backend-node-modules**
-   - 用途: Backendの依存パッケージの管理
-   - マウント先: `/app/node_modules`
-   - 理由: ホストとコンテナ間のファイルシステムの違いによるパフォーマンス問題を回避
 
 ## データモデル
 
@@ -298,11 +286,11 @@ project-root/
 
 ### プロパティ4: ボリューム定義の完全性
 
-*任意の*docker-compose.yml設定において、postgres-data、frontend-node-modules、backend-node-modulesの3つの名前付きボリュームが定義されている必要があります。
+*任意の*docker-compose.yml設定において、postgres-dataの名前付きボリュームが定義されている必要があります。
 
 **検証方法**: docker-compose.ymlのvolumesセクションの確認
 
-**検証要件**: 要件7.1, 7.2, 7.3
+**検証要件**: 要件7.1
 
 ### プロパティ5: ソースコードマウントの正確性
 
@@ -312,7 +300,7 @@ project-root/
 
 **検証方法**: docker-compose.ymlのvolumesセクションの確認
 
-**検証要件**: 要件2.5, 3.5, 11.9
+**検証要件**: 要件2.4, 3.4, 11.9
 
 ### プロパティ6: ネットワーク設定の一貫性
 
@@ -637,11 +625,7 @@ docker compose logs --tail=100
 
 ## パフォーマンス最適化
 
-### 1. node_modulesボリューム
-
-ホストとコンテナ間のファイルシステムの違いによるパフォーマンス問題を回避するため、node_modulesは名前付きボリュームとして管理します。
-
-### 2. イメージのキャッシュ
+### 1. イメージのキャッシュ
 
 Dockerfileの命令順序を最適化し、ビルドキャッシュを効果的に活用します。
 
@@ -652,11 +636,11 @@ Dockerfileの命令順序を最適化し、ビルドキャッシュを効果的�
 4. 依存パッケージのインストール
 5. ソースコードのコピー
 
-### 3. Alpineイメージの使用
+### 2. Alpineイメージの使用
 
 軽量なAlpineベースのイメージを使用し、イメージサイズを削減します。
 
-### 4. ヘルスチェックの最適化
+### 3. ヘルスチェックの最適化
 
 ヘルスチェックの間隔とタイムアウトを適切に設定し、不要なリソース消費を避けます。
 

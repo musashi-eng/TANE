@@ -38,9 +38,8 @@
 1. THE Frontend Containerはポート4200でホストマシンにバインドされる
 2. WHEN Frontend Containerが起動する THEN システムはAngular開発サーバーを自動的に起動する
 3. WHEN ソースコードが変更される THEN システムはHot Reload機能により自動的にアプリケーションを再読み込みする
-4. THE Frontend Containerはnode_modulesをDockerボリュームとして管理する
-5. THE Frontend Containerはプロジェクトルートのfrontendディレクトリをマウントする
-6. THE Frontend Containerはバックエンドコンテナと通信できる
+4. THE Frontend Containerはプロジェクトルートのfrontendディレクトリをマウントする
+5. THE Frontend Containerはバックエンドコンテナと通信できる
 
 ### 要件3: Backendコンテナ
 
@@ -51,10 +50,9 @@
 1. THE Backend Containerはポート3000でホストマシンにバインドされる
 2. WHEN Backend Containerが起動する THEN システムはNestJS開発サーバーを自動的に起動する
 3. WHEN ソースコードが変更される THEN システムはHot Reload機能により自動的にアプリケーションを再起動する
-4. THE Backend Containerはnode_modulesをDockerボリュームとして管理する
-5. THE Backend Containerはプロジェクトルートのbackendディレクトリをマウントする
-6. THE Backend ContainerはDatabase Containerと通信できる
-7. THE Backend Containerはデータベース接続情報を環境変数から取得する
+4. THE Backend Containerはプロジェクトルートのbackendディレクトリをマウントする
+5. THE Backend ContainerはDatabase Containerと通信できる
+6. THE Backend Containerはデータベース接続情報を環境変数から取得する
 
 ### 要件4: Databaseコンテナ
 
@@ -93,15 +91,13 @@
 
 ### 要件7: ボリューム管理
 
-**ユーザーストーリー:** 開発者として、データとnode_modulesを適切に管理したい。そうすることで、パフォーマンスとデータの永続性を確保できる。
+**ユーザーストーリー:** 開発者として、データを適切に管理したい。そうすることで、データの永続性を確保できる。
 
 #### 受入基準
 
 1. THE システムはPostgreSQLデータ用の名前付きボリュームを作成する
-2. THE システムはFrontend node_modules用の名前付きボリュームを作成する
-3. THE システムはBackend node_modules用の名前付きボリュームを作成する
-4. WHEN コンテナが再起動される THEN システムはボリュームのデータを保持する
-5. WHEN 開発者がボリュームを削除する THEN システムは `docker compose down -v` コマンドで全てのボリュームを削除する
+2. WHEN コンテナが再起動される THEN システムはボリュームのデータを保持する
+3. WHEN 開発者がボリュームを削除する THEN システムは `docker compose down -v` コマンドで全てのボリュームを削除する
 
 ### 要件8: ヘルスチェック
 
