@@ -168,13 +168,16 @@
   - **プロパティ9: サービス依存関係の定義**
   - **検証要件: 要件8.4**
 
-- [ ] 12. Angular20プロジェクトの初期化
+- [x] 12. Angular20プロジェクトの初期化
   - frontendディレクトリにAngular20プロジェクトを作成
-  - package.jsonを作成し、Angular 20の依存パッケージを定義
-  - angular.jsonを作成し、ビルド設定を定義
-  - tsconfig.jsonを作成し、TypeScript設定を定義
+  - package.jsonを作成し、Angular 20の依存パッケージを定義（zone.jsを除外）
+  - angular.jsonを作成し、ビルド設定を定義（zone.jsのpolyfillsを除外）
+  - tsconfig.jsonを作成し、TypeScript 5.8設定を定義
   - src/ディレクトリに基本的なアプリケーション構造を作成
   - ソースマップを有効化（angular.json）
+  - Zonelessモードを有効化（provideZonelessChangeDetection）
+  - Signalsベースのコンポーネントを作成
+  - スタンドアロンコンポーネント方式を採用
   - _要件: 2.2, 9.1, 11.6_
 
 - [ ] 13. NestJS11プロジェクトの初期化

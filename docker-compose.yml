@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # Frontend Container - Angular 20
   frontend:
@@ -18,8 +16,9 @@ services:
     networks:
       - app-network
     restart: unless-stopped
-    depends_on:
-      - backend
+    # 注意: backendが未実装の場合は、以下の依存関係をコメントアウトしてください
+    # depends_on:
+    #   - backend
 
   # Backend Container - NestJS 11
   backend:

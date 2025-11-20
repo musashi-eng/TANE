@@ -13,6 +13,132 @@ inclusion: always
 - **開発環境**: Docker Compose
 - **テストフレームワーク**: Jasmine + Karma
 
+## Angular 20の重要な設定
+
+### Zoneless モード
+
+このプロジェクトは**Zonelessモード**で動作しています。Zone.jsを使用せず、Angularの新しい変更検知メカニズムを採用しています。
+
+**特徴：**
+- Zone.jsの依存がないため、バンドルサイズが削減
+- パフォーマンスが向上
+- より予測可能な変更検知
+
+**設定方法：**
+```typescript
+// src/app/app.config.ts
+import { provideZonelessChangeDetection } from '@angular/core';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideZonelessChangeDetection(),
+    // その他のプロバイダー
+  ]
+};
+```
+
+**注意事項：**
+- `zone.js`をpackage.jsonから削除
+- angular.jsonのpolyfillsから`zone.js`を削除
+- テスト設定からも`zone.js/testing`を削除
+
+### Signals ベースの開発
+
+このプロジェクトでは**Signals**を主要な状態管理手法として使用します。
+
+**基本的な使い方：**
+
+```typescript
+import { Component, signal, computed, effect } from '@angular/core';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  template: `
+    <h1>{{ title() }}</h1>
+    <p>Count: {{ count() }}</p>
+    <p>Double: {{ doubleCount() }}</p>
+    <button (click)="increment()">Increment</button>
+  `
+})
+export class ExampleComponent {
+  // Signal の定義
+  title = signal('Example Component');
+  count = signal(0);
+  
+  // Computed Signal（派生値）
+  doubleCount = computed(() => this.count() * 2);
+  
+  // Effect（副作用）
+  constructor() {
+    effect(() => {
+      console.log('Count changed:', this.count());
+    });
+  }
+  
+  // Signal の更新
+  increment() {
+    this.count.update(value => value + 1);
+    // または
+    // this.count.set(this.count() + 1);
+  }
+}
+```
+
+**Signalsを使うべき場面：**
+- コンポーネントの状態管理
+- 派生値の計算（computed）
+- リアクティブな副作用（effect）
+- 親子コンポーネント間のデータ共有
+
+**従来の方法との比較：**
+
+```typescript
+// ❌ 従来の方法（使用しない）
+export class OldComponent {
+  title = 'Example';  // 通常のプロパティ
+  count = 0;
+}
+
+// ✅ Signalsを使用（推奨）
+export class NewComponent {
+  title = signal('Example');  // Signal
+  count = signal(0);
+}
+```
+
+**テンプレートでの使用：**
+
+```html
+<!-- Signalは関数として呼び出す -->
+<h1>{{ title() }}</h1>
+<p>Count: {{ count() }}</p>
+
+<!-- Computed Signalも同様 -->
+<p>Double: {{ doubleCount() }}</p>
+```
+
+**RxJSとの併用：**
+
+SignalsとRxJSは併用できます。必要に応じて`toSignal()`や`toObservable()`を使用します。
+
+```typescript
+import { toSignal, toObservable } from '@angular/core/rxjs-interop';
+
+// ObservableをSignalに変換
+const data = toSignal(this.http.get('/api/data'));
+
+// SignalをObservableに変換
+const count$ = toObservable(this.count);
+```
+
+**ベストプラクティス：**
+1. 新しいコンポーネントは必ずSignalsを使用する
+2. 状態の更新は`set()`または`update()`を使用する
+3. 派生値は`computed()`を使用する
+4. 副作用は`effect()`を使用する（ただし、最小限に）
+5. テンプレートでSignalを使用する際は必ず`()`を付けて呼び出す
+
 ## Docker環境
 
 このプロジェクトはDocker Composeを使用して開発環境を構築しています。
