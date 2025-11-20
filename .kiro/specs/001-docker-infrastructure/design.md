@@ -103,6 +103,7 @@ graph TB
 - パッケージマネージャー: npm
 - アーキテクチャ: Zoneless + Signals
 - TypeScript: 5.8以上
+- 追加パッケージ: `tzdata`（タイムゾーン設定用）
 
 **Angular 20の特徴**:
 - **Zonelessモード**: Zone.jsを使用せず、明示的な変更検知を採用
@@ -671,10 +672,13 @@ PostgreSQLの公式Dockerイメージ（Debianベース）には、デフォル�
 
 全てのコンテナで統一されたタイムゾーン（デフォルト: Asia/Tokyo）を使用します：
 
-- Frontend/Backend: `TZ`環境変数で設定
-- Database: `TZ`と`PGTZ`環境変数、および初期化スクリプト（`00-set-timezone.sh`）で設定
+- **Frontend**: `TZ`環境変数で設定、`tzdata`パッケージをインストール
+- **Backend**: `TZ`環境変数で設定、`tzdata`パッケージをインストール（予定）
+- **Database**: `TZ`と`PGTZ`環境変数、および初期化スクリプト（`00-set-timezone.sh`）で設定
 
 タイムゾーンは`.env`ファイルの`TZ`変数で一括変更可能です。
+
+**重要**: Alpine Linuxベースのイメージでは、`tzdata`パッケージのインストールが必要です。これにより、`TZ`環境変数が正しく機能し、ログやデバッグ情報が日本時間で表示されます。
 
 **初期化スクリプト**:
 

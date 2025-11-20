@@ -76,13 +76,10 @@
 - [x] 6. Frontend Dockerfileの作成
   - docker/frontend/Dockerfileを作成
   - Node.js 22の公式イメージ（node:22-alpine）をベースとする
-  - マルチステージビルドを使用（開発ステージ）
+  - tzdataパッケージをインストール（タイムゾーン設定用）
   - 作業ディレクトリを/appに設定
-  - package.jsonとpackage-lock.jsonをコピー
-  - npm installで依存パッケージをインストール
-  - ソースコードをコピー
   - ポート4200を公開
-  - 起動コマンド（npm start）を設定
+  - 起動コマンド（コンテナ起動時にnpm installを実行してからnpm start）を設定
   - _要件: 10.1, 10.4, 10.5_
 
 - [x] 7. Frontend .dockerignoreの作成

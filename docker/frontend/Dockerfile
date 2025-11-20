@@ -1,6 +1,9 @@
 # 開発ステージ
 FROM node:22-alpine AS development
 
+# タイムゾーン設定のためのパッケージをインストール
+RUN apk add --no-cache tzdata
+
 # 作業ディレクトリを設定
 WORKDIR /app
 
