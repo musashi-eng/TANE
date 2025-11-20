@@ -106,7 +106,7 @@ import {
     FontAwesomeModule
   ],
   templateUrl: './ui-demo.component.html',
-  styleUrls: ['./ui-demo.component.scss']
+  styleUrls: ['./ui-demo.component.less']
 })
 export class UiDemoComponent {
   // FontAwesomeアイコン
@@ -139,12 +139,17 @@ export class UiDemoComponent {
 {
   "projects": {
     "tama-frontend": {
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "less"
+        }
+      },
       "architect": {
         "build": {
           "options": {
+            "inlineStyleLanguage": "less",
             "styles": [
-              "src/styles.scss",
-              "node_modules/ng-zorro-antd/ng-zorro-antd.min.css"
+              "src/styles.less"
             ]
           }
         }
@@ -155,7 +160,8 @@ export class UiDemoComponent {
 ```
 
 **責務**:
-- ng-zorroのグローバルスタイルをビルドに含める
+- LESSをデフォルトのスタイル言語として設定
+- ng-zorroのLESSファイルを直接インポートしてテーマカスタマイズを可能にする
 - スタイルの読み込み順序を管理
 
 ### 4. パッケージ依存関係 (package.json)
@@ -834,6 +840,9 @@ docker compose exec frontend npm install @fortawesome/fontawesome-svg-core@^7.1.
 docker compose exec frontend npm install @fortawesome/free-solid-svg-icons@^7.1.0
 docker compose exec frontend npm install @fortawesome/free-regular-svg-icons@^7.1.0
 docker compose exec frontend npm install @fortawesome/free-brands-svg-icons@^7.1.0
+
+# LESSサポートをインストール（ng-zorroのテーマカスタマイズ用）
+docker compose exec frontend npm install --save-dev less
 ```
 
 ### 2. app.config.ts の設定
@@ -868,12 +877,17 @@ export const appConfig: ApplicationConfig = {
 {
   "projects": {
     "tama-frontend": {
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "less"
+        }
+      },
       "architect": {
         "build": {
           "options": {
+            "inlineStyleLanguage": "less",
             "styles": [
-              "src/styles.scss",
-              "node_modules/ng-zorro-antd/ng-zorro-antd.min.css"
+              "src/styles.less"
             ]
           }
         }
@@ -882,6 +896,48 @@ export const appConfig: ApplicationConfig = {
   }
 }
 ```
+
+### 3.1. styles.less の設定
+
+ng-zorroのテーマをカスタマイズできるように、LESSファイルで直接ng-zorroのスタイルをインポートします。
+
+```less
+// グローバルスタイル
+// ng-zorroのテーマをカスタマイズ可能にするためLESSを使用
+
+// ng-zorroのテーマ変数をインポート
+@import "../node_modules/ng-zorro-antd/ng-zorro-antd.less";
+
+// カスタムテーマ変数（必要に応じて上書き）
+// @primary-color: #1890ff; // プライマリカラー
+// @link-color: #1890ff; // リンクカラー
+// @success-color: #52c41a; // 成功カラー
+// @warning-color: #faad14; // 警告カラー
+// @error-color: #f5222d; // エラーカラー
+// @font-size-base: 14px; // ベースフォントサイズ
+// @heading-color: rgba(0, 0, 0, 0.85); // 見出しカラー
+// @text-color: rgba(0, 0, 0, 0.65); // テキストカラー
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+    'Noto Color Emoji';
+  font-size: 14px;
+  line-height: 1.5;
+  color: #333;
+  background-color: #f0f2f5;
+}
+```
+
+**テーマカスタマイズ方法**:
+- コメントアウトされている変数を有効にして値を変更するだけで、ng-zorroのテーマをカスタマイズできます
+- 例: `@primary-color: #ff6b6b;` でプライマリカラーを変更
 
 ### 4. デモコンポーネントの実装
 
@@ -933,7 +989,7 @@ interface TableData {
     FontAwesomeModule
   ],
   templateUrl: './ui-demo.component.html',
-  styleUrls: ['./ui-demo.component.scss']
+  styleUrls: ['./ui-demo.component.less']
 })
 export class UiDemoComponent {
   // FontAwesome Solid Icons
@@ -1125,22 +1181,46 @@ export class UiDemoComponent {
 </div>
 ```
 
-#### ui-demo.component.scss
+#### ui-demo.component.less
 
-```scss
+```less
 .ui-demo-container {
   padding: 24px;
   max-width: 1200px;
   margin: 0 auto;
   
+  // レスポンシブ対応
+  @media (max-width: 768px) {
+    padding: 16px;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 12px;
+  }
+  
   h1 {
     margin-bottom: 24px;
     font-size: 28px;
     font-weight: bold;
+    color: #262626;
+    
+    @media (max-width: 480px) {
+      font-size: 24px;
+      margin-bottom: 16px;
+    }
   }
   
   nz-card {
     margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    
+    // ng-zorroの内部スタイルをカスタマイズ
+    /deep/ .ant-card-head-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #262626;
+    }
   }
   
   .button-group {
@@ -1151,6 +1231,14 @@ export class UiDemoComponent {
     button {
       fa-icon {
         margin-right: 8px;
+        vertical-align: middle;
+        font-size: 14px;
+        line-height: 1;
+      }
+      
+      @media (max-width: 480px) {
+        flex: 1 1 100%;
+        min-width: 100%;
       }
     }
   }
@@ -1159,21 +1247,42 @@ export class UiDemoComponent {
     display: flex;
     gap: 24px;
     flex-wrap: wrap;
+    justify-content: flex-start;
     
     .icon-item {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 8px;
+      min-width: 80px;
       
       fa-icon {
         color: #1890ff;
+        transition: color 0.3s ease;
+        display: inline-block;
+        
+        &:hover {
+          color: #40a9ff;
+        }
       }
       
       span {
         font-size: 12px;
         color: #666;
+        text-align: center;
       }
+    }
+  }
+}
+
+// スタイル競合防止
+:host {
+  display: block;
+  
+  fa-icon {
+    svg {
+      display: inline-block;
+      vertical-align: middle;
     }
   }
 }
@@ -1268,9 +1377,11 @@ docker compose exec frontend npm audit fix
 
 - **Angular 20対応**: Zoneless + Signalsアーキテクチャに準拠
 - **Standalone Component**: NgModuleを使用しない最新のアーキテクチャ
+- **LESSによるテーマカスタマイズ**: ng-zorroのLESSファイルを直接インポートし、テーマ変数を上書き可能
+- **レスポンシブデザイン**: デスクトップ、タブレット、モバイルに対応したスタイル実装
 - **プロパティベーステスト**: fast-checkを使用した包括的なテスト戦略
 - **日本語対応**: ロケール設定とドキュメントの日本語化
 - **実装例**: デモコンポーネントによる具体的な使用方法の提示
 - **Docker環境**: コンテナ内での開発とテストの実行
 
-この設計に従うことで、一貫性のある美しいUIを効率的に構築できる開発環境が整備されます。
+この設計に従うことで、一貫性のある美しいUIを効率的に構築でき、将来的なテーマカスタマイズも容易に行える開発環境が整備されます。
