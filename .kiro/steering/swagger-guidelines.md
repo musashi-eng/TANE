@@ -1,6 +1,6 @@
 # Swagger開発ガイドライン
 
-このドキュメントでは、TamaプロジェクトにおけるSwagger（OpenAPI）の使用方法とベストプラクティスを定義します。
+このドキュメントでは、TaneプロジェクトにおけるSwagger（OpenAPI）の使用方法とベストプラクティスを定義します。
 
 ## 基本方針
 
@@ -361,7 +361,7 @@ describe('Swagger Integration', () => {
       .expect(200);
     
     expect(response.body.openapi).toBe('3.0.0');
-    expect(response.body.info.title).toBe('Tama API');
+    expect(response.body.info.title).toBe('Tane API');
   });
 });
 ```

@@ -1,4 +1,4 @@
-# Tama Backend API
+# Tane Backend API
 
 NestJS 11を使用したバックエンドAPIサーバー
 

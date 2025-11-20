@@ -11,5 +11,5 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   // Signalsを使用
-  title = signal('Tama Frontend');
+  title = signal('Tane Frontend');
 }

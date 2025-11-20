@@ -95,7 +95,7 @@ describe('Swagger OpenAPI Specification Compliance', () => {
    */
   it('should have valid OpenAPI structure for default configuration', () => {
     const config = new DocumentBuilder()
-      .setTitle('Tama API')
+      .setTitle('Tane API')
       .setDescription('タスク管理アプリケーションのバックエンドAPI')
       .setVersion('1.0')
       .build();
@@ -106,7 +106,7 @@ describe('Swagger OpenAPI Specification Compliance', () => {
     expect(document.openapi).toBe('3.0.0');
 
     // info オブジェクトの検証
-    expect(document.info.title).toBe('Tama API');
+    expect(document.info.title).toBe('Tane API');
     expect(document.info.description).toBe('タスク管理アプリケーションのバックエンドAPI');
     expect(document.info.version).toBe('1.0');
 
@@ -242,7 +242,7 @@ describe('Swagger Endpoint Tagging', () => {
    */
   it('should have tags for health check endpoint', () => {
     const config = new DocumentBuilder()
-      .setTitle('Tama API')
+      .setTitle('Tane API')
       .setDescription('タスク管理アプリケーションのバックエンドAPI')
       .setVersion('1.0')
       .build();
@@ -263,7 +263,7 @@ describe('Swagger Endpoint Tagging', () => {
    */
   it('should ensure all endpoints in the application have tags', () => {
     const config = new DocumentBuilder()
-      .setTitle('Tama API')
+      .setTitle('Tane API')
       .setDescription('タスク管理アプリケーションのバックエンドAPI')
       .setVersion('1.0')
       .build();
@@ -378,7 +378,7 @@ describe('Swagger Controller Auto-Documentation', () => {
    */
   it('should include health controller endpoints', () => {
     const config = new DocumentBuilder()
-      .setTitle('Tama API')
+      .setTitle('Tane API')
       .setDescription('タスク管理アプリケーションのバックエンドAPI')
       .setVersion('1.0')
       .build();
@@ -401,7 +401,7 @@ describe('Swagger Controller Auto-Documentation', () => {
    */
   it('should document all HTTP methods for each endpoint', () => {
     const config = new DocumentBuilder()
-      .setTitle('Tama API')
+      .setTitle('Tane API')
       .setDescription('タスク管理アプリケーションのバックエンドAPI')
       .setVersion('1.0')
       .build();
@@ -527,7 +527,7 @@ describe('Swagger Response Auto-Documentation', () => {
    */
   it('should have response definitions for health check endpoint', () => {
     const config = new DocumentBuilder()
-      .setTitle('Tama API')
+      .setTitle('Tane API')
       .setDescription('タスク管理アプリケーションのバックエンドAPI')
       .setVersion('1.0')
       .build();
@@ -560,7 +560,7 @@ describe('Swagger Response Auto-Documentation', () => {
    */
   it('should include detailed response schemas', () => {
     const config = new DocumentBuilder()
-      .setTitle('Tama API')
+      .setTitle('Tane API')
       .setDescription('タスク管理アプリケーションのバックエンドAPI')
       .setVersion('1.0')
       .build();
@@ -593,7 +593,7 @@ describe('Swagger Response Auto-Documentation', () => {
    */
   it('should ensure all endpoints have complete response definitions', () => {
     const config = new DocumentBuilder()
-      .setTitle('Tama API')
+      .setTitle('Tane API')
       .setDescription('タスク管理アプリケーションのバックエンドAPI')
       .setVersion('1.0')
       .build();
@@ -728,7 +728,7 @@ describe('Swagger DTO Auto-Documentation', () => {
    */
   it('should have complete schema for CreateTaskDto', () => {
     const config = new DocumentBuilder()
-      .setTitle('Tama API')
+      .setTitle('Tane API')
       .setDescription('タスク管理アプリケーションのバックエンドAPI')
       .setVersion('1.0')
       .build();
@@ -795,7 +795,7 @@ describe('Swagger DTO Auto-Documentation', () => {
    */
   it('should have complete schema for TaskDto', () => {
     const config = new DocumentBuilder()
-      .setTitle('Tama API')
+      .setTitle('Tane API')
       .setDescription('タスク管理アプリケーションのバックエンドAPI')
       .setVersion('1.0')
       .build();
@@ -826,7 +826,7 @@ describe('Swagger DTO Auto-Documentation', () => {
    */
   it('should reference DTOs in endpoint definitions', () => {
     const config = new DocumentBuilder()
-      .setTitle('Tama API')
+      .setTitle('Tane API')
       .setDescription('タスク管理アプリケーションのバックエンドAPI')
       .setVersion('1.0')
       .build();
@@ -871,7 +871,7 @@ describe('Swagger DTO Auto-Documentation', () => {
    */
   it('should ensure all DTO fields have descriptions and examples', () => {
     const config = new DocumentBuilder()
-      .setTitle('Tama API')
+      .setTitle('Tane API')
       .setDescription('タスク管理アプリケーションのバックエンドAPI')
       .setVersion('1.0')
       .build();
@@ -1028,7 +1028,7 @@ describe('Swagger Validation Rules Documentation', () => {
    */
   it('should document MinLength and MaxLength constraints', () => {
     const config = new DocumentBuilder()
-      .setTitle('Tama API')
+      .setTitle('Tane API')
       .setDescription('タスク管理アプリケーションのバックエンドAPI')
       .setVersion('1.0')
       .build();
@@ -1056,7 +1056,7 @@ describe('Swagger Validation Rules Documentation', () => {
    */
   it('should document Min and Max constraints for numeric fields', () => {
     const config = new DocumentBuilder()
-      .setTitle('Tama API')
+      .setTitle('Tane API')
       .setDescription('タスク管理アプリケーションのバックエンドAPI')
       .setVersion('1.0')
       .build();
@@ -1084,7 +1084,7 @@ describe('Swagger Validation Rules Documentation', () => {
    */
   it('should document Enum constraints', () => {
     const config = new DocumentBuilder()
-      .setTitle('Tama API')
+      .setTitle('Tane API')
       .setDescription('タスク管理アプリケーションのバックエンドAPI')
       .setVersion('1.0')
       .build();
@@ -1111,7 +1111,7 @@ describe('Swagger Validation Rules Documentation', () => {
    */
   it('should distinguish between required and optional fields', () => {
     const config = new DocumentBuilder()
-      .setTitle('Tama API')
+      .setTitle('Tane API')
       .setDescription('タスク管理アプリケーションのバックエンドAPI')
       .setVersion('1.0')
       .build();
@@ -1137,7 +1137,7 @@ describe('Swagger Validation Rules Documentation', () => {
    */
   it('should document type constraints from class-validator decorators', () => {
     const config = new DocumentBuilder()
-      .setTitle('Tama API')
+      .setTitle('Tane API')
       .setDescription('タスク管理アプリケーションのバックエンドAPI')
       .setVersion('1.0')
       .build();
@@ -1170,7 +1170,7 @@ describe('Swagger Validation Rules Documentation', () => {
    */
   it('should ensure all validation constraints are properly documented', () => {
     const config = new DocumentBuilder()
-      .setTitle('Tama API')
+      .setTitle('Tane API')
       .setDescription('タスク管理アプリケーションのバックエンドAPI')
       .setVersion('1.0')
       .build();
@@ -1262,7 +1262,7 @@ describe('Swagger UI Integration', () => {
 
     // Swagger設定を追加
     const config = new DocumentBuilder()
-      .setTitle('Tama API')
+      .setTitle('Tane API')
       .setDescription('タスク管理アプリケーションのバックエンドAPI')
       .setVersion('1.0')
       .build();
@@ -1359,7 +1359,7 @@ describe('OpenAPI JSON Integration', () => {
 
     // Swagger設定を追加
     const config = new DocumentBuilder()
-      .setTitle('Tama API')
+      .setTitle('Tane API')
       .setDescription('タスク管理アプリケーションのバックエンドAPI')
       .setVersion('1.0')
       .build();
@@ -1404,7 +1404,7 @@ describe('OpenAPI JSON Integration', () => {
     // OpenAPI 3.0仕様に準拠していることを確認
     expect(openApiDoc.openapi).toBe('3.0.0');
     expect(openApiDoc.info).toBeDefined();
-    expect(openApiDoc.info.title).toBe('Tama API');
+    expect(openApiDoc.info.title).toBe('Tane API');
     expect(openApiDoc.info.description).toBe('タスク管理アプリケーションのバックエンドAPI');
     expect(openApiDoc.info.version).toBe('1.0');
     expect(openApiDoc.paths).toBeDefined();
@@ -1503,7 +1503,7 @@ describe('Swagger Environment-Specific Behavior', () => {
       // Swagger設定を追加（開発環境）
       if (process.env.NODE_ENV !== 'production') {
         const config = new DocumentBuilder()
-          .setTitle('Tama API')
+          .setTitle('Tane API')
           .setDescription('タスク管理アプリケーションのバックエンドAPI')
           .setVersion('1.0')
           .build();
@@ -1582,7 +1582,7 @@ describe('Swagger Environment-Specific Behavior', () => {
       // Swagger設定を追加しない（本番環境）
       if (process.env.NODE_ENV !== 'production') {
         const config = new DocumentBuilder()
-          .setTitle('Tama API')
+          .setTitle('Tane API')
           .setDescription('タスク管理アプリケーションのバックエンドAPI')
           .setVersion('1.0')
           .build();

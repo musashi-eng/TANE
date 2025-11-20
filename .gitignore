@@ -1,17 +1,20 @@
 # 環境変数
 .env
+.env.local
+.env.*.local
 
 # Node.js
 node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-package-lock.json
+lerna-debug.log*
 
 # ビルド成果物
 dist/
 build/
 *.js.map
+*.tgz
 
 # IDE
 .vscode/
@@ -23,6 +26,7 @@ build/
 # OS
 .DS_Store
 Thumbs.db
+ehthumbs.db
 
 # ログ
 *.log
@@ -31,8 +35,21 @@ logs/
 # テスト
 coverage/
 .nyc_output/
+*.lcov
 
 # Docker
 *.pid
 *.seed
 *.pid.lock
+
+# 一時ファイル
+tmp/
+temp/
+*.tmp
+
+# Angular
+.angular/
+.sass-cache/
+
+# NestJS
+.nest/

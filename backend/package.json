@@ -1,7 +1,7 @@
 {
-  "name": "tama-backend",
+  "name": "tane-backend",
   "version": "0.0.1",
-  "description": "Tama Backend API with NestJS 11",
+  "description": "Tane Backend API with NestJS 11",
   "author": "",
   "private": true,
   "license": "UNLICENSED",

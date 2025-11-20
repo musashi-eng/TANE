@@ -1,4 +1,4 @@
-# TAMA プロジェクト
+# TANE プロジェクト
 
 Angular 20、NestJS 11、PostgreSQL 17を使用したコンテナベースのアプリケーション基盤です。
 
@@ -37,7 +37,7 @@ Angular 20、NestJS 11、PostgreSQL 17を使用したコンテナベースのア
 
 ```bash
 git clone <repository-url>
-cd TAMA.new
+cd TANE.new
 ```
 
 ### 2. 環境変数ファイルを作成
@@ -276,7 +276,7 @@ pgAdmin、DBeaver、TablePlusなどのGUIツールで接続できます。
 ## プロジェクト構造
 
 ```
-TAMA.new/
+TANE.new/
 ├── .kiro/                      # Kiro設定ファイル
 │   ├── specs/                  # 仕様書
 │   └── steering/               # 開発ガイドライン
@@ -567,7 +567,7 @@ A. 以下のコマンドで確認できます：
 docker stats
 
 # 特定のコンテナのみ表示
-docker stats tama-frontend tama-backend tama-database
+docker stats tane-frontend tane-backend tane-database
 ```
 
 ### Q7. 複数の開発者で同時に開発できますか？
@@ -665,7 +665,7 @@ docker volume prune
 
 # コンテナの詳細情報
 docker compose config
-docker inspect tama-frontend
+docker inspect tane-frontend
 ```
 
 ## ライセンス
@@ -676,4 +676,4 @@ docker inspect tama-frontend
 
 **最終更新**: 2025年11月20日  
 **バージョン**: 1.0.0  
-**メンテナー**: TAMA開発チーム
+**メンテナー**: TANE開発チーム

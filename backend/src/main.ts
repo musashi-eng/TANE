@@ -31,7 +31,7 @@ async function bootstrap() {
   if (process.env.NODE_ENV !== 'production') {
     try {
       const config = new DocumentBuilder()
-        .setTitle('Tama API')
+        .setTitle('Tane API')
         .setDescription('タスク管理アプリケーションのバックエンドAPI')
         .setVersion('1.0')
         .build();

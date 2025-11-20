@@ -1,4 +1,4 @@
-# Tama Frontend
+# Tane Frontend
 
 このプロジェクトは[Angular CLI](https://github.com/angular/angular-cli) version 20.0.0で生成されました。
 

@@ -16,7 +16,7 @@ inclusion: always
 - Specディレクトリは `.kiro/specs/` 配下に作成します
 - ディレクトリ名は `001-feature-name` のように、3桁の連番を先頭に付けます
 - 連番は001から始まり、新しいspecを作成するたびに1ずつ増やします
-- 例: `001-tama-task-management`, `002-user-authentication`, `003-reporting-feature`
+- 例: `001-tane-task-management`, `002-user-authentication`, `003-reporting-feature`
 
 ## コマンド実行
 

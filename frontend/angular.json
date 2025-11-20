@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "tama-frontend": {
+    "tane-frontend": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/tama-frontend",
+            "outputPath": "dist/tane-frontend",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [],
@@ -65,10 +65,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "tama-frontend:build:production"
+              "buildTarget": "tane-frontend:build:production"
             },
             "development": {
-              "buildTarget": "tama-frontend:build:development"
+              "buildTarget": "tane-frontend:build:development"
             }
           },
           "defaultConfiguration": "development"

@@ -4,7 +4,7 @@ inclusion: always
 
 # 開発ガイド
 
-このドキュメントでは、Tamaプロジェクトの開発に必要なコマンドとテスト方法を説明します。
+このドキュメントでは、Taneプロジェクトの開発に必要なコマンドとテスト方法を説明します。
 
 ## プロジェクト構成
 
@@ -355,9 +355,9 @@ docker compose exec backend npm run lint
 
 ### テストファイルの場所
 
-- **統合テスト**: `tama/src/app/integration.spec.ts`
-- **サービステスト**: `tama/src/app/core/services/*.spec.ts`
-- **コンポーネントテスト**: `tama/src/app/features/**/*.spec.ts`
+- **統合テスト**: `tane/src/app/integration.spec.ts`
+- **サービステスト**: `tane/src/app/core/services/*.spec.ts`
+- **コンポーネントテスト**: `tane/src/app/features/**/*.spec.ts`
 
 ### テストの種類
 

@@ -4,7 +4,7 @@ services:
     build:
       context: ./frontend
       dockerfile: ../docker/frontend/Dockerfile
-    container_name: tama-frontend
+    container_name: tane-frontend
     ports:
       - "4200:4200"
     volumes:
@@ -24,7 +24,7 @@ services:
     build:
       context: ./backend
       dockerfile: ../docker/backend/Dockerfile
-    container_name: tama-backend
+    container_name: tane-backend
     ports:
       - "3000:3000"
       - "9229:9229"
@@ -50,7 +50,7 @@ services:
     build:
       context: ./docker/postgres
       dockerfile: Dockerfile
-    container_name: tama-database
+    container_name: tane-database
     ports:
       - "5432:5432"
     volumes:
