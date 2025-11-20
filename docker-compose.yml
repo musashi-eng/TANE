@@ -4,8 +4,8 @@ services:
   # Frontend Container - Angular 20
   frontend:
     build:
-      context: ./docker/frontend
-      dockerfile: Dockerfile
+      context: ./frontend
+      dockerfile: ../docker/frontend/Dockerfile
     container_name: tama-frontend
     ports:
       - "4200:4200"
@@ -24,8 +24,8 @@ services:
   # Backend Container - NestJS 11
   backend:
     build:
-      context: ./docker/backend
-      dockerfile: Dockerfile
+      context: ./backend
+      dockerfile: ../docker/backend/Dockerfile
     container_name: tama-backend
     ports:
       - "3000:3000"

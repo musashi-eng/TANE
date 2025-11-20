@@ -367,7 +367,7 @@ project-root/
 
 ### プロパティ11: Dockerfileのベースイメージ
 
-*任意の*Dockerfileにおいて、FrontendとBackendはnode:20をベースイメージとして使用する必要があります。
+*任意の*Dockerfileにおいて、FrontendとBackendはnode:22をベースイメージとして使用する必要があります。
 
 **検証方法**: DockerfileのFROM命令の確認
 

@@ -1,0 +1,41 @@
+# 依存パッケージ
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ビルド成果物
+dist
+build
+.angular
+
+# Git関連
+.git
+.gitignore
+
+# ログファイル
+*.log
+logs
+
+# テストカバレッジ
+coverage
+
+# IDE設定
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS固有ファイル
+.DS_Store
+Thumbs.db
+
+# 環境変数
+.env
+.env.local
+.env.*.local
+
+# テストファイル（本番ビルド時）
+*.spec.ts
+*.test.ts

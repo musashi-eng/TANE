@@ -73,9 +73,9 @@
   - docker-compose.ymlで初期化スクリプトをマウント
   - _要件: 11.5_
 
-- [ ] 6. Frontend Dockerfileの作成
+- [x] 6. Frontend Dockerfileの作成
   - docker/frontend/Dockerfileを作成
-  - Node.js 20の公式イメージ（node:20-alpine）をベースとする
+  - Node.js 22の公式イメージ（node:22-alpine）をベースとする
   - マルチステージビルドを使用（開発ステージ）
   - 作業ディレクトリを/appに設定
   - package.jsonとpackage-lock.jsonをコピー
@@ -85,20 +85,20 @@
   - 起動コマンド（npm start）を設定
   - _要件: 10.1, 10.4, 10.5_
 
-- [ ] 7. Frontend .dockerignoreの作成
+- [x] 7. Frontend .dockerignoreの作成
   - docker/frontend/.dockerignoreを作成
   - node_modules、dist、.git、ログファイルを除外
   - _要件: 設計書の実装上の注意事項_
 
-- [ ] 7.1 プロパティテスト: Dockerfileの存在と配置（Frontend）
+- [x] 7.1 プロパティテスト: Dockerfileの存在と配置（Frontend）
   - **プロパティ10: Dockerfileの存在と配置（Frontend部分）**
   - **検証要件: 要件11.3**
 
-- [ ] 7.2 プロパティテスト: Dockerfileのベースイメージ（Frontend）
+- [x] 7.2 プロパティテスト: Dockerfileのベースイメージ（Frontend）
   - **プロパティ11: Dockerfileのベースイメージ（Frontend部分）**
   - **検証要件: 要件10.1**
 
-- [ ] 8. Frontend Container設定
+- [x] 8. Frontend Container設定
   - docker-compose.ymlにfrontendサービスを設定
   - docker/frontend/Dockerfileからビルド
   - ポート4200をホストにバインド
@@ -108,17 +108,17 @@
   - 再起動ポリシー（unless-stopped）を設定
   - _要件: 2.1, 2.2, 2.4, 2.5, 9.1, 9.5_
 
-- [ ] 8.1 プロパティテスト: ポートマッピングの正確性（Frontend）
+- [x] 8.1 プロパティテスト: ポートマッピングの正確性（Frontend）
   - **プロパティ3: ポートマッピングの正確性（Frontend部分）**
   - **検証要件: 要件2.1**
 
-- [ ] 8.2 プロパティテスト: ソースコードマウントの正確性（Frontend）
+- [x] 8.2 プロパティテスト: ソースコードマウントの正確性（Frontend）
   - **プロパティ5: ソースコードマウントの正確性（Frontend部分）**
   - **検証要件: 要件2.4, 11.9**
 
 - [ ] 9. Backend Dockerfileの作成
   - docker/backend/Dockerfileを作成
-  - Node.js 20の公式イメージ（node:20-alpine）をベースとする
+  - Node.js 22の公式イメージ（node:22-alpine）をベースとする
   - マルチステージビルドを使用（開発ステージ）
   - 作業ディレクトリを/appに設定
   - package.jsonとpackage-lock.jsonをコピー

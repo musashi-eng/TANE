@@ -128,8 +128,8 @@
 
 #### 受入基準
 
-1. THE Frontend ContainerはNode.js 20の公式イメージをベースとする
-2. THE Backend ContainerはNode.js 20の公式イメージをベースとする
+1. THE Frontend ContainerはNode.js 22の公式イメージをベースとする
+2. THE Backend ContainerはNode.js 22の公式イメージをベースとする
 3. THE Database ContainerはPostgreSQL 17の公式イメージを使用する
 4. THE Frontend DockerfileとBackend Dockerfileはマルチステージビルドを使用する
 5. WHEN Dockerfileが実行される THEN システムは依存パッケージを自動的にインストールする
