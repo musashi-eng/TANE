@@ -91,15 +91,7 @@ fi
 log_info "✅ 環境変数ファイルの確認完了"
 echo ""
 
-# 3. 既存のコンテナを停止
-log_step "既存のコンテナを停止中..."
-if ! docker compose -f "$COMPOSE_FILE" down; then
-    log_warn "コンテナの停止に失敗しました（コンテナが存在しない可能性があります）"
-fi
-log_info "✅ コンテナの停止完了"
-echo ""
-
-# 4. Dockerイメージをビルド
+# 3. Dockerイメージをビルド
 log_step "Dockerイメージをビルド中（キャッシュなし）..."
 if ! docker compose -f "$COMPOSE_FILE" build --no-cache; then
     log_error "Dockerビルドに失敗しました"
@@ -108,22 +100,24 @@ fi
 log_info "✅ Dockerイメージのビルド完了"
 echo ""
 
-# 5. 新しいコンテナを起動
-log_step "新しいコンテナを起動中..."
+# 4. コンテナを再作成して起動
+log_step "コンテナを再作成して起動中..."
 if [ "$ENVIRONMENT" = "prod" ]; then
     log_info "（本番環境では、マイグレーションはコンテナ起動時に自動実行されます）"
 else
     log_info "（テスト環境では、マイグレーションはコンテナ起動時に自動実行されます）"
 fi
 
-if ! docker compose -f "$COMPOSE_FILE" up -d; then
+# --force-recreate: 既存コンテナを強制的に再作成
+# down を使わないことで、restart: unless-stopped の設定が維持される
+if ! docker compose -f "$COMPOSE_FILE" up -d --force-recreate; then
     log_error "コンテナの起動に失敗しました"
     exit 1
 fi
-log_info "✅ コンテナの起動完了"
+log_info "✅ コンテナの再作成と起動完了"
 echo ""
 
-# 6. ヘルスチェック確認（最大180秒待機）
+# 5. ヘルスチェック確認（最大180秒待機）
 log_step "ヘルスチェックを確認中（最大180秒待機）..."
 
 # .envファイルからポート番号を読み込む（grepで安全に取得）
@@ -165,7 +159,7 @@ while [ $ATTEMPT -lt $MAX_ATTEMPTS ]; do
 done
 echo ""
 
-# 7. 古いDockerイメージのクリーンアップ
+# 6. 古いDockerイメージのクリーンアップ
 log_step "古いDockerイメージをクリーンアップ中..."
 if ! docker image prune -f; then
     log_warn "イメージのクリーンアップに失敗しました"
