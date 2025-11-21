@@ -105,14 +105,16 @@ sleep 5
 log_step "依存パッケージをインストール中..."
 
 log_info "バックエンドのパッケージをインストール中..."
-if docker compose exec backend npm install; then
+# 既存のnode_modulesを削除してクリーンインストール
+if docker compose exec backend sh -c "rm -rf node_modules package-lock.json && npm install"; then
     log_info "✅ バックエンドのパッケージをインストールしました"
 else
     log_warn "バックエンドのパッケージインストールに失敗しました"
 fi
 
 log_info "フロントエンドのパッケージをインストール中..."
-if docker compose exec frontend npm install; then
+# 既存のnode_modulesを削除してクリーンインストール
+if docker compose exec frontend sh -c "rm -rf node_modules package-lock.json && npm install"; then
     log_info "✅ フロントエンドのパッケージをインストールしました"
 else
     log_warn "フロントエンドのパッケージインストールに失敗しました"
@@ -121,10 +123,15 @@ echo ""
 
 # データベースのマイグレーション
 log_step "データベースをマイグレーション中..."
-if docker compose exec backend npm run migration:run 2>/dev/null; then
-    log_info "✅ データベースのマイグレーションが完了しました"
+# migration:runスクリプトが存在するか確認
+if docker compose exec backend npm run | grep -q "migration:run"; then
+    if docker compose exec backend npm run migration:run 2>/dev/null; then
+        log_info "✅ データベースのマイグレーションが完了しました"
+    else
+        log_warn "マイグレーションに失敗しました"
+    fi
 else
-    log_warn "マイグレーションに失敗しました（初回起動時は正常です）"
+    log_info "migration:runスクリプトが見つかりません。スキップします。"
 fi
 echo ""
 
