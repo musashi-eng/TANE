@@ -126,12 +126,14 @@ echo ""
 # 6. ヘルスチェック確認（最大180秒待機）
 log_step "ヘルスチェックを確認中（最大180秒待機）..."
 
-# 環境別のポート設定
-if [ "$ENVIRONMENT" = "prod" ]; then
-    HEALTH_CHECK_URL="http://localhost:3000/health"
-else
-    HEALTH_CHECK_URL="http://localhost:3000/health"
+# .envファイルからポート番号を読み込む
+if [ -f .env ]; then
+    source .env
 fi
+
+# ポート番号を取得（デフォルト: 3000）
+BACKEND_PORT=${BACKEND_PORT:-3000}
+HEALTH_CHECK_URL="http://localhost:${BACKEND_PORT}/health"
 
 log_info "ヘルスチェックURL: $HEALTH_CHECK_URL"
 
