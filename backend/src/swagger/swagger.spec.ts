@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as fc from 'fast-check';
+import * as request from 'supertest';
 import { HealthModule } from '../health/health.module';
 import { HealthCheckService, TypeOrmHealthIndicator } from '@nestjs/terminus';
 
@@ -1283,7 +1284,6 @@ describe('Swagger UI Integration', () => {
    * Swagger UIが /api パスで提供されることを確認
    */
   it('should serve Swagger UI at /api path', async () => {
-    const request = require('supertest');
     const response = await request(app.getHttpServer())
       .get('/api')
       .expect(200); // Swagger UIはHTMLを返す
@@ -1297,7 +1297,6 @@ describe('Swagger UI Integration', () => {
    * Swagger UIのHTMLが正しく返されることを確認
    */
   it('should return Swagger UI HTML content', async () => {
-    const request = require('supertest');
     const response = await request(app.getHttpServer())
       .get('/api/')
       .expect(200);
@@ -1311,7 +1310,6 @@ describe('Swagger UI Integration', () => {
    * Swagger UIの静的リソースが提供されることを確認
    */
   it('should serve Swagger UI static resources', async () => {
-    const request = require('supertest');
     
     // swagger-ui.css が提供されることを確認
     const cssResponse = await request(app.getHttpServer())
@@ -1380,7 +1378,6 @@ describe('OpenAPI JSON Integration', () => {
    * OpenAPI JSONが /api-json パスで取得できることを確認
    */
   it('should serve OpenAPI JSON at /api-json path', async () => {
-    const request = require('supertest');
     const response = await request(app.getHttpServer())
       .get('/api-json')
       .expect(200);
@@ -1394,7 +1391,6 @@ describe('OpenAPI JSON Integration', () => {
    * OpenAPI JSONの構造が正しいことを確認
    */
   it('should return valid OpenAPI 3.0 JSON structure', async () => {
-    const request = require('supertest');
     const response = await request(app.getHttpServer())
       .get('/api-json')
       .expect(200);
@@ -1415,7 +1411,6 @@ describe('OpenAPI JSON Integration', () => {
    * OpenAPI JSONにエンドポイント情報が含まれることを確認
    */
   it('should include endpoint information in OpenAPI JSON', async () => {
-    const request = require('supertest');
     const response = await request(app.getHttpServer())
       .get('/api-json')
       .expect(200);
@@ -1434,7 +1429,6 @@ describe('OpenAPI JSON Integration', () => {
    * OpenAPI JSONがキャッシュされることを確認
    */
   it('should cache OpenAPI JSON for performance', async () => {
-    const request = require('supertest');
     
     // 1回目のリクエスト
     const response1 = await request(app.getHttpServer())
@@ -1454,7 +1448,6 @@ describe('OpenAPI JSON Integration', () => {
    * OpenAPI JSONのサイズが妥当であることを確認
    */
   it('should return reasonably sized OpenAPI JSON', async () => {
-    const request = require('supertest');
     const response = await request(app.getHttpServer())
       .get('/api-json')
       .expect(200);
@@ -1522,7 +1515,6 @@ describe('Swagger Environment-Specific Behavior', () => {
     });
 
     it('should enable Swagger in development environment', async () => {
-      const request = require('supertest');
       
       // Swagger UIにアクセスできることを確認
       const uiResponse = await request(app.getHttpServer())
@@ -1603,7 +1595,6 @@ describe('Swagger Environment-Specific Behavior', () => {
     });
 
     it('should disable Swagger in production environment', async () => {
-      const request = require('supertest');
       
       // Swagger UIにアクセスできないことを確認（404エラー）
       await request(app.getHttpServer())
@@ -1617,7 +1608,6 @@ describe('Swagger Environment-Specific Behavior', () => {
     });
 
     it('should not expose API documentation in production', async () => {
-      const request = require('supertest');
       
       // /api パスが存在しないことを確認
       const response = await request(app.getHttpServer())
