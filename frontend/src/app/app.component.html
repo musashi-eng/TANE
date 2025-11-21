@@ -1,1 +1,38 @@
-<router-outlet></router-outlet>
+<div class="welcome-container">
+  <div class="welcome-content">
+    <h1>{{ title() }}</h1>
+    <p class="subtitle">Template for Angular NestJS Environment</p>
+    
+    <div class="info-cards">
+      <div class="card">
+        <h3>🚀 技術スタック</h3>
+        <ul>
+          <li>Angular 20 (Zoneless + Signals)</li>
+          <li>NestJS 11</li>
+          <li>PostgreSQL 17</li>
+          <li>Docker + Docker Compose</li>
+        </ul>
+      </div>
+      
+      <div class="card">
+        <h3>📚 リソース</h3>
+        <ul>
+          <li><a href="http://localhost:3000/api" target="_blank">Swagger API ドキュメント</a></li>
+          <li><a href="http://localhost:3000/health" target="_blank">ヘルスチェック</a></li>
+          <li><a href="https://angular.dev/" target="_blank">Angular ドキュメント</a></li>
+          <li><a href="https://docs.nestjs.com/" target="_blank">NestJS ドキュメント</a></li>
+        </ul>
+      </div>
+      
+      <div class="card">
+        <h3>🎯 次のステップ</h3>
+        <ul>
+          <li>コンポーネントを作成する</li>
+          <li>APIエンドポイントを追加する</li>
+          <li>データベーススキーマを定義する</li>
+          <li>開発を開始する！</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
