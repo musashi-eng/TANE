@@ -99,26 +99,8 @@ echo ""
 
 # コンテナの起動を待つ
 log_info "コンテナの起動を待っています..."
-sleep 5
-
-# 依存パッケージのインストール
-log_step "依存パッケージをインストール中..."
-
-log_info "バックエンドのパッケージをインストール中..."
-# 既存のnode_modulesを削除してクリーンインストール
-if docker compose exec backend sh -c "rm -rf node_modules package-lock.json && npm install"; then
-    log_info "✅ バックエンドのパッケージをインストールしました"
-else
-    log_warn "バックエンドのパッケージインストールに失敗しました"
-fi
-
-log_info "フロントエンドのパッケージをインストール中..."
-# 既存のnode_modulesを削除してクリーンインストール
-if docker compose exec frontend sh -c "rm -rf node_modules package-lock.json && npm install"; then
-    log_info "✅ フロントエンドのパッケージをインストールしました"
-else
-    log_warn "フロントエンドのパッケージインストールに失敗しました"
-fi
+log_info "（Dockerfileで自動的にnpm installが実行されます）"
+sleep 10
 echo ""
 
 # データベースのマイグレーション
