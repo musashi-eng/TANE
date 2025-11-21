@@ -2,8 +2,8 @@ services:
   # Frontend Container - Angular 20 (Test Environment)
   frontend:
     build:
-      context: ./frontend
-      dockerfile: ../docker/frontend/Dockerfile.prod
+      context: .
+      dockerfile: docker/frontend/Dockerfile.prod
     container_name: tane-frontend-test
     ports:
       - "${FRONTEND_PORT:-80}:80"
@@ -26,8 +26,8 @@ services:
   # Backend Container - NestJS (Test Environment)
   backend:
     build:
-      context: ./backend
-      dockerfile: ../docker/backend/Dockerfile.prod
+      context: .
+      dockerfile: docker/backend/Dockerfile.prod
     container_name: tane-backend-test
     ports:
       - "${BACKEND_PORT:-3000}:3000"
