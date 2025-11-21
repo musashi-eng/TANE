@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as fc from 'fast-check';
-import * as request from 'supertest';
+import request from 'supertest';
 import { HealthModule } from '../health/health.module';
 import { HealthCheckService, TypeOrmHealthIndicator } from '@nestjs/terminus';
 
