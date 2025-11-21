@@ -226,4 +226,4 @@ docker compose exec frontend npx tsc --noEmit
 
 ## 📞 サポート
 
-問題が発生した場合は、[イシュー](https://github.com/your-username/your-project-name/issues)を作成してください。
+問題が発生した場合は、[イシュー](https://github.com/musashi-eng/TANE/issues)を作成してください。
