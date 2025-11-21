@@ -11,4 +11,4 @@ WORKDIR /app
 EXPOSE 3000 9229
 
 # 起動コマンド（コンテナ起動時にnpm installを実行してから開発サーバーを起動）
-CMD ["sh", "-c", "npm install && npm run start:dev"]
+CMD ["sh", "-c", "npm install && npx nest start --watch"]
