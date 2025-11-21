@@ -126,9 +126,9 @@ echo ""
 # 6. ヘルスチェック確認（最大180秒待機）
 log_step "ヘルスチェックを確認中（最大180秒待機）..."
 
-# .envファイルからポート番号を読み込む
+# .envファイルからポート番号を読み込む（grepで安全に取得）
 if [ -f .env ]; then
-    source .env
+    BACKEND_PORT=$(grep "^BACKEND_PORT=" .env | cut -d '=' -f2 | tr -d ' ')
 fi
 
 # ポート番号を取得（デフォルト: 3000）
