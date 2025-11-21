@@ -75,7 +75,7 @@ if [ ! -f .env ]; then
         
         # ランダムなシークレットキーを生成
         JWT_SECRET=$(openssl rand -base64 32)
-        sed -i "s/your-secret-key-here/$JWT_SECRET/g" .env
+        sed -i "s|your-secret-key-here|$JWT_SECRET|g" .env
         
         log_info "✅ .envファイルを生成しました"
         log_info "JWT_SECRETを自動生成しました"
