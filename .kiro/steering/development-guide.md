@@ -11,7 +11,7 @@ inclusion: always
 - **フロントエンド**: Angular 20 + ng-zorro-antd（Ant Design）
 - **ガントチャート**: dhtmlx-gantt
 - **開発環境**: Docker Compose
-- **テストフレームワーク**: Jasmine + Karma
+- **テストフレームワーク**: Vitest
 
 ## Angular 20の重要な設定
 
@@ -320,20 +320,28 @@ docker compose exec backend npm test -- --no-coverage
 
 ### 単体テスト・統合テストの実行
 
-このプロジェクトでは、Jasmine + Karmaを使用してテストを実行します。
+このプロジェクトでは、**Vitest**を使用してテストを実行します。
 
-#### テストの実行（CI/CD環境向け）
+#### Vitestの特徴
+
+- **高速**: Karmaより圧倒的に速い実行速度
+- **ブラウザ不要**: jsdomを使用するため、実際のブラウザが不要
+- **Docker環境に最適**: ヘッドレスブラウザの設定が不要
+- **ウォッチモード**: ファイル変更を自動検知して再実行
+
+#### テストの実行
 
 ```bash
-docker compose exec frontend npm test -- --watch=false --browsers=ChromeHeadless
+# ウォッチモードで実行（開発時）
+docker compose exec frontend npm test
+
+# 1回だけ実行（CI/CD環境向け）
+docker compose exec frontend npx vitest run
 ```
 
-**注意**: Docker環境ではChromeがインストールされていないため、ブラウザベースのテストは実行できません。
-テストコードの構文チェックや型チェックには、以下の方法を使用してください。
+**注意**: `ng test`はウォッチモードで起動します。終了するには`q`キーを押してください。
 
 #### テストファイルの構文チェック
-
-#### フロントエンド
 
 ```bash
 # TypeScriptコンパイラで型チェック
@@ -513,4 +521,4 @@ docker compose exec backend npm run format
 - [Angular公式ドキュメント](https://angular.dev/)
 - [ng-zorro-antd公式ドキュメント](https://ng.ant.design/)
 - [dhtmlx-gantt公式ドキュメント](https://docs.dhtmlx.com/gantt/)
-- [Jasmine公式ドキュメント](https://jasmine.github.io/)
+- [Vitest公式ドキュメント](https://vitest.dev/)

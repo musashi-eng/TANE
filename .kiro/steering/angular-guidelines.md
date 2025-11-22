@@ -441,13 +441,57 @@ getExpensiveResult() {
 
 ## テスト
 
+### テストフレームワーク: Vitest
+
+このプロジェクトでは**Vitest**を使用してテストを実行します。
+
+#### Vitestの特徴
+
+- **高速**: Karmaより圧倒的に速い
+- **ブラウザ不要**: jsdomを使用するため、実際のブラウザが不要
+- **シンプル**: 設定が簡単で、モダンなツールチェーン
+- **ウォッチモード**: ファイル変更を自動検知
+
+#### テストの基本構造
+
+```typescript
+import { TestBed } from '@angular/core/testing';
+import { provideZonelessChangeDetection } from '@angular/core';
+import { ExampleComponent } from './example.component';
+
+describe('ExampleComponent', () => {
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [ExampleComponent],
+      providers: [provideZonelessChangeDetection()],
+    }).compileComponents();
+  });
+
+  it('should create the component', () => {
+    const fixture = TestBed.createComponent(ExampleComponent);
+    const component = fixture.componentInstance;
+    expect(component).toBeTruthy();
+  });
+});
+```
+
+**重要**: Zonelessモードを使用しているため、テストでも`provideZonelessChangeDetection()`を必ず追加してください。
+
 ### Signalsのテスト
 
 ```typescript
 import { TestBed } from '@angular/core/testing';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { signal } from '@angular/core';
 
 describe('ExampleComponent', () => {
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [ExampleComponent],
+      providers: [provideZonelessChangeDetection()],
+    }).compileComponents();
+  });
+
   it('should update signal value', () => {
     const fixture = TestBed.createComponent(ExampleComponent);
     const component = fixture.componentInstance;
@@ -472,6 +516,16 @@ describe('ExampleComponent', () => {
     expect(component.doubleCount()).toBe(20);
   });
 });
+```
+
+### テストの実行
+
+```bash
+# ウォッチモードで実行（開発時）
+docker compose exec frontend npm test
+
+# 1回だけ実行（CI/CD環境向け）
+docker compose exec frontend npx vitest run
 ```
 
 ## 禁止事項
