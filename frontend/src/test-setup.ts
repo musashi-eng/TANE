@@ -6,9 +6,9 @@ import {
   platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
 
-// グローバルなexpectとviを設定
-globalThis.expect = expect;
-globalThis.vi = vi;
+// グローバルなexpectとviを設定（型安全な方法）
+(globalThis as any).expect = expect;
+(globalThis as any).vi = vi;
 
 // Angular TestBedの初期化
 getTestBed().initTestEnvironment(

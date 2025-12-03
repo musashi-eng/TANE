@@ -53,7 +53,7 @@ docker compose up -d
 NODE_ENV=development
 
 # データベース接続
-DATABASE_HOST=database
+DATABASE_HOST=postgres
 DATABASE_PORT=5432
 DATABASE_USER=postgres
 DATABASE_PASSWORD=postgres

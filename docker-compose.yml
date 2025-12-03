@@ -32,7 +32,7 @@ services:
       - ./backend:/app
     environment:
       - NODE_ENV=${NODE_ENV:-development}
-      - DATABASE_HOST=${DATABASE_HOST:-database}
+      - DATABASE_HOST=${DATABASE_HOST:-postgres}
       - DATABASE_PORT=${DATABASE_PORT:-5432}
       - DATABASE_USER=${DATABASE_USER:-postgres}
       - DATABASE_PASSWORD=${DATABASE_PASSWORD:-postgres}
@@ -42,15 +42,15 @@ services:
       - app-network
     restart: unless-stopped
     depends_on:
-      database:
+      postgres:
         condition: service_healthy
 
   # Database Container - PostgreSQL 17
-  database:
+  postgres:
     build:
       context: ./docker/postgres
       dockerfile: Dockerfile
-    container_name: tane-database
+    container_name: tane-postgres
     ports:
       - "5432:5432"
     volumes:
