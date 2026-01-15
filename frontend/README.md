@@ -1,49 +1,59 @@
-# Tane Frontend
+# TaneFrontend
 
-このプロジェクトは[Angular CLI](https://github.com/angular/angular-cli) version 20.0.0で生成されました。
+This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.0.
 
-## プロジェクトの特徴
+## Development server
 
-このプロジェクトは、Angular 20の最新機能を採用しています：
-
-- **Zonelessモード**: Zone.jsを使用せず、明示的な変更検知を採用
-- **Signalsベース**: 状態管理にSignalsを使用
-- **スタンドアロンコンポーネント**: NgModuleを使用しない新しいアーキテクチャ
-- **新しい制御フロー構文**: `@if`, `@for`, `@switch`を使用
-- **TypeScript 5.8**: 最新のTypeScript機能を活用
-
-詳細なガイドラインについては、`.kiro/steering/angular-guidelines.md`を参照してください。
-
-## 開発サーバー
-
-開発サーバーを起動するには、以下のコマンドを実行してください：
+To start a local development server, run:
 
 ```bash
-npm start
+ng serve
 ```
 
-ブラウザで `http://localhost:4200/` にアクセスしてください。ソースファイルを変更すると、アプリケーションは自動的にリロードされます。
+Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
-## ビルド
+## Code scaffolding
 
-プロジェクトをビルドするには、以下のコマンドを実行してください：
+Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
 
 ```bash
-npm run build
+ng generate component component-name
 ```
 
-ビルド成果物は `dist/` ディレクトリに保存されます。
-
-## テストの実行
-
-単体テストを実行するには、以下のコマンドを実行してください：
+For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
 
 ```bash
-npm test
+ng generate --help
 ```
 
-[Karma](https://karma-runner.github.io)を使用してテストを実行します。
+## Building
 
-## 詳細情報
+To build the project run:
 
-Angular CLIの詳細については、[Angular CLI Overview and Command Reference](https://angular.dev/tools/cli)を参照してください。
+```bash
+ng build
+```
+
+This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+
+## Running unit tests
+
+To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+
+```bash
+ng test
+```
+
+## Running end-to-end tests
+
+For end-to-end (e2e) testing, run:
+
+```bash
+ng e2e
+```
+
+Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+
+## Additional Resources
+
+For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
