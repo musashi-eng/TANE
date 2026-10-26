@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>デザイントークン ショーケース</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["Noto Sans JP", "sans-serif"],
+            mono: ["Noto Sans Mono", "monospace"],
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    /* デザイントークン CSS カスタムプロパティ（実プロジェクトと同一値） */
+    :root {
+      --color-primary: #0095BC;
+      --color-primary-hover: #007A9A;
+      --color-primary-soft: rgba(0, 149, 188, 0.08);
+      --color-bg: #F9FAFB;
+      --color-surface: #FFFFFF;
+      --color-border: #E5E7EB;
+      --color-text-main: #172B4D;
+      --color-text-sub: #6B778C;
+      --color-success: #16A34A;
+      --color-warning: #D97706;
+      --color-danger: #DC2626;
+      --shadow-modern: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      --shadow-header-elevation: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    /* テキストリンクは常時アンダーライン */
+    a { text-decoration: underline; color: var(--color-primary); }
+    a.no-underline { text-decoration: none; }
+  </style>
+</head>
+<body class="bg-gray-50 font-sans text-gray-800 p-8">
+
+  <div class="max-w-5xl mx-auto space-y-12">
+
+    <!-- ページタイトル -->
+    <header>
+      <h1 class="text-3xl font-bold" style="color: var(--color-text-main);">デザイントークン ショーケース</h1>
+      <p class="mt-2 text-lg" style="color: var(--color-text-sub);">プロジェクトで使用するデザイントークンの一覧</p>
+    </header>
+
+    <!-- ===== カラーパレット ===== -->
+    <section aria-labelledby="colors-heading">
+      <h2 id="colors-heading" class="text-2xl font-semibold mb-6" style="color: var(--color-text-main);">カラーパレット</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+
+        <!-- primary -->
+        <div class="rounded-lg overflow-hidden border" style="border-color: var(--color-border);">
+          <div class="h-20" style="background-color: #0095BC;" aria-label="primary カラースウォッチ"></div>
+          <div class="p-3 bg-white">
+            <p class="font-semibold text-sm" style="color: var(--color-text-main);">primary</p>
+            <p class="text-xs font-mono" style="color: var(--color-text-sub);">#0095BC</p>
+            <p class="text-xs mt-1" style="color: var(--color-text-sub);">ブランドカラー・CTA</p>
+          </div>
+        </div>
+
+        <!-- primary-hover -->
+        <div class="rounded-lg overflow-hidden border" style="border-color: var(--color-border);">
+          <div class="h-20" style="background-color: #007A9A;" aria-label="primary-hover カラースウォッチ"></div>
+          <div class="p-3 bg-white">
+            <p class="font-semibold text-sm" style="color: var(--color-text-main);">primary-hover</p>
+            <p class="text-xs font-mono" style="color: var(--color-text-sub);">#007A9A</p>
+            <p class="text-xs mt-1" style="color: var(--color-text-sub);">ホバー状態</p>
+          </div>
+        </div>
+
+        <!-- primary-soft -->
+        <div class="rounded-lg overflow-hidden border" style="border-color: var(--color-border);">
+          <div class="h-20" style="background-color: rgba(0,149,188,0.08);" aria-label="primary-soft カラースウォッチ"></div>
+          <div class="p-3 bg-white">
+            <p class="font-semibold text-sm" style="color: var(--color-text-main);">primary-soft</p>
+            <p class="text-xs font-mono" style="color: var(--color-text-sub);">rgba(0,149,188,0.08)</p>
+            <p class="text-xs mt-1" style="color: var(--color-text-sub);">選択行・ハイライト背景</p>
+          </div>
+        </div>
+
+        <!-- bg -->
+        <div class="rounded-lg overflow-hidden border" style="border-color: var(--color-border);">
+          <div class="h-20" style="background-color: #F9FAFB;" aria-label="bg カラースウォッチ"></div>
+          <div class="p-3 bg-white">
+            <p class="font-semibold text-sm" style="color: var(--color-text-main);">bg</p>
+            <p class="text-xs font-mono" style="color: var(--color-text-sub);">#F9FAFB</p>
+            <p class="text-xs mt-1" style="color: var(--color-text-sub);">ページ背景</p>
+          </div>
+        </div>
+
+        <!-- surface -->
+        <div class="rounded-lg overflow-hidden border" style="border-color: var(--color-border);">
+          <div class="h-20" style="background-color: #FFFFFF;" aria-label="surface カラースウォッチ"></div>
+          <div class="p-3 bg-white">
+            <p class="font-semibold text-sm" style="color: var(--color-text-main);">surface</p>
+            <p class="text-xs font-mono" style="color: var(--color-text-sub);">#FFFFFF</p>
+            <p class="text-xs mt-1" style="color: var(--color-text-sub);">カード・テーブル背景</p>
+          </div>
+        </div>
+
+        <!-- border -->
+        <div class="rounded-lg overflow-hidden border" style="border-color: var(--color-border);">
+          <div class="h-20" style="background-color: #E5E7EB;" aria-label="border カラースウォッチ"></div>
+          <div class="p-3 bg-white">
+            <p class="font-semibold text-sm" style="color: var(--color-text-main);">border</p>
+            <p class="text-xs font-mono" style="color: var(--color-text-sub);">#E5E7EB</p>
+            <p class="text-xs mt-1" style="color: var(--color-text-sub);">ボーダー</p>
+          </div>
+        </div>
+
+        <!-- text-main -->
+        <div class="rounded-lg overflow-hidden border" style="border-color: var(--color-border);">
+          <div class="h-20" style="background-color: #172B4D;" aria-label="text-main カラースウォッチ"></div>
+          <div class="p-3 bg-white">
+            <p class="font-semibold text-sm" style="color: var(--color-text-main);">text-main</p>
+            <p class="text-xs font-mono" style="color: var(--color-text-sub);">#172B4D</p>
+            <p class="text-xs mt-1" style="color: var(--color-text-sub);">本文テキスト</p>
+          </div>
+        </div>
+
+        <!-- text-sub -->
+        <div class="rounded-lg overflow-hidden border" style="border-color: var(--color-border);">
+          <div class="h-20" style="background-color: #6B778C;" aria-label="text-sub カラースウォッチ"></div>
+          <div class="p-3 bg-white">
+            <p class="font-semibold text-sm" style="color: var(--color-text-main);">text-sub</p>
+            <p class="text-xs font-mono" style="color: var(--color-text-sub);">#6B778C</p>
+            <p class="text-xs mt-1" style="color: var(--color-text-sub);">サブテキスト・ラベル</p>
+          </div>
+        </div>
+
+        <!-- success -->
+        <div class="rounded-lg overflow-hidden border" style="border-color: var(--color-border);">
+          <div class="h-20" style="background-color: #16A34A;" aria-label="success カラースウォッチ"></div>
+          <div class="p-3 bg-white">
+            <p class="font-semibold text-sm" style="color: var(--color-text-main);">success</p>
+            <p class="text-xs font-mono" style="color: var(--color-text-sub);">#16A34A</p>
+            <p class="text-xs mt-1" style="color: var(--color-text-sub);">成功・在庫あり</p>
+          </div>
+        </div>
+
+        <!-- warning -->
+        <div class="rounded-lg overflow-hidden border" style="border-color: var(--color-border);">
+          <div class="h-20" style="background-color: #D97706;" aria-label="warning カラースウォッチ"></div>
+          <div class="p-3 bg-white">
+            <p class="font-semibold text-sm" style="color: var(--color-text-main);">warning</p>
+            <p class="text-xs font-mono" style="color: var(--color-text-sub);">#D97706</p>
+            <p class="text-xs mt-1" style="color: var(--color-text-sub);">警告・在庫少</p>
+          </div>
+        </div>
+
+        <!-- danger -->
+        <div class="rounded-lg overflow-hidden border" style="border-color: var(--color-border);">
+          <div class="h-20" style="background-color: #DC2626;" aria-label="danger カラースウォッチ"></div>
+          <div class="p-3 bg-white">
+            <p class="font-semibold text-sm" style="color: var(--color-text-main);">danger</p>
+            <p class="text-xs font-mono" style="color: var(--color-text-sub);">#DC2626</p>
+            <p class="text-xs mt-1" style="color: var(--color-text-sub);">エラー・危険</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== タイポグラフィ ===== -->
+    <section aria-labelledby="typography-heading">
+      <h2 id="typography-heading" class="text-2xl font-semibold mb-6" style="color: var(--color-text-main);">タイポグラフィ</h2>
+
+      <!-- フォントファミリー -->
+      <div class="mb-8 space-y-4">
+        <h3 class="text-lg font-medium" style="color: var(--color-text-main);">フォントファミリー</h3>
+        <div class="bg-white rounded-lg border p-6 space-y-4" style="border-color: var(--color-border);">
+          <div>
+            <p class="text-xs font-mono mb-1" style="color: var(--color-text-sub);">--font-sans: 'Noto Sans JP', sans-serif</p>
+            <p class="text-xl" style="font-family: 'Noto Sans JP', sans-serif; color: var(--color-text-main);">
+              あいうえお かきくけこ ABCDEFG abcdefg 0123456789
+            </p>
+          </div>
+          <hr style="border-color: var(--color-border);" />
+          <div>
+            <p class="text-xs font-mono mb-1" style="color: var(--color-text-sub);">--font-mono: 'Noto Sans Mono', monospace</p>
+            <p class="text-xl" style="font-family: 'Noto Sans Mono', monospace; color: var(--color-text-main);">
+              ABCDEFG abcdefg 0123456789 +-*/=
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- サイズ体系 -->
+      <div class="space-y-4">
+        <h3 class="text-lg font-medium" style="color: var(--color-text-main);">サイズ体系（Tailwind デフォルト）</h3>
+        <div class="bg-white rounded-lg border p-6 space-y-3" style="border-color: var(--color-border);">
+          <div class="flex items-baseline gap-4">
+            <span class="w-16 text-xs font-mono shrink-0" style="color: var(--color-text-sub);">xs</span>
+            <span class="text-xs" style="color: var(--color-text-main);">0.75rem / 12px — 受注管理システムのサンプルテキスト</span>
+          </div>
+          <div class="flex items-baseline gap-4">
+            <span class="w-16 text-xs font-mono shrink-0" style="color: var(--color-text-sub);">sm</span>
+            <span class="text-sm" style="color: var(--color-text-main);">0.875rem / 14px — 受注管理システムのサンプルテキスト</span>
+          </div>
+          <div class="flex items-baseline gap-4">
+            <span class="w-16 text-xs font-mono shrink-0" style="color: var(--color-text-sub);">base</span>
+            <span class="text-base" style="color: var(--color-text-main);">1rem / 16px — 受注管理システムのサンプルテキスト</span>
+          </div>
+          <div class="flex items-baseline gap-4">
+            <span class="w-16 text-xs font-mono shrink-0" style="color: var(--color-text-sub);">lg</span>
+            <span class="text-lg" style="color: var(--color-text-main);">1.125rem / 18px — 受注管理システムのサンプルテキスト</span>
+          </div>
+          <div class="flex items-baseline gap-4">
+            <span class="w-16 text-xs font-mono shrink-0" style="color: var(--color-text-sub);">xl</span>
+            <span class="text-xl" style="color: var(--color-text-main);">1.25rem / 20px — 受注管理システムのサンプルテキスト</span>
+          </div>
+          <div class="flex items-baseline gap-4">
+            <span class="w-16 text-xs font-mono shrink-0" style="color: var(--color-text-sub);">2xl</span>
+            <span class="text-2xl" style="color: var(--color-text-main);">1.5rem / 24px — 受注管理システムのサンプルテキスト</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ボーダーRadius ===== -->
+    <section aria-labelledby="radius-heading">
+      <h2 id="radius-heading" class="text-2xl font-semibold mb-6" style="color: var(--color-text-main);">ボーダーRadius</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+
+        <!-- DEFAULT: 6px -->
+        <div class="bg-white border p-6 text-center" style="border-color: var(--color-border); border-radius: 6px;">
+          <div class="w-24 h-24 mx-auto mb-4" style="background-color: var(--color-primary); border-radius: 6px;" aria-label="DEFAULT radius サンプル"></div>
+          <p class="font-semibold text-sm" style="color: var(--color-text-main);">DEFAULT</p>
+          <p class="text-xs font-mono" style="color: var(--color-text-sub);">--radius-DEFAULT: 6px</p>
+          <p class="text-xs mt-1" style="color: var(--color-text-sub);">ボタン・入力フィールド</p>
+        </div>
+
+        <!-- md: 8px -->
+        <div class="bg-white border p-6 text-center" style="border-color: var(--color-border); border-radius: 8px;">
+          <div class="w-24 h-24 mx-auto mb-4" style="background-color: var(--color-primary); border-radius: 8px;" aria-label="md radius サンプル"></div>
+          <p class="font-semibold text-sm" style="color: var(--color-text-main);">md</p>
+          <p class="text-xs font-mono" style="color: var(--color-text-sub);">--radius-md: 8px</p>
+          <p class="text-xs mt-1" style="color: var(--color-text-sub);">カード</p>
+        </div>
+
+        <!-- lg: 12px -->
+        <div class="bg-white border p-6 text-center" style="border-color: var(--color-border); border-radius: 12px;">
+          <div class="w-24 h-24 mx-auto mb-4" style="background-color: var(--color-primary); border-radius: 12px;" aria-label="lg radius サンプル"></div>
+          <p class="font-semibold text-sm" style="color: var(--color-text-main);">lg</p>
+          <p class="text-xs font-mono" style="color: var(--color-text-sub);">--radius-lg: 12px</p>
+          <p class="text-xs mt-1" style="color: var(--color-text-sub);">モーダル</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== シャドウ ===== -->
+    <section aria-labelledby="shadow-heading">
+      <h2 id="shadow-heading" class="text-2xl font-semibold mb-6" style="color: var(--color-text-main);">シャドウ</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+
+        <!-- modern -->
+        <div class="bg-white rounded-lg p-8 text-center" style="box-shadow: var(--shadow-modern);">
+          <p class="font-semibold text-sm" style="color: var(--color-text-main);">modern</p>
+          <p class="text-xs font-mono mt-2" style="color: var(--color-text-sub);">--shadow-modern</p>
+          <p class="text-xs font-mono" style="color: var(--color-text-sub);">0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px 0 rgba(0,0,0,0.06)</p>
+          <p class="text-xs mt-2" style="color: var(--color-text-sub);">カード・テーブル</p>
+        </div>
+
+        <!-- header-elevation -->
+        <div class="bg-white rounded-lg p-8 text-center" style="box-shadow: var(--shadow-header-elevation);">
+          <p class="font-semibold text-sm" style="color: var(--color-text-main);">header-elevation</p>
+          <p class="text-xs font-mono mt-2" style="color: var(--color-text-sub);">--shadow-header-elevation</p>
+          <p class="text-xs font-mono" style="color: var(--color-text-sub);">0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06)</p>
+          <p class="text-xs mt-2" style="color: var(--color-text-sub);">ヘッダー・フッターアクションバー</p>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+</body>
+</html>

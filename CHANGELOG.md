@@ -7,6 +7,15 @@
 
 ## [Unreleased]
 
+### 変更
+- Angular 20 → 22 へアップグレード（Zoneless + Signals は維持）
+- NestJS 11 → 12 へアップグレード
+- バックエンドのテスト基盤を Jest から Vitest へ移行（フロントエンドと統一）
+- TypeScript: フロント 5.9 / バック 6、@types/node を 24 系へ更新
+
+### 削除
+- ng-zorro-antd を廃止（プロジェクト独自のデザインシステムを利用する方針へ）
+
 ### 追加
 - 初回リリースに向けた準備
 

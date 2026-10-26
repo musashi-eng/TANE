@@ -1,0 +1,70 @@
+/* ===========================================================================
+ * グローバルスタイル / デザインシステム
+ * ===========================================================================
+ * このプロジェクトのデザインシステムを読み込みます。
+ * 見本帳は docs/design-system/*.html を参照してください。
+ * =========================================================================== */
+
+/* Tailwind CSS v4 を読み込む */
+@import "tailwindcss";
+
+/* ===========================================================================
+ * 🎨 テーマカラー（プロジェクト開始時に最初に決める）
+ * ---------------------------------------------------------------------------
+ * 新しいプロジェクトを TANE から派生させたら、まず下の primary 3 色を
+ * ブランドカラーに置き換えてください。ここがこのテンプレートの「色の種」です。
+ *   --color-primary       … ブランドカラー・CTA（基準色）
+ *   --color-primary-hover … ホバー状態（基準色を少し暗く）
+ *   --color-primary-soft  … 選択行・ハイライト背景（基準色の薄い透過）
+ * 機能色（success/warning/danger）やテキスト色は原則そのままで構いません。
+ * =========================================================================== */
+:root {
+  /* --- ここを変える（プロジェクト固有のブランドカラー） --- */
+  --color-primary: #0095bc;
+  --color-primary-hover: #007a9a;
+  --color-primary-soft: rgba(0, 149, 188, 0.08);
+
+  /* --- 以下はデザインシステム共通トークン（通常は変更不要） --- */
+  --color-bg: #f9fafb;
+  --color-surface: #ffffff;
+  --color-border: #e5e7eb;
+  --color-text-main: #172b4d;
+  --color-text-sub: #6b778c;
+  --color-success: #16a34a;
+  --color-warning: #d97706;
+  --color-danger: #dc2626;
+
+  --radius-default: 6px; /* ボタン・入力フィールド */
+  --radius-md: 8px; /* カード */
+  --radius-lg: 12px; /* モーダル */
+
+  --shadow-modern: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-header-elevation: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* ===========================================================================
+ * ベーススタイル
+ * =========================================================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Noto Sans JP", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--color-text-main);
+  background-color: var(--color-bg);
+}
+
+/* テキストリンクは常時アンダーライン（デザインシステム準拠） */
+a {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+a.no-underline {
+  text-decoration: none;
+}

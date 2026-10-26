@@ -4,13 +4,13 @@ inclusion: always
 
 # Angular 開発ガイドライン
 
-このドキュメントでは、Taneプロジェクトで使用するAngular 20の開発ガイドラインを定義します。
+このドキュメントでは、Taneプロジェクトで使用するAngular 22の開発ガイドラインを定義します。
 
 ## アーキテクチャ方針
 
 ### Zoneless + Signals アーキテクチャ
 
-このプロジェクトは、Angular 20の最新機能である**Zoneless**モードと**Signals**を採用しています。
+このプロジェクトは、Angular 22の最新機能である**Zoneless**モードと**Signals**を採用しています。
 
 #### なぜZonelessなのか？
 
@@ -117,7 +117,7 @@ effect(() => {
 
 ### Input/Output Signals
 
-Angular 20では、`@Input()`と`@Output()`の代わりに、`input()`と`output()`を使用します。
+Angular 22では、`@Input()`と`@Output()`の代わりに、`input()`と`output()`を使用します。
 
 ```typescript
 import { Component, input, output } from '@angular/core';
@@ -309,7 +309,7 @@ export class UsersComponent {
 
 ### 新しい制御フロー構文
 
-Angular 20では、新しい制御フロー構文（`@if`, `@for`, `@switch`）を使用します。
+Angular 22では、新しい制御フロー構文（`@if`, `@for`, `@switch`）を使用します。
 
 ```html
 <!-- 条件分岐 -->

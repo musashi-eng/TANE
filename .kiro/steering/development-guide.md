@@ -8,12 +8,12 @@ inclusion: always
 
 ## プロジェクト構成
 
-- **フロントエンド**: Angular 20 + ng-zorro-antd（Ant Design）
-- **ガントチャート**: dhtmlx-gantt
+- **フロントエンド**: Angular 22 + デザインシステム（プロジェクト独自）
+- **バックエンド**: NestJS 12 + TypeORM + PostgreSQL
 - **開発環境**: Docker Compose
 - **テストフレームワーク**: Vitest
 
-## Angular 20の重要な設定
+## Angular 22の重要な設定
 
 ### Zoneless モード
 
@@ -161,9 +161,42 @@ docker compose down
 docker compose ps
 ```
 
+### AIエージェント（Kiro Crew）からコンテナを操作する場合
+
+macOSのKiro Crewサンドボックスからは、Docker Desktopの標準ソケットに到達できないことがあります（`/var/run/docker.sock` が存在しない、`~/.docker/run/docker.sock` が `Operation not permitted` で弾かれる）。この場合でも**Docker Desktopは起動しています**。`~/Library/Containers/com.docker.docker/Data/docker.raw.sock` は権限が通るため、以下の環境変数を付けて操作できます。
+
+```bash
+# Docker Desktop のソケットを直接指す（サンドボックスから到達可能）
+export DOCKER_HOST="unix://$HOME/Library/Containers/com.docker.docker/Data/docker.raw.sock"
+# ~/.docker/config.json 読み取り不可の WARNING を消す（空ディレクトリを指す）
+export DOCKER_CONFIG=/tmp/emptydockercfg
+
+# compose コマンド: `docker compose`(スペース版) が unknown command の場合は
+# `docker-compose`(ハイフン版) を使う（中身は v2 相当）
+docker-compose ps
+docker-compose exec backend npm test
+docker-compose exec frontend npm test
+```
+
+> **補足**: 恒久的に解消したい場合は、Docker Desktop の Settings → Advanced で
+> 「Allow the default Docker socket to be used」を有効にすると
+> `/var/run/docker.sock` が復活し、上記の環境変数が不要になります。
+
 ## コマンド実行方法
 
 **🚨 重要**: このプロジェクトはDocker環境で動作しています。**全てのnpmコマンドは必ずDockerコンテナ内で実行してください。**
+
+> **なぜコンテナ内で実行するのか**
+>
+> - **テスト環境・本番環境がコンテナ**だから、開発もコンテナで行えば検証結果が本番と一致する（dev/prod parity）。
+> - ホスト（macOS）とコンテナ（Linux）で `node_modules` を**マウント共有している**ため、
+>   ホストで `npm install` / `npm ci` を実行すると **mac 用のネイティブバイナリ（esbuild 等）が
+>   共有ディレクトリに書き込まれ、コンテナ側のビルド・テストが
+>   `You installed esbuild for another platform` エラーで壊れる**（逆もまた然り）。
+> - **編集はローカルのエディタで快適に行える**（ソースはマウント共有＋ホットリロードが効く）。
+>   コンテナで実行するのは `install` / `build` / `test` などの **npm コマンドだけ** でよい。
+>
+> ⇒ 原則「**書くのはローカル、動かすのはコンテナ**」。ホストでは npm コマンドを叩かないこと。
 
 ### ❌ 間違った実行方法
 
@@ -519,6 +552,5 @@ docker compose exec backend npm run format
 ## 参考リンク
 
 - [Angular公式ドキュメント](https://angular.dev/)
-- [ng-zorro-antd公式ドキュメント](https://ng.ant.design/)
-- [dhtmlx-gantt公式ドキュメント](https://docs.dhtmlx.com/gantt/)
+- [NestJS公式ドキュメント](https://nestjs.com/)
 - [Vitest公式ドキュメント](https://vitest.dev/)

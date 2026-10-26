@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ナビゲーションコンポーネント | デザインシステム</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    :root {
+      --color-primary: #0095BC;
+      --color-primary-hover: #007A9A;
+      --color-primary-soft: rgba(0, 149, 188, 0.08);
+      --color-bg: #F9FAFB;
+      --color-surface: #FFFFFF;
+      --color-border: #E5E7EB;
+      --color-text-main: #172B4D;
+      --color-text-sub: #6B778C;
+      --color-success: #16A34A;
+      --color-warning: #D97706;
+      --color-danger: #DC2626;
+      --shadow-modern: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px 0 rgba(0,0,0,0.06);
+      --shadow-header-elevation: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+    }
+    body { font-family: 'Noto Sans JP', sans-serif; background-color: var(--color-bg); color: var(--color-text-main); margin: 0; }
+    .modern-shadow { box-shadow: var(--shadow-modern); }
+    .header-elevation { box-shadow: var(--shadow-header-elevation); }
+    a { text-decoration: underline; color: var(--color-primary); }
+    a.no-underline { text-decoration: none; }
+
+    /* ===== タブコンポーネント スタイル ===== */
+    .tab-group { width: 100%; }
+    .tab-list { display: flex; align-items: stretch; border-bottom: 1px solid var(--color-border); }
+    .tab-list button {
+      position: relative; cursor: pointer; border: none; background: none;
+      padding: 0.625rem 1.25rem; font-size: 0.875rem; font-weight: 500;
+      line-height: 1.5; white-space: nowrap;
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+    .tab-list button:focus-visible {
+      outline: 2px solid var(--color-primary); outline-offset: -2px;
+      border-radius: 6px 6px 0 0; z-index: 1;
+    }
+    .tab-list button.tab-selected {
+      border: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--color-surface);
+      border-top: 2px solid var(--color-primary);
+      border-radius: 6px 6px 0 0;
+      background-color: var(--color-surface);
+      color: var(--color-primary); font-weight: 600;
+      margin-bottom: -1px; z-index: 1;
+    }
+    .tab-list button.tab-unselected {
+      border: 1px solid transparent;
+      border-bottom: none;
+      border-radius: 6px 6px 0 0;
+      color: var(--color-text-sub); background-color: transparent;
+    }
+    .tab-list button.tab-unselected:hover {
+      background-color: var(--color-primary-soft);
+      color: var(--color-text-main);
+    }
+    .tab-list button.tab-disabled {
+      cursor: not-allowed; opacity: 0.4;
+      border: 1px solid transparent;
+      border-bottom: none;
+      border-radius: 6px 6px 0 0;
+      color: var(--color-text-sub); background-color: transparent;
+    }
+    .tab-panel {
+      border: 1px solid var(--color-border); border-top: none;
+      border-radius: 0 6px 6px 6px;
+      padding: 1.25rem; background-color: var(--color-surface);
+    }
+  </style>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0095BC', 'primary-hover': '#007A9A',
+            bg: '#F9FAFB', surface: '#FFFFFF', border: '#E5E7EB',
+            'text-main': '#172B4D', 'text-sub': '#6B778C',
+            success: '#16A34A', warning: '#D97706', danger: '#DC2626',
+          },
+        },
+      },
+    };
+  </script>
+  <script>
+    /** タブ切り替えロジック */
+    function selectTab(groupId, index, totalTabs) {
+      for (let i = 0; i < totalTabs; i++) {
+        const btn = document.getElementById(groupId + '-tab-' + i);
+        const panel = document.getElementById(groupId + '-panel-' + i);
+        if (!btn || !panel) continue;
+        const isSelected = i === index;
+        const isDisabled = btn.getAttribute('aria-disabled') === 'true';
+        if (isDisabled && isSelected) return;
+        btn.setAttribute('aria-selected', isSelected);
+        btn.setAttribute('tabindex', isSelected ? '0' : '-1');
+        btn.className = 'tab-' + (isDisabled ? 'disabled' : (isSelected ? 'selected' : 'unselected'));
+        panel.hidden = !isSelected;
+      }
+    }
+  </script>
+</head>
+<body class="min-h-screen">
+
+  <!-- ヘッダー -->
+  <header class="sticky top-0 z-50 flex items-center justify-between px-8 py-3 text-white header-elevation" style="background-color: var(--color-primary);" role="banner">
+    <div class="flex items-center gap-4">
+      <div class="bg-white p-1.5 rounded">
+        <i class="fa-solid fa-sitemap text-xl leading-none" style="color: var(--color-primary);" aria-hidden="true"></i>
+      </div>
+      <span class="text-lg font-black tracking-tighter uppercase">Ordering</span>
+    </div>
+    <nav class="flex items-center gap-2 text-sm" aria-label="ドキュメントナビゲーション">
+      <a href="tokens.html" class="no-underline text-white/80 hover:text-white px-3 py-1.5 rounded hover:bg-white/10 transition-colors">トークン</a>
+      <a href="layout.html" class="no-underline text-white/80 hover:text-white px-3 py-1.5 rounded hover:bg-white/10 transition-colors">レイアウト</a>
+      <a href="components-basic.html" class="no-underline text-white/80 hover:text-white px-3 py-1.5 rounded hover:bg-white/10 transition-colors">基本コンポーネント</a>
+      <a href="components-navigation.html" class="no-underline text-white bg-white/20 px-3 py-1.5 rounded font-semibold">ナビゲーション</a>
+    </nav>
+  </header>
+
+  <main class="max-w-[1200px] mx-auto p-8">
+    <div class="mb-8">
+      <h1 class="text-2xl font-bold" style="color: var(--color-text-main);">ナビゲーションコンポーネント</h1>
+      <p class="text-sm mt-1" style="color: var(--color-text-sub);">TabGroup・Tab のボックス型タブコンポーネント</p>
+    </div>
+
+    <!-- ========== TabGroupComponent ========== -->
+    <section class="bg-white rounded-md p-6 modern-shadow border mb-6" style="border-color: var(--color-border);">
+      <h2 class="text-lg font-bold mb-1" style="color: var(--color-text-main);">
+        <i class="fa-solid fa-folder mr-2" style="color: var(--color-primary);" aria-hidden="true"></i>
+        TabGroupComponent + TabComponent
+      </h2>
+      <p class="text-sm mb-5" style="color: var(--color-text-sub);">
+        セレクター: <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs">ui-tab-group</code> + <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs">ui-tab</code>
+        &nbsp;|&nbsp; ボックス型タブ &nbsp;|&nbsp; WAI-ARIA Tabs パターン準拠
+      </p>
+
+      <!-- 基本的な4タブ -->
+      <h3 class="text-sm font-semibold mb-3" style="color: var(--color-text-main);">基本的なタブ（4タブ構成）</h3>
+      <div class="tab-group mb-6">
+        <div class="tab-list" role="tablist" aria-label="得意先管理タブ">
+          <button role="tab" id="demo1-tab-0" aria-selected="true" aria-controls="demo1-panel-0" tabindex="0" class="tab-selected" onclick="selectTab('demo1', 0, 4)">得意先情報</button>
+          <button role="tab" id="demo1-tab-1" aria-selected="false" aria-controls="demo1-panel-1" tabindex="-1" class="tab-unselected" onclick="selectTab('demo1', 1, 4)">ユーザー管理</button>
+          <button role="tab" id="demo1-tab-2" aria-selected="false" aria-controls="demo1-panel-2" tabindex="-1" class="tab-unselected" onclick="selectTab('demo1', 2, 4)">納品先管理</button>
+          <button role="tab" id="demo1-tab-3" aria-selected="false" aria-controls="demo1-panel-3" tabindex="-1" class="tab-unselected" onclick="selectTab('demo1', 3, 4)">商品管理</button>
+        </div>
+        <div role="tabpanel" id="demo1-panel-0" aria-labelledby="demo1-tab-0" class="tab-panel">
+          <h4 class="text-sm font-semibold mb-2" style="color: var(--color-text-main);">得意先情報</h4>
+          <p class="text-sm" style="color: var(--color-text-sub);">得意先の基本情報（得意先コード、得意先名、担当スタッフ、通知メール設定など）がここに表示されます。</p>
+        </div>
+        <div role="tabpanel" id="demo1-panel-1" aria-labelledby="demo1-tab-1" class="tab-panel" hidden>
+          <h4 class="text-sm font-semibold mb-2" style="color: var(--color-text-main);">ユーザー管理</h4>
+          <p class="text-sm" style="color: var(--color-text-sub);">得意先に紐づくユーザーの一覧と管理機能がここに表示されます。</p>
+        </div>
+        <div role="tabpanel" id="demo1-panel-2" aria-labelledby="demo1-tab-2" class="tab-panel" hidden>
+          <h4 class="text-sm font-semibold mb-2" style="color: var(--color-text-main);">納品先管理</h4>
+          <p class="text-sm" style="color: var(--color-text-sub);">納品先の一覧と管理機能がここに表示されます。</p>
+        </div>
+        <div role="tabpanel" id="demo1-panel-3" aria-labelledby="demo1-tab-3" class="tab-panel" hidden>
+          <h4 class="text-sm font-semibold mb-2" style="color: var(--color-text-main);">商品管理</h4>
+          <p class="text-sm" style="color: var(--color-text-sub);">商品の一覧と管理機能がここに表示されます。</p>
+        </div>
+      </div>
+
+      <!-- disabledタブ付き -->
+      <h3 class="text-sm font-semibold mb-3" style="color: var(--color-text-main);">disabledタブ付き</h3>
+      <div class="tab-group mb-6">
+        <div class="tab-list" role="tablist" aria-label="disabled付きタブ">
+          <button role="tab" id="demo2-tab-0" aria-selected="true" aria-controls="demo2-panel-0" tabindex="0" class="tab-selected" onclick="selectTab('demo2', 0, 3)">有効なタブ1</button>
+          <button role="tab" id="demo2-tab-1" aria-selected="false" aria-controls="demo2-panel-1" tabindex="-1" aria-disabled="true" class="tab-disabled">無効なタブ</button>
+          <button role="tab" id="demo2-tab-2" aria-selected="false" aria-controls="demo2-panel-2" tabindex="-1" class="tab-unselected" onclick="selectTab('demo2', 2, 3)">有効なタブ2</button>
+        </div>
+        <div role="tabpanel" id="demo2-panel-0" aria-labelledby="demo2-tab-0" class="tab-panel">
+          <p class="text-sm" style="color: var(--color-text-sub);">このタブは有効です。中央の「無効なタブ」はクリックできず、キーボードナビゲーションでもスキップされます。</p>
+        </div>
+        <div role="tabpanel" id="demo2-panel-1" aria-labelledby="demo2-tab-1" class="tab-panel" hidden>
+          <p class="text-sm" style="color: var(--color-text-sub);">（このパネルは表示されません）</p>
+        </div>
+        <div role="tabpanel" id="demo2-panel-2" aria-labelledby="demo2-tab-2" class="tab-panel" hidden>
+          <p class="text-sm" style="color: var(--color-text-sub);">このタブも有効です。矢印キーで移動すると、無効なタブはスキップされます。</p>
+        </div>
+      </div>
+
+      <!-- 2タブ構成 -->
+      <h3 class="text-sm font-semibold mb-3" style="color: var(--color-text-main);">2タブ構成</h3>
+      <div class="tab-group mb-6">
+        <div class="tab-list" role="tablist" aria-label="2タブ構成">
+          <button role="tab" id="demo3-tab-0" aria-selected="true" aria-controls="demo3-panel-0" tabindex="0" class="tab-selected" onclick="selectTab('demo3', 0, 2)">概要</button>
+          <button role="tab" id="demo3-tab-1" aria-selected="false" aria-controls="demo3-panel-1" tabindex="-1" class="tab-unselected" onclick="selectTab('demo3', 1, 2)">詳細</button>
+        </div>
+        <div role="tabpanel" id="demo3-panel-0" aria-labelledby="demo3-tab-0" class="tab-panel">
+          <p class="text-sm" style="color: var(--color-text-sub);">概要タブの内容です。シンプルな2タブ構成の例。</p>
+        </div>
+        <div role="tabpanel" id="demo3-panel-1" aria-labelledby="demo3-tab-1" class="tab-panel" hidden>
+          <p class="text-sm" style="color: var(--color-text-sub);">詳細タブの内容です。</p>
+        </div>
+      </div>
+
+      <!-- API仕様 -->
+      <h3 class="text-sm font-semibold mb-3" style="color: var(--color-text-main);">API仕様</h3>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="bg-slate-50">
+              <th class="text-left px-4 py-2 text-xs font-semibold uppercase tracking-wider border" style="border-color: var(--color-border); color: var(--color-text-sub);">コンポーネント</th>
+              <th class="text-left px-4 py-2 text-xs font-semibold uppercase tracking-wider border" style="border-color: var(--color-border); color: var(--color-text-sub);">プロパティ</th>
+              <th class="text-left px-4 py-2 text-xs font-semibold uppercase tracking-wider border" style="border-color: var(--color-border); color: var(--color-text-sub);">型</th>
+              <th class="text-left px-4 py-2 text-xs font-semibold uppercase tracking-wider border" style="border-color: var(--color-border); color: var(--color-text-sub);">説明</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b" style="border-color: var(--color-border);">
+              <td class="px-4 py-2 border font-medium" style="border-color: var(--color-border);"><code class="bg-slate-100 px-1 rounded text-xs">ui-tab-group</code></td>
+              <td class="px-4 py-2 border" style="border-color: var(--color-border);"><code class="text-xs">[(selectedIndex)]</code></td>
+              <td class="px-4 py-2 border" style="border-color: var(--color-border);"><code class="text-xs">number</code></td>
+              <td class="px-4 py-2 border" style="border-color: var(--color-border);">選択中タブのインデックス（双方向バインディング）</td>
+            </tr>
+            <tr class="border-b" style="border-color: var(--color-border);">
+              <td class="px-4 py-2 border font-medium" style="border-color: var(--color-border);"><code class="bg-slate-100 px-1 rounded text-xs">ui-tab</code></td>
+              <td class="px-4 py-2 border" style="border-color: var(--color-border);"><code class="text-xs">[label]</code></td>
+              <td class="px-4 py-2 border" style="border-color: var(--color-border);"><code class="text-xs">string</code> (required)</td>
+              <td class="px-4 py-2 border" style="border-color: var(--color-border);">タブのラベルテキスト</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-2 border font-medium" style="border-color: var(--color-border);"><code class="bg-slate-100 px-1 rounded text-xs">ui-tab</code></td>
+              <td class="px-4 py-2 border" style="border-color: var(--color-border);"><code class="text-xs">[disabled]</code></td>
+              <td class="px-4 py-2 border" style="border-color: var(--color-border);"><code class="text-xs">boolean</code></td>
+              <td class="px-4 py-2 border" style="border-color: var(--color-border);">タブの無効状態（デフォルト: false）</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- キーボード操作 -->
+      <h3 class="text-sm font-semibold mt-5 mb-3" style="color: var(--color-text-main);">キーボード操作</h3>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="bg-slate-50">
+              <th class="text-left px-4 py-2 text-xs font-semibold uppercase tracking-wider border" style="border-color: var(--color-border); color: var(--color-text-sub);">キー</th>
+              <th class="text-left px-4 py-2 text-xs font-semibold uppercase tracking-wider border" style="border-color: var(--color-border); color: var(--color-text-sub);">動作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b" style="border-color: var(--color-border);">
+              <td class="px-4 py-2 border" style="border-color: var(--color-border);"><kbd class="bg-slate-100 px-1.5 py-0.5 rounded text-xs border" style="border-color: var(--color-border);">→</kbd></td>
+              <td class="px-4 py-2 border" style="border-color: var(--color-border);">次の有効タブへフォーカス移動（循環）</td>
+            </tr>
+            <tr class="border-b" style="border-color: var(--color-border);">
+              <td class="px-4 py-2 border" style="border-color: var(--color-border);"><kbd class="bg-slate-100 px-1.5 py-0.5 rounded text-xs border" style="border-color: var(--color-border);">←</kbd></td>
+              <td class="px-4 py-2 border" style="border-color: var(--color-border);">前の有効タブへフォーカス移動（循環）</td>
+            </tr>
+            <tr class="border-b" style="border-color: var(--color-border);">
+              <td class="px-4 py-2 border" style="border-color: var(--color-border);"><kbd class="bg-slate-100 px-1.5 py-0.5 rounded text-xs border" style="border-color: var(--color-border);">Home</kbd></td>
+              <td class="px-4 py-2 border" style="border-color: var(--color-border);">最初の有効タブへフォーカス移動</td>
+            </tr>
+            <tr class="border-b" style="border-color: var(--color-border);">
+              <td class="px-4 py-2 border" style="border-color: var(--color-border);"><kbd class="bg-slate-100 px-1.5 py-0.5 rounded text-xs border" style="border-color: var(--color-border);">End</kbd></td>
+              <td class="px-4 py-2 border" style="border-color: var(--color-border);">最後の有効タブへフォーカス移動</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-2 border" style="border-color: var(--color-border);"><kbd class="bg-slate-100 px-1.5 py-0.5 rounded text-xs border" style="border-color: var(--color-border);">Enter</kbd> / <kbd class="bg-slate-100 px-1.5 py-0.5 rounded text-xs border" style="border-color: var(--color-border);">Space</kbd></td>
+              <td class="px-4 py-2 border" style="border-color: var(--color-border);">フォーカス中のタブを選択</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 使用例コード -->
+      <h3 class="text-sm font-semibold mt-5 mb-3" style="color: var(--color-text-main);">使用例</h3>
+      <pre class="bg-slate-50 rounded p-4 text-xs overflow-x-auto border" style="border-color: var(--color-border);"><code>&lt;ui-tab-group [(selectedIndex)]="activeTab"&gt;
+  &lt;ui-tab label="得意先情報"&gt;
+    &lt;app-customer-info [customer]="customer()" /&gt;
+  &lt;/ui-tab&gt;
+  &lt;ui-tab label="ユーザー管理"&gt;
+    &lt;app-customer-users [customerId]="customerId()" /&gt;
+  &lt;/ui-tab&gt;
+  &lt;ui-tab label="納品先管理" [disabled]="true"&gt;
+    &lt;p&gt;後続スペックで実装予定&lt;/p&gt;
+  &lt;/ui-tab&gt;
+&lt;/ui-tab-group&gt;</code></pre>
+    </section>
+
+  </main>
+
+</body>
+</html>

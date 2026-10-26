@@ -1,38 +1,67 @@
-<div class="welcome-container">
-  <div class="welcome-content">
-    <h1>{{ title() }}</h1>
-    <p class="subtitle">Template for Angular NestJS Environment</p>
-    
-    <div class="info-cards">
-      <div class="card">
-        <h3>🚀 技術スタック</h3>
-        <ul>
-          <li>Angular 20 (Zoneless + Signals)</li>
-          <li>NestJS 11</li>
-          <li>PostgreSQL 17</li>
-          <li>Docker + Docker Compose</li>
-        </ul>
+<div class="ds-page">
+  <!-- ヘッダー（デザインシステム準拠: surface + header-elevation） -->
+  <header class="ds-header">
+    <div class="ds-header__inner">
+      <div class="ds-brand">
+        <span class="ds-brand__mark" aria-hidden="true"></span>
+        <span class="ds-brand__name">{{ title() }}</span>
       </div>
-      
-      <div class="card">
-        <h3>📚 リソース</h3>
-        <ul>
-          <li><a href="http://localhost:3000/api" target="_blank">Swagger API ドキュメント</a></li>
-          <li><a href="http://localhost:3000/health" target="_blank">ヘルスチェック</a></li>
-          <li><a href="https://angular.dev/" target="_blank">Angular ドキュメント</a></li>
-          <li><a href="https://docs.nestjs.com/" target="_blank">NestJS ドキュメント</a></li>
-        </ul>
-      </div>
-      
-      <div class="card">
-        <h3>🎯 次のステップ</h3>
-        <ul>
-          <li>コンポーネントを作成する</li>
-          <li>APIエンドポイントを追加する</li>
-          <li>データベーススキーマを定義する</li>
-          <li>開発を開始する！</li>
-        </ul>
-      </div>
+      <span class="ds-badge">Template for Angular NestJS Environment</span>
     </div>
-  </div>
+  </header>
+
+  <main class="ds-main">
+    <section class="ds-hero">
+      <h1 class="ds-hero__title">{{ title() }} へようこそ</h1>
+      <p class="ds-hero__lead">
+        このページはデザインシステムのトークン（カラー・角丸・影）で構成されています。
+        テーマカラーを変えると、この画面全体の色が追従します。
+      </p>
+    </section>
+
+    <!-- 情報カード（surface + modern shadow + md radius） -->
+    <section class="ds-cards">
+      <article class="ds-card">
+        <h3 class="ds-card__title">🚀 技術スタック</h3>
+        <ul class="ds-list">
+          <li>Angular 22 (Zoneless + Signals)</li>
+          <li>NestJS 12</li>
+          <li>PostgreSQL 17</li>
+          <li>Tailwind CSS + デザインシステム</li>
+        </ul>
+      </article>
+
+      <article class="ds-card">
+        <h3 class="ds-card__title">📚 リソース</h3>
+        <ul class="ds-list">
+          <li><a href="http://localhost:3000/api" target="_blank" rel="noopener">Swagger API ドキュメント</a></li>
+          <li><a href="http://localhost:3000/health" target="_blank" rel="noopener">ヘルスチェック</a></li>
+          <li><a href="https://angular.dev/" target="_blank" rel="noopener">Angular ドキュメント</a></li>
+          <li><a href="https://nestjs.com/" target="_blank" rel="noopener">NestJS ドキュメント</a></li>
+        </ul>
+      </article>
+
+      <article class="ds-card">
+        <h3 class="ds-card__title">🎨 デザインシステム</h3>
+        <ul class="ds-list">
+          <li>見本帳: <code>docs/design-system/</code></li>
+          <li>テーマカラーは <code>src/styles.less</code> の先頭で変更</li>
+          <li>トークン: カラー / 角丸 / 影</li>
+        </ul>
+        <!-- カラースウォッチ: テーマ変更の効果が一目で分かる -->
+        <div class="ds-swatches" aria-label="テーマカラー サンプル">
+          <span class="ds-swatch ds-swatch--primary" title="primary"></span>
+          <span class="ds-swatch ds-swatch--success" title="success"></span>
+          <span class="ds-swatch ds-swatch--warning" title="warning"></span>
+          <span class="ds-swatch ds-swatch--danger" title="danger"></span>
+        </div>
+      </article>
+    </section>
+
+    <!-- ボタン見本（primary / hover が効くことを示す） -->
+    <section class="ds-actions">
+      <button type="button" class="ds-btn ds-btn--primary">プライマリボタン</button>
+      <button type="button" class="ds-btn ds-btn--ghost">セカンダリボタン</button>
+    </section>
+  </main>
 </div>

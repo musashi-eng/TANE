@@ -1,22 +1,26 @@
 # TANE - Template for Angular NestJS Environment
 
-**TANE**は、Angular 20 + NestJS + PostgreSQLのフルスタックTypeScriptアプリケーションを素早く立ち上げるためのテンプレートリポジトリです。
+**TANE**は、Angular 22 + NestJS 12 + PostgreSQLのフルスタックTypeScriptアプリケーションを素早く立ち上げるためのテンプレートリポジトリです。
 
 プロジェクトの「種（たね）」という意味を込めて、新しいプロジェクトの出発点として使用できます。
 
 ## 🚀 技術スタック
 
 ### フロントエンド
-- **Angular 20** - Zoneless + Signals アーキテクチャ
-- **ng-zorro-antd** - Ant Design UIコンポーネント
-- **TypeScript 5.8** - 型安全な開発
+- **Angular 22** - Zoneless + Signals アーキテクチャ
+- **デザインシステム** - プロジェクト独自のUIを配置（UIライブラリ非依存）
+- **Font Awesome** - アイコン（@fortawesome/angular-fontawesome）
+- **TypeScript 5.9** - 型安全な開発
 - **RxJS 7** - リアクティブプログラミング
+- **Vitest** - テストフレームワーク
 
 ### バックエンド
-- **NestJS 11** - スケーラブルなNode.jsフレームワーク
+- **NestJS 12** - スケーラブルなNode.jsフレームワーク
 - **TypeORM** - TypeScript ORM
 - **Swagger/OpenAPI** - API ドキュメント自動生成
 - **class-validator** - バリデーション
+- **TypeScript 6** - 型安全な開発
+- **Vitest** - テストフレームワーク
 
 ### データベース
 - **PostgreSQL 17** - リレーショナルデータベース
@@ -29,8 +33,8 @@
 
 ## ✨ 機能
 
-- ✅ Zoneless + Signals による高速なAngular 20
-- ✅ NestJS 11 による堅牢なバックエンド
+- ✅ Zoneless + Signals による高速なAngular 22
+- ✅ NestJS 12 による堅牢なバックエンド
 - ✅ Swagger UIによるインタラクティブなAPIドキュメント
 - ✅ Docker環境による簡単なセットアップ
 - ✅ 環境別設定（開発・テスト・本番）
@@ -82,7 +86,7 @@ cd your-project-name
 ### 前提条件
 
 - Docker Desktop
-- Node.js 22以上（ローカル開発の場合）
+- Node.js 24以上（ローカル開発の場合）
 - Git
 
 ### セットアップ手順
@@ -221,7 +225,7 @@ docker compose exec frontend npx tsc --noEmit
 - [Angular](https://angular.dev/)
 - [NestJS](https://nestjs.com/)
 - [PostgreSQL](https://www.postgresql.org/)
-- [ng-zorro-antd](https://ng.ant.design/)
+- [Vitest](https://vitest.dev/)
 - [Docker](https://www.docker.com/)
 
 ## 📞 サポート

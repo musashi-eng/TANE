@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -21,11 +22,11 @@ describe('Swagger OpenAPI Specification Compliance', () => {
     })
       .overrideProvider(HealthCheckService)
       .useValue({
-        check: jest.fn().mockResolvedValue({ status: 'ok' }),
+        check: vi.fn().mockResolvedValue({ status: 'ok' }),
       })
       .overrideProvider(TypeOrmHealthIndicator)
       .useValue({
-        pingCheck: jest.fn().mockResolvedValue({ database: { status: 'up' } }),
+        pingCheck: vi.fn().mockResolvedValue({ database: { status: 'up' } }),
       })
       .compile();
 
@@ -159,11 +160,11 @@ describe('Swagger Endpoint Tagging', () => {
     })
       .overrideProvider(HealthCheckService)
       .useValue({
-        check: jest.fn().mockResolvedValue({ status: 'ok' }),
+        check: vi.fn().mockResolvedValue({ status: 'ok' }),
       })
       .overrideProvider(TypeOrmHealthIndicator)
       .useValue({
-        pingCheck: jest.fn().mockResolvedValue({ database: { status: 'up' } }),
+        pingCheck: vi.fn().mockResolvedValue({ database: { status: 'up' } }),
       })
       .compile();
 
@@ -306,11 +307,11 @@ describe('Swagger Controller Auto-Documentation', () => {
     })
       .overrideProvider(HealthCheckService)
       .useValue({
-        check: jest.fn().mockResolvedValue({ status: 'ok' }),
+        check: vi.fn().mockResolvedValue({ status: 'ok' }),
       })
       .overrideProvider(TypeOrmHealthIndicator)
       .useValue({
-        pingCheck: jest.fn().mockResolvedValue({ database: { status: 'up' } }),
+        pingCheck: vi.fn().mockResolvedValue({ database: { status: 'up' } }),
       })
       .compile();
 
@@ -445,11 +446,11 @@ describe('Swagger Response Auto-Documentation', () => {
     })
       .overrideProvider(HealthCheckService)
       .useValue({
-        check: jest.fn().mockResolvedValue({ status: 'ok' }),
+        check: vi.fn().mockResolvedValue({ status: 'ok' }),
       })
       .overrideProvider(TypeOrmHealthIndicator)
       .useValue({
-        pingCheck: jest.fn().mockResolvedValue({ database: { status: 'up' } }),
+        pingCheck: vi.fn().mockResolvedValue({ database: { status: 'up' } }),
       })
       .compile();
 
@@ -651,11 +652,11 @@ describe('Swagger DTO Auto-Documentation', () => {
     })
       .overrideProvider(HealthCheckService)
       .useValue({
-        check: jest.fn().mockResolvedValue({ status: 'ok' }),
+        check: vi.fn().mockResolvedValue({ status: 'ok' }),
       })
       .overrideProvider(TypeOrmHealthIndicator)
       .useValue({
-        pingCheck: jest.fn().mockResolvedValue({ database: { status: 'up' } }),
+        pingCheck: vi.fn().mockResolvedValue({ database: { status: 'up' } }),
       })
       .compile();
 
@@ -935,11 +936,11 @@ describe('Swagger Validation Rules Documentation', () => {
     })
       .overrideProvider(HealthCheckService)
       .useValue({
-        check: jest.fn().mockResolvedValue({ status: 'ok' }),
+        check: vi.fn().mockResolvedValue({ status: 'ok' }),
       })
       .overrideProvider(TypeOrmHealthIndicator)
       .useValue({
-        pingCheck: jest.fn().mockResolvedValue({ database: { status: 'up' } }),
+        pingCheck: vi.fn().mockResolvedValue({ database: { status: 'up' } }),
       })
       .compile();
 
@@ -1251,11 +1252,11 @@ describe('Swagger UI Integration', () => {
     })
       .overrideProvider(HealthCheckService)
       .useValue({
-        check: jest.fn().mockResolvedValue({ status: 'ok' }),
+        check: vi.fn().mockResolvedValue({ status: 'ok' }),
       })
       .overrideProvider(TypeOrmHealthIndicator)
       .useValue({
-        pingCheck: jest.fn().mockResolvedValue({ database: { status: 'up' } }),
+        pingCheck: vi.fn().mockResolvedValue({ database: { status: 'up' } }),
       })
       .compile();
 
@@ -1345,11 +1346,11 @@ describe('OpenAPI JSON Integration', () => {
     })
       .overrideProvider(HealthCheckService)
       .useValue({
-        check: jest.fn().mockResolvedValue({ status: 'ok' }),
+        check: vi.fn().mockResolvedValue({ status: 'ok' }),
       })
       .overrideProvider(TypeOrmHealthIndicator)
       .useValue({
-        pingCheck: jest.fn().mockResolvedValue({ database: { status: 'up' } }),
+        pingCheck: vi.fn().mockResolvedValue({ database: { status: 'up' } }),
       })
       .compile();
 
@@ -1483,11 +1484,11 @@ describe('Swagger Environment-Specific Behavior', () => {
       })
         .overrideProvider(HealthCheckService)
         .useValue({
-          check: jest.fn().mockResolvedValue({ status: 'ok' }),
+          check: vi.fn().mockResolvedValue({ status: 'ok' }),
         })
         .overrideProvider(TypeOrmHealthIndicator)
         .useValue({
-          pingCheck: jest.fn().mockResolvedValue({ database: { status: 'up' } }),
+          pingCheck: vi.fn().mockResolvedValue({ database: { status: 'up' } }),
         })
         .compile();
 
@@ -1533,7 +1534,7 @@ describe('Swagger Environment-Specific Behavior', () => {
 
     it('should log Swagger URL in development environment', () => {
       // コンソールログのスパイを設定
-      const consoleSpy = jest.spyOn(console, 'log');
+      const consoleSpy = vi.spyOn(console, 'log');
 
       // 開発環境であることを確認
       expect(process.env.NODE_ENV).toBe('development');
@@ -1561,11 +1562,11 @@ describe('Swagger Environment-Specific Behavior', () => {
       })
         .overrideProvider(HealthCheckService)
         .useValue({
-          check: jest.fn().mockResolvedValue({ status: 'ok' }),
+          check: vi.fn().mockResolvedValue({ status: 'ok' }),
         })
         .overrideProvider(TypeOrmHealthIndicator)
         .useValue({
-          pingCheck: jest.fn().mockResolvedValue({ database: { status: 'up' } }),
+          pingCheck: vi.fn().mockResolvedValue({ database: { status: 'up' } }),
         })
         .compile();
 

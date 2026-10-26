@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>データ表示コンポーネント | デザインシステム</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    :root {
+      --color-primary: #0095BC;
+      --color-primary-hover: #007A9A;
+      --color-primary-soft: rgba(0, 149, 188, 0.08);
+      --color-bg: #F9FAFB;
+      --color-surface: #FFFFFF;
+      --color-border: #E5E7EB;
+      --color-text-main: #172B4D;
+      --color-text-sub: #6B778C;
+      --color-success: #16A34A;
+      --color-warning: #D97706;
+      --color-danger: #DC2626;
+      --shadow-modern: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px 0 rgba(0,0,0,0.06);
+      --shadow-header-elevation: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+    }
+    body { font-family: 'Noto Sans JP', sans-serif; background-color: var(--color-bg); color: var(--color-text-main); margin: 0; }
+    .modern-shadow { box-shadow: var(--shadow-modern); }
+    .header-elevation { box-shadow: var(--shadow-header-elevation); }
+    a { text-decoration: underline; color: var(--color-primary); }
+    a.no-underline { text-decoration: none; }
+  </style>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0095BC', 'primary-hover': '#007A9A',
+            bg: '#F9FAFB', surface: '#FFFFFF', border: '#E5E7EB',
+            'text-main': '#172B4D', 'text-sub': '#6B778C',
+            success: '#16A34A', warning: '#D97706', danger: '#DC2626',
+          },
+          borderRadius: { DEFAULT: '6px', md: '8px', lg: '12px' },
+        },
+      },
+    };
+  </script>
+</head>
+<body class="min-h-screen">
+
+  <!-- ヘッダー -->
+  <header class="sticky top-0 z-50 flex items-center justify-between px-8 py-3 text-white header-elevation" style="background-color: var(--color-primary);" role="banner">
+    <div class="flex items-center gap-4">
+      <div class="bg-white p-1.5 rounded">
+        <i class="fa-solid fa-sitemap text-xl leading-none" style="color: var(--color-primary);" aria-hidden="true"></i>
+      </div>
+      <span class="text-lg font-black tracking-tighter uppercase">Ordering</span>
+    </div>
+    <nav class="flex items-center gap-2 text-sm" aria-label="ドキュメントナビゲーション">
+      <a href="tokens.html" class="no-underline text-white/80 hover:text-white px-3 py-1.5 rounded hover:bg-white/10 transition-colors">トークン</a>
+      <a href="layout.html" class="no-underline text-white/80 hover:text-white px-3 py-1.5 rounded hover:bg-white/10 transition-colors">レイアウト</a>
+      <a href="components-basic.html" class="no-underline text-white/80 hover:text-white px-3 py-1.5 rounded hover:bg-white/10 transition-colors">基本</a>
+      <a href="components-form.html" class="no-underline text-white/80 hover:text-white px-3 py-1.5 rounded hover:bg-white/10 transition-colors">フォーム</a>
+      <a href="components-data.html" class="no-underline text-white bg-white/20 px-3 py-1.5 rounded font-semibold">データ表示</a>
+    </nav>
+  </header>
+
+  <main class="max-w-[1200px] mx-auto p-8">
+    <div class="mb-8">
+      <h1 class="text-2xl font-bold" style="color: var(--color-text-main);">データ表示コンポーネント</h1>
+      <p class="text-sm mt-1" style="color: var(--color-text-sub);">Table・Card・Modal・Toast の全バリアント</p>
+    </div>
+
+    <!-- ========== TableComponent ========== -->
+    <section class="bg-white rounded-md p-6 modern-shadow border mb-6" style="border-color: var(--color-border);">
+      <h2 class="text-lg font-bold mb-4" style="color: var(--color-text-main);">
+        <i class="fa-solid fa-table mr-2" style="color: var(--color-primary);" aria-hidden="true"></i>
+        TableComponent
+      </h2>
+      <p class="text-sm mb-4" style="color: var(--color-text-sub);">ソート・ページネーション対応。ヘッダー bg-slate-50、行ホバー bg-primary-soft。</p>
+
+      <div class="overflow-x-auto rounded-md border modern-shadow" style="border-color: var(--color-border);">
+        <table class="w-full border-collapse text-left">
+          <thead>
+            <tr class="border-b bg-slate-50" style="border-color: var(--color-border);">
+              <th class="p-4 text-[11px] font-bold uppercase tracking-wider w-40" style="color: var(--color-text-sub);">
+                <button class="inline-flex items-center gap-1 cursor-pointer hover:text-[var(--color-primary)] transition-colors">
+                  SKU コード <i class="fa-solid fa-sort-up text-[10px]" aria-hidden="true"></i>
+                </button>
+              </th>
+              <th class="p-4 text-[11px] font-bold uppercase tracking-wider" style="color: var(--color-text-sub);">
+                <button class="inline-flex items-center gap-1 cursor-pointer hover:text-[var(--color-primary)] transition-colors">
+                  商品名 <i class="fa-solid fa-sort text-[10px] opacity-30" aria-hidden="true"></i>
+                </button>
+              </th>
+              <th class="p-4 text-[11px] font-bold uppercase tracking-wider text-center w-32" style="color: var(--color-text-sub);">在庫</th>
+              <th class="p-4 text-[11px] font-bold uppercase tracking-wider text-right w-32" style="color: var(--color-text-sub);">
+                <button class="inline-flex items-center gap-1 cursor-pointer hover:text-[var(--color-primary)] transition-colors">
+                  単価 <i class="fa-solid fa-sort text-[10px] opacity-30" aria-hidden="true"></i>
+                </button>
+              </th>
+            </tr>
+          </thead>
+          <tbody class="divide-y" style="border-color: var(--color-border);">
+            <tr class="transition-colors hover:bg-[var(--color-primary-soft)]">
+              <td class="p-4 text-sm font-medium" style="color: var(--color-text-sub);">SKU-IND-4001</td>
+              <td class="p-4 text-sm font-semibold" style="color: var(--color-text-main);">Industrial Grade Heavy Widget v4</td>
+              <td class="p-4 text-center"><span class="text-sm font-medium" style="color: var(--color-text-main);">1,240</span><span class="block text-[10px] font-bold" style="color: var(--color-success);">IN STOCK</span></td>
+              <td class="p-4 text-right text-sm font-medium" style="color: var(--color-text-main);">¥4,500</td>
+            </tr>
+            <tr class="transition-colors hover:bg-[var(--color-primary-soft)]">
+              <td class="p-4 text-sm font-medium" style="color: var(--color-text-sub);">SKU-PRE-9021</td>
+              <td class="p-4 text-sm font-semibold" style="color: var(--color-text-main);">Precision Bearing Set (High Speed)</td>
+              <td class="p-4 text-center"><span class="text-sm font-medium" style="color: var(--color-danger);">42</span><span class="block text-[10px] font-bold uppercase" style="color: var(--color-danger);">Low Stock</span></td>
+              <td class="p-4 text-right text-sm font-medium" style="color: var(--color-text-main);">¥12,250</td>
+            </tr>
+            <tr class="transition-colors hover:bg-[var(--color-primary-soft)]">
+              <td class="p-4 text-sm font-medium" style="color: var(--color-text-sub);">SKU-MTR-1020</td>
+              <td class="p-4 text-sm font-semibold" style="color: var(--color-text-main);">High-Torque Brushless Motor 24V</td>
+              <td class="p-4 text-center"><span class="text-sm font-medium" style="color: var(--color-text-main);">85</span><span class="block text-[10px] font-bold uppercase" style="color: var(--color-text-sub);">Standard</span></td>
+              <td class="p-4 text-right text-sm font-medium" style="color: var(--color-text-main);">¥85,000</td>
+            </tr>
+            <tr class="transition-colors hover:bg-[var(--color-primary-soft)]">
+              <td class="p-4 text-sm font-medium" style="color: var(--color-text-sub);">SKU-STL-3040</td>
+              <td class="p-4 text-sm font-semibold" style="color: var(--color-text-main);">Steel Alloy Structural Plate (10mm)</td>
+              <td class="p-4 text-center"><span class="text-sm font-medium" style="color: var(--color-text-main);">3,000</span><span class="block text-[10px] font-bold" style="color: var(--color-success);">IN STOCK</span></td>
+              <td class="p-4 text-right text-sm font-medium" style="color: var(--color-text-main);">¥1,250</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ページネーション -->
+      <nav class="mt-4 flex items-center justify-between" aria-label="ページネーション">
+        <p class="text-xs" style="color: var(--color-text-sub);">全 24 件中 ページ 1 / 6</p>
+        <div class="flex items-center gap-1">
+          <button class="rounded px-2 py-1 text-xs opacity-30 cursor-not-allowed" style="color: var(--color-text-sub);" disabled aria-label="前のページ">
+            <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+          </button>
+          <button class="h-7 w-7 rounded text-xs font-medium text-white" style="background-color: var(--color-primary);" aria-current="page">1</button>
+          <button class="h-7 w-7 rounded text-xs font-medium hover:bg-slate-100" style="color: var(--color-text-sub);">2</button>
+          <button class="h-7 w-7 rounded text-xs font-medium hover:bg-slate-100" style="color: var(--color-text-sub);">3</button>
+          <button class="rounded px-2 py-1 text-xs hover:bg-slate-100" style="color: var(--color-text-sub);" aria-label="次のページ">
+            <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+          </button>
+        </div>
+      </nav>
+    </section>
+
+    <!-- ========== CardComponent ========== -->
+    <section class="bg-white rounded-md p-6 modern-shadow border mb-6" style="border-color: var(--color-border);">
+      <h2 class="text-lg font-bold mb-4" style="color: var(--color-text-main);">
+        <i class="fa-solid fa-id-card mr-2" style="color: var(--color-primary);" aria-hidden="true"></i>
+        CardComponent
+      </h2>
+      <p class="text-sm mb-4" style="color: var(--color-text-sub);">ヘッダー・コンテンツ・フッターの3スロット構成。modern-shadow + border スタイル。</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- ヘッダー + コンテンツ -->
+        <div class="overflow-hidden rounded-md border bg-white modern-shadow" style="border-color: var(--color-border);">
+          <div class="border-b bg-slate-50 px-6 py-4" style="border-color: var(--color-border);">
+            <h3 class="text-sm font-bold uppercase tracking-wider" style="color: var(--color-text-sub);">注文サマリー</h3>
+          </div>
+          <div class="px-6 py-4 space-y-3">
+            <div class="flex justify-between"><span class="text-sm" style="color: var(--color-text-sub);">小計</span><span class="text-sm font-semibold" style="color: var(--color-text-main);">¥765,000</span></div>
+            <div class="flex justify-between"><span class="text-sm" style="color: var(--color-text-sub);">税（8%）</span><span class="text-sm font-semibold" style="color: var(--color-text-main);">¥61,200</span></div>
+            <div class="flex justify-between"><span class="text-sm" style="color: var(--color-text-sub);">送料</span><span class="text-sm font-semibold" style="color: var(--color-primary);">無料</span></div>
+            <div class="border-t pt-3" style="border-color: var(--color-border);">
+              <div class="flex justify-between"><span class="text-xs font-bold uppercase tracking-wider" style="color: var(--color-primary);">合計</span><span class="text-xl font-black" style="color: var(--color-text-main);">¥826,200</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ヘッダー + コンテンツ + フッター -->
+        <div class="overflow-hidden rounded-md border bg-white modern-shadow" style="border-color: var(--color-border);">
+          <div class="border-b bg-slate-50 px-6 py-4" style="border-color: var(--color-border);">
+            <h3 class="text-sm font-bold uppercase tracking-wider" style="color: var(--color-text-sub);">
+              <i class="fa-solid fa-truck mr-2" style="color: var(--color-primary);" aria-hidden="true"></i>
+              配送情報
+            </h3>
+          </div>
+          <div class="px-6 py-4 space-y-2">
+            <p class="text-sm" style="color: var(--color-text-main);">優先地上便（2〜3日）</p>
+            <p class="text-xs" style="color: var(--color-text-sub);">配送予定日: 2026/03/12</p>
+          </div>
+          <div class="border-t px-6 py-3 bg-slate-50" style="border-color: var(--color-border);">
+            <button class="text-sm font-medium transition-colors hover:underline" style="color: var(--color-primary);">配送方法を変更</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Padding バリエーション -->
+      <h3 class="text-sm font-bold mt-6 mb-3" style="color: var(--color-text-main);">
+        <i class="fa-solid fa-arrows-left-right-to-line mr-2" style="color: var(--color-primary);" aria-hidden="true"></i>
+        Padding バリエーション
+      </h3>
+      <p class="text-xs mb-4" style="color: var(--color-text-sub);">
+        <code>padding</code> 入力の各値に対応するコンテンツ領域のパディング比較。背景色でパディング領域を可視化。
+      </p>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <!-- padding="none" -->
+        <div class="overflow-hidden rounded-md border bg-white modern-shadow" style="border-color: var(--color-border);">
+          <div class="border-b bg-slate-50 px-3 py-2" style="border-color: var(--color-border);">
+            <span class="inline-block rounded text-[10px] font-bold px-1.5 py-0.5 text-white" style="background-color: var(--color-primary);">padding="none"</span>
+          </div>
+          <div class="bg-[var(--color-bg)]">
+            <div class="bg-white">
+              <p class="text-xs font-medium" style="color: var(--color-text-main);">コンテンツ領域</p>
+              <p class="text-[10px] mt-1" style="color: var(--color-text-sub);">パディングなし</p>
+            </div>
+          </div>
+          <div class="border-t px-3 py-1.5 text-center" style="border-color: var(--color-border);">
+            <code class="text-[10px] font-mono" style="color: var(--color-text-sub);">padding: 0</code>
+          </div>
+        </div>
+
+        <!-- padding="sm" -->
+        <div class="overflow-hidden rounded-md border bg-white modern-shadow" style="border-color: var(--color-border);">
+          <div class="border-b bg-slate-50 px-3 py-2" style="border-color: var(--color-border);">
+            <span class="inline-block rounded text-[10px] font-bold px-1.5 py-0.5 text-white" style="background-color: var(--color-primary);">padding="sm"</span>
+          </div>
+          <div class="bg-[var(--color-bg)]">
+            <div class="px-3 py-2 bg-white">
+              <p class="text-xs font-medium" style="color: var(--color-text-main);">コンテンツ領域</p>
+              <p class="text-[10px] mt-1" style="color: var(--color-text-sub);">px-3 py-2</p>
+            </div>
+          </div>
+          <div class="border-t px-3 py-1.5 text-center" style="border-color: var(--color-border);">
+            <code class="text-[10px] font-mono" style="color: var(--color-text-sub);">px-3 py-2</code>
+          </div>
+        </div>
+
+        <!-- padding="md"（デフォルト） -->
+        <div class="overflow-hidden rounded-md border bg-white modern-shadow" style="border-color: var(--color-border); outline: 2px solid var(--color-primary); outline-offset: -2px;">
+          <div class="border-b bg-slate-50 px-3 py-2" style="border-color: var(--color-border);">
+            <span class="inline-block rounded text-[10px] font-bold px-1.5 py-0.5 text-white" style="background-color: var(--color-primary);">padding="md"</span>
+            <span class="ml-1 text-[10px] font-medium" style="color: var(--color-primary);">default</span>
+          </div>
+          <div class="bg-[var(--color-bg)]">
+            <div class="px-6 py-4 bg-white">
+              <p class="text-xs font-medium" style="color: var(--color-text-main);">コンテンツ領域</p>
+              <p class="text-[10px] mt-1" style="color: var(--color-text-sub);">px-6 py-4</p>
+            </div>
+          </div>
+          <div class="border-t px-3 py-1.5 text-center" style="border-color: var(--color-border);">
+            <code class="text-[10px] font-mono" style="color: var(--color-text-sub);">px-6 py-4</code>
+          </div>
+        </div>
+
+        <!-- padding="lg" -->
+        <div class="overflow-hidden rounded-md border bg-white modern-shadow" style="border-color: var(--color-border);">
+          <div class="border-b bg-slate-50 px-3 py-2" style="border-color: var(--color-border);">
+            <span class="inline-block rounded text-[10px] font-bold px-1.5 py-0.5 text-white" style="background-color: var(--color-primary);">padding="lg"</span>
+          </div>
+          <div class="bg-[var(--color-bg)]">
+            <div class="px-8 py-6 bg-white">
+              <p class="text-xs font-medium" style="color: var(--color-text-main);">コンテンツ領域</p>
+              <p class="text-[10px] mt-1" style="color: var(--color-text-sub);">px-8 py-6</p>
+            </div>
+          </div>
+          <div class="border-t px-3 py-1.5 text-center" style="border-color: var(--color-border);">
+            <code class="text-[10px] font-mono" style="color: var(--color-text-sub);">px-8 py-6</code>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== ModalComponent ========== -->
+    <section class="bg-white rounded-md p-6 modern-shadow border mb-6" style="border-color: var(--color-border);">
+      <h2 class="text-lg font-bold mb-4" style="color: var(--color-text-main);">
+        <i class="fa-solid fa-window-restore mr-2" style="color: var(--color-primary);" aria-hidden="true"></i>
+        ModalComponent
+      </h2>
+      <p class="text-sm mb-4" style="color: var(--color-text-sub);">オーバーレイ + 中央配置。タイトル・コンテンツ・アクションスロット構成。Escape / オーバーレイクリックで閉じる。</p>
+
+      <!-- モーダルプレビュー（インライン表示） -->
+      <div class="rounded-lg border-2 border-dashed p-8 flex items-center justify-center" style="border-color: var(--color-border); background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.02) 10px, rgba(0,0,0,0.02) 20px);">
+        <div class="w-full max-w-lg rounded-lg border bg-white" style="border-color: var(--color-border); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);">
+          <div class="flex items-center justify-between border-b px-6 py-4" style="border-color: var(--color-border);">
+            <h3 class="text-base font-bold" style="color: var(--color-text-main);">注文を確定しますか？</h3>
+            <button class="flex h-8 w-8 items-center justify-center rounded transition-colors hover:bg-slate-100" style="color: var(--color-text-sub);" aria-label="閉じる">
+              <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="px-6 py-4">
+            <p class="text-sm" style="color: var(--color-text-main);">この操作は取り消せません。注文内容を確認の上、確定してください。</p>
+            <div class="mt-3 rounded border p-3 bg-slate-50 text-xs" style="border-color: var(--color-border); color: var(--color-text-sub);">
+              注文番号: #ORD-2026-1234 / 合計: ¥826,200
+            </div>
+          </div>
+          <div class="flex justify-end gap-3 border-t px-6 py-4" style="border-color: var(--color-border);">
+            <button class="rounded border px-4 py-2 text-sm font-medium transition-colors hover:bg-slate-50" style="border-color: var(--color-border); color: var(--color-text-main);">キャンセル</button>
+            <button class="rounded px-4 py-2 text-sm font-bold text-white transition-colors" style="background-color: var(--color-primary);">確定する</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Size バリエーション -->
+      <h3 class="text-sm font-bold mt-6 mb-3" style="color: var(--color-text-main);">
+        <i class="fa-solid fa-up-right-and-down-left-from-center mr-2" style="color: var(--color-primary);" aria-hidden="true"></i>
+        Size バリエーション
+      </h3>
+      <p class="text-xs mb-4" style="color: var(--color-text-sub);">
+        <code>size</code> 入力の各値に対応するモーダル最大幅の比較。インラインプレビューでサイズ差を可視化。
+      </p>
+
+      <div class="rounded-lg border-2 border-dashed p-6 flex flex-col items-center gap-6" style="border-color: var(--color-border); background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.02) 10px, rgba(0,0,0,0.02) 20px);">
+
+        <!-- size="sm" — max-w-sm (384px) -->
+        <div class="w-full flex flex-col items-center">
+          <div class="mb-2">
+            <span class="inline-block rounded text-[10px] font-bold px-1.5 py-0.5 text-white" style="background-color: var(--color-primary);">size="sm"</span>
+            <span class="ml-1 text-[10px]" style="color: var(--color-text-sub);">max-w-sm (384px)</span>
+          </div>
+          <div class="w-full max-w-sm rounded-lg border bg-white" style="border-color: var(--color-border); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);">
+            <div class="flex items-center justify-between border-b px-4 py-3" style="border-color: var(--color-border);">
+              <h4 class="text-sm font-bold" style="color: var(--color-text-main);">確認</h4>
+              <button class="flex h-6 w-6 items-center justify-center rounded transition-colors hover:bg-slate-100" style="color: var(--color-text-sub);" aria-label="閉じる">
+                <i class="fa-solid fa-xmark text-xs" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="px-4 py-3">
+              <p class="text-xs" style="color: var(--color-text-main);">この操作を実行しますか？</p>
+            </div>
+            <div class="flex justify-end gap-2 border-t px-4 py-3" style="border-color: var(--color-border);">
+              <button class="rounded border px-3 py-1.5 text-xs font-medium transition-colors hover:bg-slate-50" style="border-color: var(--color-border); color: var(--color-text-main);">いいえ</button>
+              <button class="rounded px-3 py-1.5 text-xs font-bold text-white transition-colors" style="background-color: var(--color-primary);">はい</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- size="md"（デフォルト） — max-w-lg (512px) -->
+        <div class="w-full flex flex-col items-center">
+          <div class="mb-2">
+            <span class="inline-block rounded text-[10px] font-bold px-1.5 py-0.5 text-white" style="background-color: var(--color-primary);">size="md"</span>
+            <span class="ml-1 text-[10px] font-medium" style="color: var(--color-primary);">default</span>
+            <span class="ml-1 text-[10px]" style="color: var(--color-text-sub);">max-w-lg (512px)</span>
+          </div>
+          <div class="w-full max-w-lg rounded-lg border bg-white" style="border-color: var(--color-border); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); outline: 2px solid var(--color-primary); outline-offset: -2px;">
+            <div class="flex items-center justify-between border-b px-6 py-4" style="border-color: var(--color-border);">
+              <h4 class="text-sm font-bold" style="color: var(--color-text-main);">商品を削除</h4>
+              <button class="flex h-7 w-7 items-center justify-center rounded transition-colors hover:bg-slate-100" style="color: var(--color-text-sub);" aria-label="閉じる">
+                <i class="fa-solid fa-xmark text-sm" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="px-6 py-4">
+              <p class="text-sm" style="color: var(--color-text-main);">選択した商品をカタログから削除します。この操作は取り消せません。</p>
+            </div>
+            <div class="flex justify-end gap-3 border-t px-6 py-4" style="border-color: var(--color-border);">
+              <button class="rounded border px-4 py-2 text-sm font-medium transition-colors hover:bg-slate-50" style="border-color: var(--color-border); color: var(--color-text-main);">キャンセル</button>
+              <button class="rounded px-4 py-2 text-sm font-bold text-white transition-colors" style="background-color: var(--color-danger);">削除する</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- size="lg" — max-w-2xl (672px) -->
+        <div class="w-full flex flex-col items-center">
+          <div class="mb-2">
+            <span class="inline-block rounded text-[10px] font-bold px-1.5 py-0.5 text-white" style="background-color: var(--color-primary);">size="lg"</span>
+            <span class="ml-1 text-[10px]" style="color: var(--color-text-sub);">max-w-2xl (672px)</span>
+          </div>
+          <div class="w-full max-w-2xl rounded-lg border bg-white" style="border-color: var(--color-border); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);">
+            <div class="flex items-center justify-between border-b px-6 py-4" style="border-color: var(--color-border);">
+              <h4 class="text-sm font-bold" style="color: var(--color-text-main);">新規注文の作成</h4>
+              <button class="flex h-7 w-7 items-center justify-center rounded transition-colors hover:bg-slate-100" style="color: var(--color-text-sub);" aria-label="閉じる">
+                <i class="fa-solid fa-xmark text-sm" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="px-6 py-4">
+              <p class="text-sm mb-3" style="color: var(--color-text-main);">注文情報を入力してください。すべての必須項目を入力する必要があります。</p>
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-xs font-medium mb-1" style="color: var(--color-text-sub);">顧客名</label>
+                  <div class="rounded border px-3 py-2 text-xs bg-slate-50" style="border-color: var(--color-border); color: var(--color-text-sub);">入力フィールド</div>
+                </div>
+                <div>
+                  <label class="block text-xs font-medium mb-1" style="color: var(--color-text-sub);">納品日</label>
+                  <div class="rounded border px-3 py-2 text-xs bg-slate-50" style="border-color: var(--color-border); color: var(--color-text-sub);">入力フィールド</div>
+                </div>
+              </div>
+            </div>
+            <div class="flex justify-end gap-3 border-t px-6 py-4" style="border-color: var(--color-border);">
+              <button class="rounded border px-4 py-2 text-sm font-medium transition-colors hover:bg-slate-50" style="border-color: var(--color-border); color: var(--color-text-main);">キャンセル</button>
+              <button class="rounded px-4 py-2 text-sm font-bold text-white transition-colors" style="background-color: var(--color-primary);">作成する</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========== ToastComponent ========== -->
+    <section class="bg-white rounded-md p-6 modern-shadow border mb-6" style="border-color: var(--color-border);">
+      <h2 class="text-lg font-bold mb-4" style="color: var(--color-text-main);">
+        <i class="fa-solid fa-bell mr-2" style="color: var(--color-primary);" aria-hidden="true"></i>
+        ToastComponent
+      </h2>
+      <p class="text-sm mb-4" style="color: var(--color-text-sub);">右下固定表示。success / warning / error / info の4バリアント。自動消去（3秒）対応。</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Success -->
+        <div class="flex items-start gap-3 rounded-md border-l-4 bg-white px-4 py-3 modern-shadow" style="border-left-color: var(--color-success);" role="alert">
+          <i class="fa-solid fa-circle-check mt-0.5 text-base" style="color: var(--color-success);" aria-hidden="true"></i>
+          <p class="flex-1 text-sm" style="color: var(--color-text-main);">注文が正常に確定されました</p>
+          <button class="flex h-5 w-5 items-center justify-center rounded transition-colors hover:bg-slate-100" style="color: var(--color-text-sub);" aria-label="閉じる">
+            <i class="fa-solid fa-xmark text-xs" aria-hidden="true"></i>
+          </button>
+        </div>
+
+        <!-- Warning -->
+        <div class="flex items-start gap-3 rounded-md border-l-4 bg-white px-4 py-3 modern-shadow" style="border-left-color: var(--color-warning);" role="alert">
+          <i class="fa-solid fa-triangle-exclamation mt-0.5 text-base" style="color: var(--color-warning);" aria-hidden="true"></i>
+          <p class="flex-1 text-sm" style="color: var(--color-text-main);">在庫が残りわずかです</p>
+          <button class="flex h-5 w-5 items-center justify-center rounded transition-colors hover:bg-slate-100" style="color: var(--color-text-sub);" aria-label="閉じる">
+            <i class="fa-solid fa-xmark text-xs" aria-hidden="true"></i>
+          </button>
+        </div>
+
+        <!-- Error -->
+        <div class="flex items-start gap-3 rounded-md border-l-4 bg-white px-4 py-3 modern-shadow" style="border-left-color: var(--color-danger);" role="alert">
+          <i class="fa-solid fa-circle-xmark mt-0.5 text-base" style="color: var(--color-danger);" aria-hidden="true"></i>
+          <p class="flex-1 text-sm" style="color: var(--color-text-main);">注文の送信に失敗しました。再試行してください。</p>
+          <button class="flex h-5 w-5 items-center justify-center rounded transition-colors hover:bg-slate-100" style="color: var(--color-text-sub);" aria-label="閉じる">
+            <i class="fa-solid fa-xmark text-xs" aria-hidden="true"></i>
+          </button>
+        </div>
+
+        <!-- Info -->
+        <div class="flex items-start gap-3 rounded-md border-l-4 bg-white px-4 py-3 modern-shadow" style="border-left-color: var(--color-primary);" role="alert">
+          <i class="fa-solid fa-circle-info mt-0.5 text-base" style="color: var(--color-primary);" aria-hidden="true"></i>
+          <p class="flex-1 text-sm" style="color: var(--color-text-main);">下書きが自動保存されました</p>
+          <button class="flex h-5 w-5 items-center justify-center rounded transition-colors hover:bg-slate-100" style="color: var(--color-text-sub);" aria-label="閉じる">
+            <i class="fa-solid fa-xmark text-xs" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- フッター -->
+  <footer class="mt-8 border-t py-6" style="border-color: var(--color-border);">
+    <div class="max-w-[1200px] mx-auto px-8 flex justify-between items-center text-xs" style="color: var(--color-text-sub);">
+      <span>デザインシステム — データ表示コンポーネント</span>
+      <nav class="flex gap-6" aria-label="ドキュメントリンク">
+        <a href="tokens.html" class="no-underline hover:underline" style="color: var(--color-primary);">トークン</a>
+        <a href="layout.html" class="no-underline hover:underline" style="color: var(--color-primary);">レイアウト</a>
+        <a href="components-basic.html" class="no-underline hover:underline" style="color: var(--color-primary);">基本</a>
+        <a href="components-form.html" class="no-underline hover:underline" style="color: var(--color-primary);">フォーム</a>
+      </nav>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -8,7 +8,7 @@
 
 - Docker Desktop 4.0以上
 - Git 2.0以上
-- Node.js 22以上（ローカル開発の場合）
+- Node.js 24以上（ローカル開発の場合）
 - お好みのIDE（VS Code推奨）
 
 ### 推奨VS Code拡張機能
@@ -20,7 +20,7 @@
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
     "ms-azuretools.vscode-docker",
-    "firsttris.vscode-jest-runner"
+    "vitest.explorer"
   ]
 }
 ```
