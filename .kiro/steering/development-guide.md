@@ -161,6 +161,27 @@ docker compose down
 docker compose ps
 ```
 
+### AIエージェント（Kiro Crew）からコンテナを操作する場合
+
+macOSのKiro Crewサンドボックスからは、Docker Desktopの標準ソケットに到達できないことがあります（`/var/run/docker.sock` が存在しない、`~/.docker/run/docker.sock` が `Operation not permitted` で弾かれる）。この場合でも**Docker Desktopは起動しています**。`~/Library/Containers/com.docker.docker/Data/docker.raw.sock` は権限が通るため、以下の環境変数を付けて操作できます。
+
+```bash
+# Docker Desktop のソケットを直接指す（サンドボックスから到達可能）
+export DOCKER_HOST="unix://$HOME/Library/Containers/com.docker.docker/Data/docker.raw.sock"
+# ~/.docker/config.json 読み取り不可の WARNING を消す（空ディレクトリを指す）
+export DOCKER_CONFIG=/tmp/emptydockercfg
+
+# compose コマンド: `docker compose`(スペース版) が unknown command の場合は
+# `docker-compose`(ハイフン版) を使う（中身は v2 相当）
+docker-compose ps
+docker-compose exec backend npm test
+docker-compose exec frontend npm test
+```
+
+> **補足**: 恒久的に解消したい場合は、Docker Desktop の Settings → Advanced で
+> 「Allow the default Docker socket to be used」を有効にすると
+> `/var/run/docker.sock` が復活し、上記の環境変数が不要になります。
+
 ## コマンド実行方法
 
 **🚨 重要**: このプロジェクトはDocker環境で動作しています。**全てのnpmコマンドは必ずDockerコンテナ内で実行してください。**
