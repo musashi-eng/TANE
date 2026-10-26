@@ -1,14 +1,15 @@
 # Tane Backend API
 
-NestJS 11を使用したバックエンドAPIサーバー
+NestJS 12を使用したバックエンドAPIサーバー
 
 ## 技術スタック
 
-- **フレームワーク**: NestJS 11
+- **フレームワーク**: NestJS 12
 - **データベース**: PostgreSQL 17
 - **ORM**: TypeORM
-- **言語**: TypeScript 5.1+
-- **Node.js**: 22
+- **言語**: TypeScript 6
+- **Node.js**: 24
+- **テスト**: Vitest
 
 ## 機能
 

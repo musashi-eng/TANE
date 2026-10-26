@@ -8,12 +8,12 @@ inclusion: always
 
 ## プロジェクト構成
 
-- **フロントエンド**: Angular 20 + ng-zorro-antd（Ant Design）
-- **ガントチャート**: dhtmlx-gantt
+- **フロントエンド**: Angular 22 + デザインシステム（プロジェクト独自）
+- **バックエンド**: NestJS 12 + TypeORM + PostgreSQL
 - **開発環境**: Docker Compose
 - **テストフレームワーク**: Vitest
 
-## Angular 20の重要な設定
+## Angular 22の重要な設定
 
 ### Zoneless モード
 
@@ -519,6 +519,5 @@ docker compose exec backend npm run format
 ## 参考リンク
 
 - [Angular公式ドキュメント](https://angular.dev/)
-- [ng-zorro-antd公式ドキュメント](https://ng.ant.design/)
-- [dhtmlx-gantt公式ドキュメント](https://docs.dhtmlx.com/gantt/)
+- [NestJS公式ドキュメント](https://nestjs.com/)
 - [Vitest公式ドキュメント](https://vitest.dev/)

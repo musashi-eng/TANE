@@ -28,8 +28,8 @@ TANEは、モダンなフルスタックTypeScriptアプリケーションのテ
                 ↓                       ↓
 ┌───────────────────────┐   ┌───────────────────────┐
 │   Frontend Container  │   │   Backend Container   │
-│   (Angular 20)        │   │   (NestJS 11)         │
-│   - Nginx             │   │   - Node.js 22        │
+│   (Angular 22)        │   │   (NestJS 12)         │
+│   - Nginx             │   │   - Node.js 24        │
 │   - Port: 80          │   │   - Port: 3000        │
 └───────────────────────┘   └───────────────────────┘
                                         │
@@ -40,7 +40,7 @@ TANEは、モダンなフルスタックTypeScriptアプリケーションのテ
                             └───────────────────────┘
 ```
 
-## フロントエンド（Angular 20）
+## フロントエンド（Angular 22）
 
 ### アーキテクチャの特徴
 
@@ -103,10 +103,10 @@ frontend/src/app/
 
 ### UIライブラリ
 
-- **ng-zorro-antd** - Ant Design UIコンポーネント
+- **デザインシステム** - プロジェクト独自のUI（UIライブラリ非依存）
 - **angular-fontawesome** - アイコンライブラリ
 
-## バックエンド（NestJS 11）
+## バックエンド（NestJS 12）
 
 ### アーキテクチャの特徴
 
