@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>レイアウトコンポーネント | デザインシステム</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    :root {
+      --color-primary: #0095BC;
+      --color-primary-hover: #007A9A;
+      --color-primary-soft: rgba(0, 149, 188, 0.08);
+      --color-bg: #F9FAFB;
+      --color-surface: #FFFFFF;
+      --color-border: #E5E7EB;
+      --color-text-main: #172B4D;
+      --color-text-sub: #6B778C;
+      --color-success: #16A34A;
+      --color-warning: #D97706;
+      --color-danger: #DC2626;
+      --shadow-modern: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      --shadow-header-elevation: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background-color: var(--color-bg);
+      color: var(--color-text-main);
+      margin: 0;
+    }
+    .modern-shadow { box-shadow: var(--shadow-modern); }
+    .header-elevation { box-shadow: var(--shadow-header-elevation); }
+    /* テキストリンクは常時アンダーライン */
+    a { text-decoration: underline; color: var(--color-primary); }
+    a.no-underline { text-decoration: none; }
+  </style>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0095BC',
+            'primary-hover': '#007A9A',
+            'primary-soft': 'rgba(0, 149, 188, 0.08)',
+            bg: '#F9FAFB',
+            surface: '#FFFFFF',
+            border: '#E5E7EB',
+            'text-main': '#172B4D',
+            'text-sub': '#6B778C',
+            success: '#16A34A',
+            warning: '#D97706',
+            danger: '#DC2626',
+          },
+          borderRadius: {
+            DEFAULT: '6px',
+            md: '8px',
+            lg: '12px',
+          },
+        },
+      },
+    };
+  </script>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- ========================================
+       セクション1: AppShell + AppHeader デモ
+       ======================================== -->
+
+  <!-- AppHeader -->
+  <header class="sticky top-0 z-50 flex items-center justify-between px-8 py-3 text-white header-elevation" style="background-color: var(--color-primary);" role="banner">
+    <div class="flex items-center gap-10">
+      <!-- ロゴ -->
+      <a href="/" class="flex items-center gap-3 no-underline">
+        <div class="bg-white p-1.5 rounded flex items-center justify-center">
+          <i class="fa-solid fa-sitemap text-2xl leading-none" style="color: var(--color-primary);"></i>
+        </div>
+        <div class="flex flex-col leading-tight">
+          <span class="text-lg font-black tracking-tighter uppercase text-white">Ordering</span>
+          <span class="text-[10px] font-medium opacity-80 tracking-widest uppercase text-white">System</span>
+        </div>
+      </a>
+
+      <!-- ナビゲーション -->
+      <nav class="hidden md:flex items-center gap-1" aria-label="メインナビゲーション">
+        <a href="#" class="no-underline px-4 py-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 rounded transition-colors">ダッシュボード</a>
+        <a href="#" class="no-underline px-4 py-2 text-sm font-semibold text-white bg-white/20 rounded">発注グリッド</a>
+        <a href="#" class="no-underline px-4 py-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 rounded transition-colors">在庫管理</a>
+        <a href="#" class="no-underline px-4 py-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 rounded transition-colors">履歴</a>
+      </nav>
+    </div>
+
+    <!-- 右側コンテンツ -->
+    <div class="flex items-center gap-4">
+      <!-- 検索 -->
+      <div class="relative">
+        <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-white/60"></i>
+        <input
+          type="text"
+          placeholder="商品コード・商品名で検索..."
+          class="bg-white/10 border-none rounded py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-white/30 focus:bg-white focus:text-text-main w-72 transition-all placeholder:text-white/50"
+        />
+      </div>
+      <!-- 通知 -->
+      <button class="text-white/80 hover:text-white p-2 rounded-full hover:bg-white/10 transition-colors" aria-label="通知">
+        <i class="fa-solid fa-bell"></i>
+      </button>
+      <!-- ユーザー名 -->
+      <span class="text-sm font-medium pl-4 border-l border-white/20 ml-2">田中 太郎</span>
+    </div>
+  </header>
+
+  <!-- メインコンテンツ -->
+  <main class="flex-1 p-8 max-w-[1600px] mx-auto w-full">
+    <!-- ページタイトル -->
+    <div class="mb-8">
+      <h1 class="text-2xl font-bold" style="color: var(--color-text-main);">レイアウトコンポーネント</h1>
+      <p class="text-sm mt-2" style="color: var(--color-text-sub);">デザインシステムのレイアウト構造デモ</p>
+    </div>
+
+    <!-- コンポーネント説明 -->
+    <div class="grid gap-6">
+      <!-- AppShell -->
+      <section class="bg-white rounded-md p-6 modern-shadow border" style="border-color: var(--color-border);">
+        <h2 class="text-lg font-bold mb-4" style="color: var(--color-text-main);">
+          <i class="fa-solid fa-layer-group mr-2" style="color: var(--color-primary);"></i>
+          AppShellComponent
+        </h2>
+        <p class="text-sm mb-4" style="color: var(--color-text-sub);">
+          アプリケーション全体のルートレイアウト。ヘッダー、メインコンテンツ、フッターの配置を管理します。
+        </p>
+        <div class="bg-bg rounded p-4 border" style="border-color: var(--color-border);">
+          <pre class="text-xs overflow-x-auto"><code>&lt;ui-app-shell [showFooter]="true"&gt;
+  &lt;ui-app-header appShellHeader /&gt;
+  &lt;ui-page-container&gt;
+    &lt;!-- ページコンテンツ --&gt;
+  &lt;/ui-page-container&gt;
+  &lt;ui-action-footer appShellFooter /&gt;
+&lt;/ui-app-shell&gt;</code></pre>
+        </div>
+      </section>
+
+      <!-- AppHeader -->
+      <section class="bg-white rounded-md p-6 modern-shadow border" style="border-color: var(--color-border);">
+        <h2 class="text-lg font-bold mb-4" style="color: var(--color-text-main);">
+          <i class="fa-solid fa-window-maximize mr-2" style="color: var(--color-primary);"></i>
+          AppHeaderComponent
+        </h2>
+        <p class="text-sm mb-4" style="color: var(--color-text-sub);">
+          スティッキーヘッダー。ロゴ、ナビゲーション、検索、ユーザーメニューを配置。背景色は primary カラー。
+        </p>
+        <div class="space-y-2">
+          <div class="flex items-center gap-2 text-sm">
+            <span class="font-medium" style="color: var(--color-text-main);">Inputs:</span>
+            <code class="bg-bg px-2 py-0.5 rounded text-xs">appName</code>
+            <code class="bg-bg px-2 py-0.5 rounded text-xs">appSubtitle</code>
+            <code class="bg-bg px-2 py-0.5 rounded text-xs">logoLink</code>
+          </div>
+          <div class="flex items-center gap-2 text-sm">
+            <span class="font-medium" style="color: var(--color-text-main);">Slots:</span>
+            <code class="bg-bg px-2 py-0.5 rounded text-xs">[appHeaderNav]</code>
+            <code class="bg-bg px-2 py-0.5 rounded text-xs">default (右側)</code>
+          </div>
+        </div>
+      </section>
+
+      <!-- PageContainer -->
+      <section class="bg-white rounded-md p-6 modern-shadow border" style="border-color: var(--color-border);">
+        <h2 class="text-lg font-bold mb-4" style="color: var(--color-text-main);">
+          <i class="fa-solid fa-expand mr-2" style="color: var(--color-primary);"></i>
+          PageContainerComponent
+        </h2>
+        <p class="text-sm mb-4" style="color: var(--color-text-sub);">
+          コンテンツの最大幅制限とパディングを提供。デフォルトは max-w-[1600px] + p-8。
+        </p>
+        <div class="space-y-2">
+          <div class="flex items-center gap-2 text-sm">
+            <span class="font-medium" style="color: var(--color-text-main);">Inputs:</span>
+            <code class="bg-bg px-2 py-0.5 rounded text-xs">maxWidth: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full'</code>
+            <code class="bg-bg px-2 py-0.5 rounded text-xs">noPadding: boolean</code>
+          </div>
+        </div>
+        <div class="mt-4 grid grid-cols-2 md:grid-cols-3 gap-3">
+          <div class="bg-bg rounded p-3 text-center border" style="border-color: var(--color-border);">
+            <span class="text-xs font-medium">sm</span>
+            <p class="text-[10px] mt-1" style="color: var(--color-text-sub);">max-w-screen-sm</p>
+          </div>
+          <div class="bg-bg rounded p-3 text-center border" style="border-color: var(--color-border);">
+            <span class="text-xs font-medium">md</span>
+            <p class="text-[10px] mt-1" style="color: var(--color-text-sub);">max-w-screen-md</p>
+          </div>
+          <div class="bg-bg rounded p-3 text-center border" style="border-color: var(--color-border);">
+            <span class="text-xs font-medium">lg</span>
+            <p class="text-[10px] mt-1" style="color: var(--color-text-sub);">max-w-screen-lg</p>
+          </div>
+          <div class="bg-primary-soft rounded p-3 text-center border-2" style="border-color: var(--color-primary);">
+            <span class="text-xs font-bold" style="color: var(--color-primary);">xl (default)</span>
+            <p class="text-[10px] mt-1" style="color: var(--color-text-sub);">max-w-[1600px]</p>
+          </div>
+          <div class="bg-bg rounded p-3 text-center border" style="border-color: var(--color-border);">
+            <span class="text-xs font-medium">2xl</span>
+            <p class="text-[10px] mt-1" style="color: var(--color-text-sub);">max-w-screen-2xl</p>
+          </div>
+          <div class="bg-bg rounded p-3 text-center border" style="border-color: var(--color-border);">
+            <span class="text-xs font-medium">full</span>
+            <p class="text-[10px] mt-1" style="color: var(--color-text-sub);">max-w-full</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ActionFooter -->
+      <section class="bg-white rounded-md p-6 modern-shadow border" style="border-color: var(--color-border);">
+        <h2 class="text-lg font-bold mb-4" style="color: var(--color-text-main);">
+          <i class="fa-solid fa-grip-lines mr-2" style="color: var(--color-primary);"></i>
+          ActionFooterComponent
+        </h2>
+        <p class="text-sm mb-4" style="color: var(--color-text-sub);">
+          画面下部に固定表示されるアクションバー。注文サマリーや確定ボタン等を配置。
+        </p>
+        <div class="bg-bg rounded p-4 border" style="border-color: var(--color-border);">
+          <pre class="text-xs overflow-x-auto"><code>&lt;ui-action-footer&gt;
+  &lt;div class="flex gap-10"&gt;
+    &lt;!-- サマリー情報 --&gt;
+  &lt;/div&gt;
+  &lt;button class="btn-primary"&gt;確定&lt;/button&gt;
+&lt;/ui-action-footer&gt;</code></pre>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- ActionFooter デモ -->
+  <footer class="sticky bottom-0 z-50 bg-white border-t p-5 header-elevation" style="border-color: var(--color-border);" role="contentinfo">
+    <div class="max-w-[1600px] mx-auto flex items-center justify-end">
+      <div class="flex gap-8 items-center">
+        <div class="text-right flex flex-col">
+          <span class="text-[10px] font-bold uppercase tracking-widest mb-0.5" style="color: var(--color-primary);">注文点数</span>
+          <span class="text-3xl font-black" style="color: var(--color-text-main);">4 点</span>
+        </div>
+        <button
+          class="text-white px-10 py-3.5 rounded text-lg font-bold transition-all flex items-center gap-2 shadow-lg active:scale-[0.98]"
+          style="background-color: var(--color-primary);"
+          onmouseover="this.style.backgroundColor='var(--color-primary-hover)'"
+          onmouseout="this.style.backgroundColor='var(--color-primary)'"
+        >
+          発注確認
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

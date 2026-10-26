@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>デザインシステム | インデックス</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["Noto Sans JP", "sans-serif"],
+            mono: ["Noto Sans Mono", "monospace"],
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    :root {
+      --color-primary: #0095BC;
+      --color-primary-hover: #007A9A;
+      --color-primary-soft: rgba(0, 149, 188, 0.08);
+      --color-bg: #F9FAFB;
+      --color-surface: #FFFFFF;
+      --color-border: #E5E7EB;
+      --color-text-main: #172B4D;
+      --color-text-sub: #6B778C;
+      --shadow-modern: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    }
+    a { text-decoration: underline; color: var(--color-primary); }
+    a.no-underline { text-decoration: none; }
+    a.card-link { text-decoration: none; color: inherit; }
+    a.card-link:hover .card { box-shadow: 0 4px 12px rgba(0, 149, 188, 0.15); border-color: var(--color-primary); }
+  </style>
+</head>
+<body class="bg-gray-50 font-sans text-gray-800 p-8">
+  <div class="max-w-5xl mx-auto space-y-10">
+
+    <!-- ヘッダー -->
+    <header class="text-center space-y-3">
+      <h1 class="text-3xl font-bold" style="color: var(--color-text-main);">デザインシステム</h1>
+      <p class="text-base" style="color: var(--color-text-sub);">Angular + Tailwind CSS ベースの共通UIコンポーネントライブラリ</p>
+    </header>
+
+    <!-- ナビゲーションカード -->
+    <nav aria-label="デザインシステム ドキュメント一覧">
+      <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 list-none p-0 m-0">
+
+        <!-- トークン -->
+        <li>
+          <a href="tokens.html" class="card-link block h-full">
+            <div class="card bg-white rounded-lg border p-6 h-full transition-all duration-200" style="border-color: var(--color-border); box-shadow: var(--shadow-modern);">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: var(--color-primary-soft);">
+                  <i class="fa-solid fa-palette text-lg" style="color: var(--color-primary);"></i>
+                </div>
+                <h2 class="text-lg font-bold" style="color: var(--color-text-main);">デザイントークン</h2>
+              </div>
+              <p class="text-sm leading-relaxed" style="color: var(--color-text-sub);">カラーパレット・タイポグラフィ・スペーシング・シャドウなどの基盤トークン一覧</p>
+            </div>
+          </a>
+        </li>
+
+        <!-- レイアウト -->
+        <li>
+          <a href="layout.html" class="card-link block h-full">
+            <div class="card bg-white rounded-lg border p-6 h-full transition-all duration-200" style="border-color: var(--color-border); box-shadow: var(--shadow-modern);">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: var(--color-primary-soft);">
+                  <i class="fa-solid fa-table-columns text-lg" style="color: var(--color-primary);"></i>
+                </div>
+                <h2 class="text-lg font-bold" style="color: var(--color-text-main);">レイアウト</h2>
+              </div>
+              <p class="text-sm leading-relaxed" style="color: var(--color-text-sub);">AppShell・Header・PageContainer・ActionFooter のレイアウト構造デモ</p>
+            </div>
+          </a>
+        </li>
+
+        <!-- 基本コンポーネント -->
+        <li>
+          <a href="components-basic.html" class="card-link block h-full">
+            <div class="card bg-white rounded-lg border p-6 h-full transition-all duration-200" style="border-color: var(--color-border); box-shadow: var(--shadow-modern);">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: var(--color-primary-soft);">
+                  <i class="fa-solid fa-cube text-lg" style="color: var(--color-primary);"></i>
+                </div>
+                <h2 class="text-lg font-bold" style="color: var(--color-text-main);">基本コンポーネント</h2>
+              </div>
+              <p class="text-sm leading-relaxed" style="color: var(--color-text-sub);">Button・Badge・Loading・Breadcrumb の全バリアント表示</p>
+            </div>
+          </a>
+        </li>
+
+        <!-- フォームコンポーネント -->
+        <li>
+          <a href="components-form.html" class="card-link block h-full">
+            <div class="card bg-white rounded-lg border p-6 h-full transition-all duration-200" style="border-color: var(--color-border); box-shadow: var(--shadow-modern);">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: var(--color-primary-soft);">
+                  <i class="fa-solid fa-keyboard text-lg" style="color: var(--color-primary);"></i>
+                </div>
+                <h2 class="text-lg font-bold" style="color: var(--color-text-main);">フォームコンポーネント</h2>
+              </div>
+              <p class="text-sm leading-relaxed" style="color: var(--color-text-sub);">Input・Select・Textarea・Checkbox・DatePicker・バリデーション状態のデモ</p>
+            </div>
+          </a>
+        </li>
+
+        <!-- データコンポーネント -->
+        <li>
+          <a href="components-data.html" class="card-link block h-full">
+            <div class="card bg-white rounded-lg border p-6 h-full transition-all duration-200" style="border-color: var(--color-border); box-shadow: var(--shadow-modern);">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: var(--color-primary-soft);">
+                  <i class="fa-solid fa-table text-lg" style="color: var(--color-primary);"></i>
+                </div>
+                <h2 class="text-lg font-bold" style="color: var(--color-text-main);">データコンポーネント</h2>
+              </div>
+              <p class="text-sm leading-relaxed" style="color: var(--color-text-sub);">Table・Card・Modal・Toast のデモ</p>
+            </div>
+          </a>
+        </li>
+
+        <!-- ナビゲーションコンポーネント -->
+        <li>
+          <a href="components-navigation.html" class="card-link block h-full">
+            <div class="card bg-white rounded-lg border p-6 h-full transition-all duration-200" style="border-color: var(--color-border); box-shadow: var(--shadow-modern);">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: var(--color-primary-soft);">
+                  <i class="fa-solid fa-folder text-lg" style="color: var(--color-primary);"></i>
+                </div>
+                <h2 class="text-lg font-bold" style="color: var(--color-text-main);">ナビゲーションコンポーネント</h2>
+              </div>
+              <p class="text-sm leading-relaxed" style="color: var(--color-text-sub);">TabGroup・Tab のボックス型タブコンポーネント</p>
+            </div>
+          </a>
+        </li>
+
+      </ul>
+    </nav>
+
+    <!-- フッター -->
+    <footer class="text-center pt-6 border-t" style="border-color: var(--color-border);">
+      <p class="text-xs" style="color: var(--color-text-sub);">デザインシステム ドキュメント — Angular + Tailwind CSS</p>
+    </footer>
+
+  </div>
+</body>
+</html>
