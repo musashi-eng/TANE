@@ -1,5 +1,5 @@
 services:
-  # Frontend Container - Angular 20
+  # Frontend Container - Angular 22
   frontend:
     build:
       context: ./frontend
@@ -19,7 +19,7 @@ services:
     depends_on:
       - backend
 
-  # Backend Container - NestJS 11
+  # Backend Container - NestJS 12
   backend:
     build:
       context: ./backend
