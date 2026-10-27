@@ -1,4 +1,4 @@
-import { Component, signal, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, signal, inject, effect, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ButtonComponent,
@@ -42,9 +42,6 @@ interface DemoRow {
   ],
   templateUrl: './app.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    '[style.--color-primary]': 'primary()',
-  },
   styleUrl: './app.less',
 })
 export class App {
@@ -53,9 +50,22 @@ export class App {
   // タイトル
   readonly title = signal('TANE');
 
-  // ===== メインカラー切替（showcase と同じ方式: --color-primary を上書き）=====
-  /** 現在のメインカラー（host の --color-primary を上書きし、全部品が追従する） */
+  // ===== メインカラー切替 =====
+  /**
+   * 現在のメインカラー。
+   * :root（documentElement）の --color-primary を上書きする。
+   * hover/soft は styles.css の :root で color-mix(var(--color-primary) ...) として
+   * 定義されているため、:root の primary を書き換えると同じ :root スコープで再計算され、
+   * hover/soft も追従する（app-root 要素への上書きだと :root の式に届かず追従しない）。
+   */
   readonly primary = signal('#0095bc');
+
+  constructor() {
+    // primary が変わるたび :root の CSS 変数を更新 → color-mix 式が hover/soft を再計算
+    effect(() => {
+      document.documentElement.style.setProperty('--color-primary', this.primary());
+    });
+  }
 
   /** プリセット色（showcase と同じ6色） */
   readonly colorPresets: ReadonlyArray<{ value: string; label: string }> = [
@@ -75,6 +85,48 @@ export class App {
       this.primary.set(v.toLowerCase());
     }
   }
+
+  // ===== デザイントークン展示（配列駆動）=====
+  // 値はベタ書きせず CSS 変数（--color-xxx 等）を参照して描画する。
+  // トークンが増減したら、下の配列に 1 行足す/消すだけで展示が追従する。
+
+  /** カラートークン（var 参照で実色を表示） */
+  readonly colorTokens: ReadonlyArray<{ varName: string; label: string; usage: string }> = [
+    { varName: '--color-primary', label: 'primary', usage: 'ブランド・CTA（基準色）' },
+    { varName: '--color-primary-hover', label: 'primary-hover', usage: 'ホバー状態' },
+    { varName: '--color-primary-soft', label: 'primary-soft', usage: '選択行・ハイライト背景' },
+    { varName: '--color-success', label: 'success', usage: '成功・完了' },
+    { varName: '--color-warning', label: 'warning', usage: '注意' },
+    { varName: '--color-danger', label: 'danger', usage: '危険・エラー' },
+    { varName: '--color-bg', label: 'bg', usage: 'ページ下地' },
+    { varName: '--color-surface', label: 'surface', usage: 'カード・パネル面' },
+    { varName: '--color-border', label: 'border', usage: '境界線' },
+    { varName: '--color-text-main', label: 'text-main', usage: '本文' },
+    { varName: '--color-text-sub', label: 'text-sub', usage: '補助テキスト' },
+  ];
+
+  /** タイポグラフィ（サイズ見本） */
+  readonly typographyTokens: ReadonlyArray<{ className: string; label: string; sample: string }> = [
+    { className: 'text-3xl font-bold', label: '3xl / bold', sample: '見出し 1' },
+    { className: 'text-2xl font-semibold', label: '2xl / semibold', sample: '見出し 2' },
+    { className: 'text-xl font-semibold', label: 'xl / semibold', sample: '見出し 3' },
+    { className: 'text-base', label: 'base', sample: '本文テキスト（標準）' },
+    { className: 'text-sm', label: 'sm', sample: '補助テキスト（小）' },
+    { className: 'text-xs font-mono', label: 'xs / mono', sample: '--token: value' },
+  ];
+
+  /** ボーダー Radius */
+  readonly radiusTokens: ReadonlyArray<{ varName: string; label: string; usage: string }> = [
+    { varName: '--radius-default', label: 'default (6px)', usage: 'ボタン・入力フィールド' },
+    { varName: '--radius-md', label: 'md (8px)', usage: 'カード' },
+    { varName: '--radius-lg', label: 'lg (12px)', usage: 'モーダル' },
+  ];
+
+  /** シャドウ */
+  readonly shadowTokens: ReadonlyArray<{ varName: string; label: string; usage: string }> = [
+    { varName: '--shadow-modern', label: 'modern', usage: 'カード・テーブル' },
+    { varName: '--shadow-header-elevation', label: 'header-elevation', usage: 'ヘッダー・フッター' },
+  ];
 
   // フォームデモの状態
   readonly inputValue = signal('');

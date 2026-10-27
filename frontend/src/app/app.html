@@ -58,6 +58,59 @@
       </div>
     </ui-panel>
 
+    <!-- デザイントークン: カラーパレット -->
+    <ui-panel title="カラーパレット" description="部品はこれらの CSS 変数を参照して色を決めます（primary 系はメインカラー切替に追従）">
+      <div class="ds-token-grid">
+        @for (c of colorTokens; track c.varName) {
+          <div class="ds-swatch-card">
+            <div class="ds-swatch-chip" [style.background-color]="'var(' + c.varName + ')'"></div>
+            <p class="ds-token-label">{{ c.label }}</p>
+            <p class="ds-token-var">{{ c.varName }}</p>
+            <p class="ds-token-usage">{{ c.usage }}</p>
+          </div>
+        }
+      </div>
+    </ui-panel>
+
+    <!-- デザイントークン: タイポグラフィ -->
+    <ui-panel title="タイポグラフィ">
+      <div class="ds-type-list">
+        @for (t of typographyTokens; track t.label) {
+          <div class="ds-type-row">
+            <span class="ds-token-var">{{ t.label }}</span>
+            <span [class]="t.className">{{ t.sample }}</span>
+          </div>
+        }
+      </div>
+    </ui-panel>
+
+    <!-- デザイントークン: ボーダー Radius -->
+    <ui-panel title="ボーダー Radius">
+      <div class="ds-token-grid">
+        @for (r of radiusTokens; track r.varName) {
+          <div class="ds-swatch-card">
+            <div class="ds-radius-chip" [style.border-radius]="'var(' + r.varName + ')'"></div>
+            <p class="ds-token-label">{{ r.label }}</p>
+            <p class="ds-token-var">{{ r.varName }}</p>
+            <p class="ds-token-usage">{{ r.usage }}</p>
+          </div>
+        }
+      </div>
+    </ui-panel>
+
+    <!-- デザイントークン: シャドウ -->
+    <ui-panel title="シャドウ">
+      <div class="ds-token-grid">
+        @for (s of shadowTokens; track s.varName) {
+          <div class="ds-shadow-card" [style.box-shadow]="'var(' + s.varName + ')'">
+            <p class="ds-token-label">{{ s.label }}</p>
+            <p class="ds-token-var">{{ s.varName }}</p>
+            <p class="ds-token-usage">{{ s.usage }}</p>
+          </div>
+        }
+      </div>
+    </ui-panel>
+
     <!-- ボタン -->
     <ui-panel title="ボタン">
       <div class="ds-row">

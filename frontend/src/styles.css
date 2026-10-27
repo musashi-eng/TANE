@@ -22,15 +22,19 @@
  * 新しいプロジェクトを TANE から派生させたら、まず下の primary 3 色を
  * ブランドカラーに置き換えてください。ここがこのテンプレートの「色の種」です。
  *   --color-primary       … ブランドカラー・CTA（基準色）
- *   --color-primary-hover … ホバー状態（基準色を少し暗く）
- *   --color-primary-soft  … 選択行・ハイライト背景（基準色の薄い透過）
+ *   --color-primary-hover … ホバー状態（primary から color-mix で自動計算・追従）
+ *   --color-primary-soft  … 選択行・ハイライト背景（primary の薄い透過・追従）
+ * hover / soft は primary から自動計算されるので、--color-primary を1つ
+ * 変えればテーマ全体（カラー切替の追従含む）が決まります。
  * 機能色（success/warning/danger）やテキスト色は原則そのままで構いません。
  * =========================================================================== */
 :root {
-  /* --- ここを変える（プロジェクト固有のブランドカラー） --- */
+  /* --- ここを変える（プロジェクト固有のブランドカラー。1個でOK） --- */
   --color-primary: #0095bc;
-  --color-primary-hover: #007a9a;
-  --color-primary-soft: rgba(0, 149, 188, 0.08);
+  /* hover / soft は primary から自動計算（library tokens.css と同じ color-mix 方式）。
+   * primary を変えると追従する。気に入らなければ個別に1行上書き可。 */
+  --color-primary-hover: color-mix(in srgb, var(--color-primary) 80%, black);
+  --color-primary-soft: color-mix(in srgb, var(--color-primary) 8%, transparent);
 
   /* --- 以下はデザインシステム共通トークン（通常は変更不要） --- */
   --color-bg: #f9fafb;
