@@ -103,6 +103,28 @@ echo ""
 
 # Dockerコンテナの起動
 log_step "Dockerコンテナを起動中..."
+
+# GitHub Packages 認証トークンを用意する。
+# フロントエンドは @musashi-eng/design-system を GitHub Packages から install するため、
+# コンテナに NODE_AUTH_TOKEN を渡す必要がある。未設定なら gh CLI から取得を試みる。
+if [ -z "${NODE_AUTH_TOKEN:-}" ]; then
+    if command -v gh >/dev/null 2>&1; then
+        NODE_AUTH_TOKEN=$(gh auth token 2>/dev/null) || true
+        export NODE_AUTH_TOKEN
+    fi
+fi
+if [ -z "${NODE_AUTH_TOKEN:-}" ]; then
+    log_warn "NODE_AUTH_TOKEN が未設定です。"
+    log_warn "フロントエンドの依存解決（@musashi-eng/design-system）が 401 で失敗する可能性があります。"
+    log_warn "gh auth login を済ませるか、export NODE_AUTH_TOKEN=\$(gh auth token) を実行してください。"
+fi
+
+# フロントエンドの .npmrc が無ければ雛形から作成
+if [ ! -f frontend/.npmrc ] && [ -f frontend/.npmrc.example ]; then
+    cp frontend/.npmrc.example frontend/.npmrc
+    log_info ".npmrc を .npmrc.example から作成しました"
+fi
+
 if ! docker compose up -d; then
     log_error "Dockerコンテナの起動に失敗しました"
     log_error "Docker Desktopが起動しているか確認してください"

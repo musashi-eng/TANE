@@ -13,6 +13,10 @@ services:
       - NODE_ENV=${NODE_ENV:-development}
       - API_URL=${API_URL:-http://backend:3000}
       - TZ=${TZ:-Asia/Tokyo}
+      # GitHub Packages 認証トークン（@musashi-eng/design-system の install 用）。
+      # ホストの環境変数から渡す。scripts/setup.sh と scripts/dev.sh が
+      # gh auth token で自動設定するので、通常ユーザーが意識する必要はない。
+      - NODE_AUTH_TOKEN=${NODE_AUTH_TOKEN:-}
     networks:
       - app-network
     restart: unless-stopped
