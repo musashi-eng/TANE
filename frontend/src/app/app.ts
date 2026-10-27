@@ -14,7 +14,7 @@ import {
   TableColumnDirective,
   ToastContainerComponent,
   ToastService,
-} from '@musashieng/design-system';
+} from '@musashi-eng/design-system';
 
 /** デモ用テーブル行の型 */
 interface DemoRow {

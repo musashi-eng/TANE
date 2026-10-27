@@ -14,7 +14,7 @@
  * 利用側で Tailwind のスキャン設定や任意値クラスの手書きは一切不要。
  * トークン（--color-primary 等）は下の :root 定義が優先されるため、
  * ライブラリの tokens.css は読み込まない（二重定義回避）。 */
-@import "@musashieng/design-system/styles.css";
+@import "@musashi-eng/design-system/styles.css";
 
 /* ===========================================================================
  * 🎨 テーマカラー（プロジェクト開始時に最初に決める）
