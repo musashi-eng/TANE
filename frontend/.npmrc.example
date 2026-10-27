@@ -1,0 +1,19 @@
+# GitHub Packages 認証設定のサンプル
+# ---------------------------------------------------------------------------
+# @musashi-eng/design-system は GitHub Packages で配布されています。
+# install するには、このファイルを同じディレクトリに `.npmrc` としてコピーし、
+# 環境変数 NODE_AUTH_TOKEN に GitHub トークンを設定してください。
+#
+#   手順:
+#     1) このファイルをコピー:  cp .npmrc.example .npmrc
+#     2) GitHub トークンを用意（read:packages 権限があれば十分。
+#        gh CLI を使っているなら `gh auth token` で取得できます）
+#     3) 環境変数に設定してから install:
+#          export NODE_AUTH_TOKEN=$(gh auth token)
+#          npm install
+#
+# ※ .npmrc は .gitignore 済みです（トークンを含みうるため git 管理しません）。
+# ※ 生のトークンをこのファイルに直接書かないでください（下記は環境変数参照）。
+# ---------------------------------------------------------------------------
+@musashi-eng:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}

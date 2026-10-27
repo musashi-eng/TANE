@@ -11,6 +11,12 @@
 npm-debug.log
 yarn-error.log
 
+# npm 認証設定（GitHub Packages のトークン参照。git管理に入れない）
+.npmrc
+
+# デザインシステムのローカル実証用（file:参照の実体。本番は GitHub Packages 経由に切替）
+/.design-system-local
+
 # IDEs and editors
 .idea/
 .project

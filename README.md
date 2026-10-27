@@ -55,7 +55,23 @@ git clone https://github.com/your-username/your-project-name.git
 cd your-project-name
 ```
 
-### 3. 初期化スクリプトを実行
+### 3. デザインシステムの認証設定（GitHub Packages）
+
+このテンプレートは UI 部品を `@musashi-eng/design-system`（GitHub Packages 配布）から
+取得します。install 前に、フロントエンドに認証設定を置いてください。
+
+```bash
+cd frontend
+cp .npmrc.example .npmrc                 # 認証設定の雛形をコピー（.npmrc は .gitignore 済み）
+export NODE_AUTH_TOKEN=$(gh auth token)  # GitHub トークンを環境変数に（read:packages 権限が必要）
+cd ..
+```
+
+> **補足**: `gh` CLI を使っていない場合は、`read:packages` 権限を持つ
+> Personal Access Token を発行し、`NODE_AUTH_TOKEN` に設定してください。
+> 生のトークンを `.npmrc` に直書きしないでください（環境変数参照が既定です）。
+
+### 4. 初期化スクリプトを実行
 
 ```bash
 ./scripts/setup.sh
@@ -70,7 +86,7 @@ cd your-project-name
 - データベースのマイグレーション
 - ヘルスチェック
 
-### 4. 開発を開始！
+### 5. 開発を開始！
 
 セットアップが完了したら、以下のURLにアクセスできます：
 
@@ -106,6 +122,10 @@ docker compose up -d
 3. **依存パッケージをインストール**
 
 ```bash
+# フロントエンドのデザインシステム認証設定（初回のみ）
+cd frontend && cp .npmrc.example .npmrc && cd ..
+export NODE_AUTH_TOKEN=$(gh auth token)   # read:packages 権限が必要
+
 # バックエンド
 docker compose exec backend npm install
 

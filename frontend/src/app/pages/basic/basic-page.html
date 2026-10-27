@@ -1,0 +1,74 @@
+<!-- ボタン -->
+<ui-panel title="ボタン">
+  <div class="ds-row">
+    <button ui-button variant="primary">プライマリ</button>
+    <button ui-button variant="outline">アウトライン</button>
+    <button ui-button variant="ghost">ゴースト</button>
+    <button ui-button variant="danger">削除</button>
+  </div>
+  <div class="ds-row">
+    <button ui-button size="sm">小</button>
+    <button ui-button size="md">中</button>
+    <button ui-button size="lg">大</button>
+    <button ui-button [loading]="true">読込中</button>
+    <button ui-button [disabled]="true">無効</button>
+  </div>
+</ui-panel>
+
+<!-- バッジ -->
+<ui-panel title="バッジ">
+  <div class="ds-row">
+    <ui-badge variant="neutral">中立</ui-badge>
+    <ui-badge variant="primary">プライマリ</ui-badge>
+    <ui-badge variant="success">成功</ui-badge>
+    <ui-badge variant="warning">警告</ui-badge>
+    <ui-badge variant="error">危険</ui-badge>
+  </div>
+</ui-panel>
+
+<!-- 注意表示（Alert） -->
+<ui-panel title="注意表示（Alert）">
+  <div class="ds-stack">
+    <ui-alert variant="info">これは情報のお知らせです。作業を止めずに読めます。</ui-alert>
+    <ui-alert variant="success">保存が完了しました。</ui-alert>
+    <ui-alert variant="warning">離島への配送は追加料金がかかります。</ui-alert>
+    <ui-alert variant="error" title="重要">この操作は取り消せません。</ui-alert>
+  </div>
+</ui-panel>
+
+<!-- ローディング -->
+<ui-panel title="ローディング">
+  <div class="ds-row ds-row--spaced">
+    <ui-loading type="spinner" size="sm" />
+    <ui-loading type="spinner" size="md" />
+    <ui-loading type="spinner" size="lg" />
+  </div>
+  <div class="ds-stack">
+    <ui-loading type="skeleton" width="100%" height="1rem" />
+    <ui-loading type="skeleton" width="60%" height="1rem" />
+  </div>
+</ui-panel>
+
+<!-- 未読ドット（絶対配置: 親に relative が必要） -->
+<ui-panel title="未読ドット（UnreadDot）">
+  <div class="ds-row ds-row--spaced">
+    <span class="ds-dot-anchor">
+      通知
+      <ui-unread-dot [visible]="true" />
+    </span>
+    <span class="ds-dot-anchor">
+      メッセージ
+      <ui-unread-dot [visible]="false" />
+    </span>
+  </div>
+</ui-panel>
+
+<!-- トースト -->
+<ui-panel title="トースト通知">
+  <div class="ds-row">
+    <button ui-button variant="primary" (click)="showToast('success')">成功</button>
+    <button ui-button variant="outline" (click)="showToast('info')">情報</button>
+    <button ui-button variant="ghost" (click)="showToast('warning')">警告</button>
+    <button ui-button variant="danger" (click)="showToast('error')">エラー</button>
+  </div>
+</ui-panel>
