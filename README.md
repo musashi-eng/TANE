@@ -150,7 +150,11 @@ curl http://localhost:3000/health
 ### よく使うコマンド
 
 ```bash
-# コンテナの起動
+# コンテナの起動（推奨: GitHub Packages 認証トークンを gh から自動供給）
+./scripts/dev.sh
+
+# コンテナの起動（手動）: 先に認証トークンを export しておくこと
+export NODE_AUTH_TOKEN=$(gh auth token)
 docker compose up -d
 
 # コンテナの停止
