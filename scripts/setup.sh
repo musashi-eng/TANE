@@ -55,14 +55,26 @@ fi
 log_info "プロジェクト名: $PROJECT_NAME"
 echo ""
 
+# プロジェクト名の大小変換（bash 3.2 でも動くよう tr と部分文字列で行う。
+# macOS 標準の bash は 3.2 で ${var,,} / ${var^} が使えないため）
+PROJECT_NAME_LOWER=$(printf '%s' "$PROJECT_NAME" | tr '[:upper:]' '[:lower:]')
+FIRST_CHAR=$(printf '%s' "$PROJECT_NAME" | cut -c1 | tr '[:lower:]' '[:upper:]')
+REST_CHARS=$(printf '%s' "$PROJECT_NAME" | cut -c2-)
+PROJECT_NAME_CAP="${FIRST_CHAR}${REST_CHARS}"
+
 # プロジェクト名の置換
+# 置換は perl -i を使う（macOS の BSD sed は -i にバックアップ拡張子が必須で
+# GNU sed と非互換。perl は mac 標準でも GNU/BSD 問わず同じ記法で動く）。
+# プロジェクト名は英数字とハイフンのみ検証済みなので正規表現メタ文字の混入はない。
 log_step "プロジェクト名を置換中..."
-find . -type f -not -path "*/node_modules/*" -not -path "*/.git/*" -not -path "*/dist/*" -not -path "*/.angular/*" -not -path "*/coverage/*" -not -path "*/.kiro/specs/*" -not -path "*/scripts/setup.sh" \
-    -exec sed -i "s/TANE/$PROJECT_NAME/g" {} \; 2>/dev/null || true
-find . -type f -not -path "*/node_modules/*" -not -path "*/.git/*" -not -path "*/dist/*" -not -path "*/.angular/*" -not -path "*/coverage/*" -not -path "*/.kiro/specs/*" -not -path "*/scripts/setup.sh" \
-    -exec sed -i "s/tane/${PROJECT_NAME,,}/g" {} \; 2>/dev/null || true
-find . -type f -not -path "*/node_modules/*" -not -path "*/.git/*" -not -path "*/dist/*" -not -path "*/.angular/*" -not -path "*/coverage/*" -not -path "*/.kiro/specs/*" -not -path "*/scripts/setup.sh" \
-    -exec sed -i "s/Tane/${PROJECT_NAME^}/g" {} \; 2>/dev/null || true
+FIND_EXCLUDES=(-not -path "*/node_modules/*" -not -path "*/.git/*" -not -path "*/dist/*" -not -path "*/.angular/*" -not -path "*/coverage/*" -not -path "*/.kiro/specs/*" -not -path "*/scripts/setup.sh")
+
+find . -type f "${FIND_EXCLUDES[@]}" \
+    -exec perl -i -pe "s/TANE/$PROJECT_NAME/g" {} \; 2>/dev/null || true
+find . -type f "${FIND_EXCLUDES[@]}" \
+    -exec perl -i -pe "s/tane/$PROJECT_NAME_LOWER/g" {} \; 2>/dev/null || true
+find . -type f "${FIND_EXCLUDES[@]}" \
+    -exec perl -i -pe "s/Tane/$PROJECT_NAME_CAP/g" {} \; 2>/dev/null || true
 
 log_info "✅ プロジェクト名の置換が完了しました"
 echo ""
@@ -75,7 +87,9 @@ if [ ! -f .env ]; then
         
         # ランダムなシークレットキーを生成
         JWT_SECRET=$(openssl rand -base64 32)
-        sed -i "s|your-secret-key-here|$JWT_SECRET|g" .env
+        # JWT_SECRET は /+= 等を含むため、perl の環境変数経由で右辺に安全に渡す
+        # （置換右辺で特殊文字をエスケープ不要にする）
+        JWT_SECRET="$JWT_SECRET" perl -i -pe 's|your-secret-key-here|$ENV{JWT_SECRET}|g' .env
         
         log_info "✅ .envファイルを生成しました"
         log_info "JWT_SECRETを自動生成しました"
