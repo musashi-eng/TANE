@@ -1,0 +1,98 @@
+<section class="ds-hero">
+  <h1 class="ds-hero__title">デザインシステム ショーケース</h1>
+  <p class="ds-hero__lead">
+    ここに並ぶ部品はすべて <code>&#64;musashi-eng/design-system</code> の実コンポーネントです。
+    下の「メインカラー」を変えると、全ページの部品の色が追従します。
+  </p>
+</section>
+
+<!-- メインカラー切替 -->
+<ui-panel title="メインカラー" description="色を選ぶと、全ページの部品が追従します（--color-primary を上書き → hover/soft も color-mix で連動）">
+  <div class="ds-row">
+    @for (preset of colorPresets; track preset.value) {
+      <button
+        type="button"
+        class="ds-swatch"
+        [style.background-color]="preset.value"
+        [class.ds-swatch--active]="primary() === preset.value"
+        [attr.aria-label]="preset.label + ' に変更'"
+        [attr.aria-pressed]="primary() === preset.value"
+        (click)="primary.set(preset.value)">
+      </button>
+    }
+  </div>
+  <div class="ds-row ds-row--spaced">
+    <label class="ds-hex">
+      <span class="ds-hex__label">ピッカー:</span>
+      <input
+        class="ds-picker"
+        type="color"
+        [value]="primary()"
+        (input)="primary.set($any($event.target).value)"
+        aria-label="カラーピッカーでメインカラーを選ぶ" />
+    </label>
+    <label class="ds-hex">
+      <span class="ds-hex__label">または #hex:</span>
+      <input
+        class="ds-hex__input"
+        type="text"
+        placeholder="#0095bc"
+        [value]="primary()"
+        (input)="setHex($any($event.target).value)" />
+    </label>
+    <ui-badge variant="primary">現在: {{ primary() }}</ui-badge>
+  </div>
+</ui-panel>
+
+<!-- カラーパレット -->
+<ui-panel title="カラーパレット" description="部品はこれらの CSS 変数を参照して色を決めます（primary 系はメインカラー切替に追従）">
+  <div class="ds-token-grid">
+    @for (c of colorTokens; track c.varName) {
+      <div class="ds-swatch-card">
+        <div class="ds-swatch-chip" [style.background-color]="'var(' + c.varName + ')'"></div>
+        <p class="ds-token-label">{{ c.label }}</p>
+        <p class="ds-token-var">{{ c.varName }}</p>
+        <p class="ds-token-usage">{{ c.usage }}</p>
+      </div>
+    }
+  </div>
+</ui-panel>
+
+<!-- タイポグラフィ -->
+<ui-panel title="タイポグラフィ">
+  <div class="ds-type-list">
+    @for (t of typographyTokens; track t.label) {
+      <div class="ds-type-row">
+        <span class="ds-token-var">{{ t.label }}</span>
+        <span [class]="t.className">{{ t.sample }}</span>
+      </div>
+    }
+  </div>
+</ui-panel>
+
+<!-- ボーダー Radius -->
+<ui-panel title="ボーダー Radius">
+  <div class="ds-token-grid">
+    @for (r of radiusTokens; track r.varName) {
+      <div class="ds-swatch-card">
+        <div class="ds-radius-chip" [style.border-radius]="'var(' + r.varName + ')'"></div>
+        <p class="ds-token-label">{{ r.label }}</p>
+        <p class="ds-token-var">{{ r.varName }}</p>
+        <p class="ds-token-usage">{{ r.usage }}</p>
+      </div>
+    }
+  </div>
+</ui-panel>
+
+<!-- シャドウ -->
+<ui-panel title="シャドウ">
+  <div class="ds-token-grid">
+    @for (s of shadowTokens; track s.varName) {
+      <div class="ds-shadow-card" [style.box-shadow]="'var(' + s.varName + ')'">
+        <p class="ds-token-label">{{ s.label }}</p>
+        <p class="ds-token-var">{{ s.varName }}</p>
+        <p class="ds-token-usage">{{ s.usage }}</p>
+      </div>
+    }
+  </div>
+</ui-panel>

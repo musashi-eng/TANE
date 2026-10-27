@@ -1,0 +1,46 @@
+<!-- フォームフィールド（ラベル・必須・ヒント付き） -->
+<ui-panel title="フォームフィールド" description="ui-form-field がラベル・必須マーク・ヒントを担い、中に入力部品を置きます">
+  <div class="ds-form-grid">
+    <ui-form-field label="お名前" [required]="true" hint="本名を入力してください">
+      <ui-input [(ngModel)]="inputValue" placeholder="山田 太郎" type="text" />
+    </ui-form-field>
+
+    <ui-form-field label="職種" hint="担当する役割を選択">
+      <ui-select [(ngModel)]="selectValue" [options]="selectOptions" placeholder="職種を選択" />
+    </ui-form-field>
+  </div>
+</ui-panel>
+
+<!-- テキストエリア -->
+<ui-panel title="テキストエリア">
+  <ui-textarea
+    [(ngModel)]="textareaValue"
+    placeholder="自由記述（複数行）"
+    [rows]="4"
+    resize="vertical" />
+</ui-panel>
+
+<!-- 日付選択 -->
+<ui-panel title="日付選択（DatePicker）">
+  <div class="ds-form-grid">
+    <ui-form-field label="予定日">
+      <ui-date-picker [(ngModel)]="dateValue" placeholder="日付を選択" />
+    </ui-form-field>
+  </div>
+</ui-panel>
+
+<!-- チェックボックス・スイッチ -->
+<ui-panel title="チェックボックス・スイッチ">
+  <div class="ds-row ds-row--spaced">
+    <ui-checkbox [(ngModel)]="agreeChecked" label="利用規約に同意する" />
+    <ui-switch [(ngModel)]="notifyEnabled" label="通知を受け取る" />
+  </div>
+</ui-panel>
+
+<!-- 読み取り専用フィールド（詳細表示向け） -->
+<ui-panel title="読み取り専用フィールド（ReadonlyField）" description="詳細表示でラベルと値を並べるときに使います">
+  <div class="ds-form-grid">
+    <ui-readonly-field label="お名前" [value]="inputValue() || '（未入力）'" />
+    <ui-readonly-field label="予定日" [value]="dateValue() || '（未選択）'" />
+  </div>
+</ui-panel>

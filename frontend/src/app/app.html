@@ -1,213 +1,33 @@
-<div class="ds-page">
-  <!-- ヘッダー（デザインシステムのトークン: surface + header-elevation） -->
-  <header class="ds-header">
-    <div class="ds-header__inner">
-      <div class="ds-brand">
-        <span class="ds-brand__mark" aria-hidden="true"></span>
-        <span class="ds-brand__name">{{ title() }}</span>
-      </div>
-      <ui-badge variant="primary">Design System Showcase</ui-badge>
-    </div>
-  </header>
+<ui-app-shell [showFooter]="true">
+  <!-- ヘッダースロット -->
+  <ui-app-header
+    appShellHeader
+    [appName]="title() + ' デザインシステム'"
+    appSubtitle="Showcase"
+    logoLink="/">
+    <span appHeaderLogo class="ds-brand__mark" aria-hidden="true"></span>
 
-  <main class="ds-main">
-    <section class="ds-hero">
-      <h1 class="ds-hero__title">{{ title() }} デザインシステム ショーケース</h1>
-      <p class="ds-hero__lead">
-        ここに並ぶ部品はすべて <code>&#64;musashieng/design-system</code> の実コンポーネントです。
-        テーマカラーを <code>src/styles.css</code> 先頭の <code>--color-primary</code> で変えると、
-        この画面の部品すべての色が追従します。各セクションの枠は <code>ui-panel</code>（領域の器）です。
-      </p>
-    </section>
+    <!-- ページナビ -->
+    @for (item of navItems; track item.path) {
+      <a
+        appHeaderNav
+        [routerLink]="item.path"
+        routerLinkActive="ds-nav--active"
+        [routerLinkActiveOptions]="{ exact: item.path === '/' }"
+        class="ds-nav">
+        {{ item.label }}
+      </a>
+    }
+  </ui-app-header>
 
-    <!-- メインカラー切替（--color-primary を変えると全部品が追従する） -->
-    <ui-panel title="メインカラー" description="色を選ぶと、この画面の部品すべてが追従します（--color-primary を上書き）">
-      <div class="ds-row">
-        @for (preset of colorPresets; track preset.value) {
-          <button
-            type="button"
-            class="ds-swatch"
-            [style.background-color]="preset.value"
-            [class.ds-swatch--active]="primary() === preset.value"
-            [attr.aria-label]="preset.label + ' に変更'"
-            [attr.aria-pressed]="primary() === preset.value"
-            (click)="primary.set(preset.value)">
-          </button>
-        }
-      </div>
-      <div class="ds-row ds-row--spaced">
-        <label class="ds-hex">
-          <span class="ds-hex__label">ピッカー:</span>
-          <input
-            class="ds-picker"
-            type="color"
-            [value]="primary()"
-            (input)="primary.set($any($event.target).value)"
-            aria-label="カラーピッカーでメインカラーを選ぶ" />
-        </label>
-        <label class="ds-hex">
-          <span class="ds-hex__label">または #hex:</span>
-          <input
-            class="ds-hex__input"
-            type="text"
-            placeholder="#0095bc"
-            [value]="primary()"
-            (input)="setHex($any($event.target).value)" />
-        </label>
-        <ui-badge variant="primary">現在: {{ primary() }}</ui-badge>
-      </div>
-    </ui-panel>
+  <!-- メインコンテンツ（各ページを router-outlet で切替） -->
+  <router-outlet />
 
-    <!-- デザイントークン: カラーパレット -->
-    <ui-panel title="カラーパレット" description="部品はこれらの CSS 変数を参照して色を決めます（primary 系はメインカラー切替に追従）">
-      <div class="ds-token-grid">
-        @for (c of colorTokens; track c.varName) {
-          <div class="ds-swatch-card">
-            <div class="ds-swatch-chip" [style.background-color]="'var(' + c.varName + ')'"></div>
-            <p class="ds-token-label">{{ c.label }}</p>
-            <p class="ds-token-var">{{ c.varName }}</p>
-            <p class="ds-token-usage">{{ c.usage }}</p>
-          </div>
-        }
-      </div>
-    </ui-panel>
+  <!-- フッタースロット -->
+  <div appShellFooter class="ds-footer">
+    <span>{{ title() }} — &#64;musashi-eng/design-system ショーケース</span>
+  </div>
+</ui-app-shell>
 
-    <!-- デザイントークン: タイポグラフィ -->
-    <ui-panel title="タイポグラフィ">
-      <div class="ds-type-list">
-        @for (t of typographyTokens; track t.label) {
-          <div class="ds-type-row">
-            <span class="ds-token-var">{{ t.label }}</span>
-            <span [class]="t.className">{{ t.sample }}</span>
-          </div>
-        }
-      </div>
-    </ui-panel>
-
-    <!-- デザイントークン: ボーダー Radius -->
-    <ui-panel title="ボーダー Radius">
-      <div class="ds-token-grid">
-        @for (r of radiusTokens; track r.varName) {
-          <div class="ds-swatch-card">
-            <div class="ds-radius-chip" [style.border-radius]="'var(' + r.varName + ')'"></div>
-            <p class="ds-token-label">{{ r.label }}</p>
-            <p class="ds-token-var">{{ r.varName }}</p>
-            <p class="ds-token-usage">{{ r.usage }}</p>
-          </div>
-        }
-      </div>
-    </ui-panel>
-
-    <!-- デザイントークン: シャドウ -->
-    <ui-panel title="シャドウ">
-      <div class="ds-token-grid">
-        @for (s of shadowTokens; track s.varName) {
-          <div class="ds-shadow-card" [style.box-shadow]="'var(' + s.varName + ')'">
-            <p class="ds-token-label">{{ s.label }}</p>
-            <p class="ds-token-var">{{ s.varName }}</p>
-            <p class="ds-token-usage">{{ s.usage }}</p>
-          </div>
-        }
-      </div>
-    </ui-panel>
-
-    <!-- ボタン -->
-    <ui-panel title="ボタン">
-      <div class="ds-row">
-        <button ui-button variant="primary">プライマリ</button>
-        <button ui-button variant="outline">アウトライン</button>
-        <button ui-button variant="ghost">ゴースト</button>
-        <button ui-button variant="danger">削除</button>
-      </div>
-      <div class="ds-row">
-        <button ui-button size="sm">小</button>
-        <button ui-button size="md">中</button>
-        <button ui-button size="lg">大</button>
-        <button ui-button [loading]="true">読込中</button>
-        <button ui-button [disabled]="true">無効</button>
-      </div>
-    </ui-panel>
-
-    <!-- バッジ -->
-    <ui-panel title="バッジ">
-      <div class="ds-row">
-        <ui-badge variant="neutral">中立</ui-badge>
-        <ui-badge variant="primary">プライマリ</ui-badge>
-        <ui-badge variant="success">成功</ui-badge>
-        <ui-badge variant="warning">警告</ui-badge>
-        <ui-badge variant="error">危険</ui-badge>
-      </div>
-    </ui-panel>
-
-    <!-- 注意表示（Alert） -->
-    <ui-panel title="注意表示（Alert）">
-      <div class="ds-stack">
-        <ui-alert variant="info">これは情報のお知らせです。作業を止めずに読めます。</ui-alert>
-        <ui-alert variant="success">保存が完了しました。</ui-alert>
-        <ui-alert variant="warning">離島への配送は追加料金がかかります。</ui-alert>
-        <ui-alert variant="error" title="重要">この操作は取り消せません。</ui-alert>
-      </div>
-    </ui-panel>
-
-    <!-- フォーム部品（Panel の overflow:visible で select のドロップダウンが開ける） -->
-    <ui-panel title="フォーム部品" description="select のドロップダウンもパネル内で正しく開きます">
-      <div class="ds-form-grid">
-        <ui-input
-          [(ngModel)]="inputValue"
-          placeholder="お名前を入力"
-          type="text" />
-        <ui-select
-          [(ngModel)]="selectValue"
-          [options]="selectOptions"
-          placeholder="職種を選択" />
-      </div>
-      <div class="ds-row ds-row--spaced">
-        <ui-checkbox [(ngModel)]="agreeChecked" label="利用規約に同意する" />
-        <ui-switch [(ngModel)]="notifyEnabled" label="通知を受け取る" />
-      </div>
-    </ui-panel>
-
-    <!-- テーブル -->
-    <ui-panel title="テーブル">
-      <ui-table [data]="tableData()">
-        <ng-template #nameTpl let-row>{{ row.name }}</ng-template>
-        <ng-container uiTableColumn="name" label="名前" [sortable]="true" [templateRef]="nameTpl" />
-
-        <ng-template #roleTpl let-row>{{ row.role }}</ng-template>
-        <ng-container uiTableColumn="role" label="職種" [templateRef]="roleTpl" />
-
-        <!-- セル書式は利用側が自由に: ステータスをバッジで表現 -->
-        <ng-template #statusTpl let-row>
-          @if (row.status === 'active') {
-            <ui-badge variant="success">稼働中</ui-badge>
-          } @else {
-            <ui-badge variant="neutral">停止中</ui-badge>
-          }
-        </ng-template>
-        <ng-container uiTableColumn="status" label="状態" align="center" [templateRef]="statusTpl" />
-      </ui-table>
-    </ui-panel>
-
-    <!-- トースト -->
-    <ui-panel title="トースト通知">
-      <div class="ds-row">
-        <button ui-button variant="primary" (click)="showToast('success')">成功</button>
-        <button ui-button variant="outline" (click)="showToast('info')">情報</button>
-        <button ui-button variant="ghost" (click)="showToast('warning')">警告</button>
-        <button ui-button variant="danger" (click)="showToast('error')">エラー</button>
-      </div>
-    </ui-panel>
-
-    <!-- リソース -->
-    <ui-panel title="リソース">
-      <ul class="ds-list">
-        <li><a href="http://localhost:3000/api" target="_blank" rel="noopener">Swagger API ドキュメント</a></li>
-        <li><a href="http://localhost:3000/health" target="_blank" rel="noopener">ヘルスチェック</a></li>
-        <li>部品の見本帳: <code>docs/design-system/</code></li>
-      </ul>
-    </ui-panel>
-  </main>
-
-  <!-- トーストの表示先（ルートに1つ置く） -->
-  <ui-toast-container />
-</div>
+<!-- トーストの表示先（アプリ全体で1つ） -->
+<ui-toast-container />

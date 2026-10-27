@@ -1,12 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 import { provideZonelessChangeDetection } from '@angular/core';
+import { provideRouter } from '@angular/router';
 import { App } from './app';
 
 describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [App],
-      providers: [provideZonelessChangeDetection()],
+      providers: [provideZonelessChangeDetection(), provideRouter([])],
     }).compileComponents();
   });
 
@@ -22,10 +23,19 @@ describe('App', () => {
     expect(app.title()).toEqual('TANE');
   });
 
-  it('should render title', () => {
+  it('should render the app shell header with the app name', () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('TANE');
+    // shell は ui-app-header に appName（"TANE デザインシステム"）を渡す
+    expect(compiled.querySelector('ui-app-header')).toBeTruthy();
+    expect(compiled.textContent).toContain('TANE');
+  });
+
+  it('should expose the 5 showcase nav items', () => {
+    const fixture = TestBed.createComponent(App);
+    const app = fixture.componentInstance;
+    expect(app.navItems.length).toBe(5);
+    expect(app.navItems[0].path).toBe('/');
   });
 });

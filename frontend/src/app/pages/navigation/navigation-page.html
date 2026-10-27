@@ -1,0 +1,34 @@
+<!-- パンくず（href は provideRouter が必要。app.config に設定済み） -->
+<ui-panel title="パンくず（Breadcrumb）">
+  <ui-breadcrumb [items]="breadcrumbItems" />
+</ui-panel>
+
+<!-- タブ -->
+<ui-panel title="タブ（Tab / TabGroup）" description="領域内で中身を切り替えます。Panel とは対等な別部品で、相互に入れ子にできます">
+  <ui-tab-group [(selectedIndex)]="activeTab">
+    <ui-tab label="プロフィール">
+      <p class="ds-pad">プロフィールタブの中身です。基本情報を表示します。</p>
+    </ui-tab>
+    <ui-tab label="履歴">
+      <p class="ds-pad">履歴タブの中身です。操作ログなどを表示します。</p>
+    </ui-tab>
+    <ui-tab label="設定">
+      <p class="ds-pad">設定タブの中身です。各種オプションを表示します。</p>
+    </ui-tab>
+  </ui-tab-group>
+</ui-panel>
+
+<!-- モーダル -->
+<ui-panel title="モーダル（Modal）" description="画面を覆って操作を一時的に奪う割り込み。確認ダイアログなどに">
+  <div class="ds-row">
+    <button ui-button variant="primary" (click)="modalOpen.set(true)">モーダルを開く</button>
+  </div>
+</ui-panel>
+
+<ui-modal [open]="modalOpen()" title="削除の確認" size="sm" (closed)="modalOpen.set(false)">
+  <p>この操作は取り消せません。本当に削除しますか？</p>
+  <div modal-actions class="ds-row">
+    <button ui-button variant="ghost" (click)="modalOpen.set(false)">キャンセル</button>
+    <button ui-button variant="danger" (click)="modalOpen.set(false)">削除</button>
+  </div>
+</ui-modal>

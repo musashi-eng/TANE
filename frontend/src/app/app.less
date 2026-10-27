@@ -1,266 +1,61 @@
-/* デザインシステム ショーケース: 部品の見た目は @musashi-eng/design-system が持つ。
-   ここはページ全体のレイアウト（配置・間隔）だけを定義する。
-   テーマカラーは src/styles.css 先頭の --color-primary で一括変更できる。 */
+/* アプリ骨格（shell）専用スタイル。
+   部品の見た目は @musashi-eng/design-system、
+   ページ横断の共通ユーティリティ（.ds-row / .ds-token-* 等）は
+   グローバルの src/styles.css にある（ページは別コンポーネントのため）。 */
 
-.ds-page {
-  min-height: 100vh;
-  background-color: var(--color-bg);
-}
-
-/* ===== ヘッダー ===== */
-.ds-header {
-  background-color: var(--color-surface);
-  box-shadow: var(--shadow-header-elevation);
-}
-.ds-header__inner {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 1rem 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-}
-.ds-brand {
-  display: flex;
-  align-items: center;
-  gap: 0.625rem;
-}
+/* ヘッダー内ロゴマーク（appHeaderLogo スロット）。
+   ヘッダー地が primary なので、マークは primary-contrast（白）で埋没を防ぐ。 */
 .ds-brand__mark {
+  display: inline-block;
   width: 1.5rem;
   height: 1.5rem;
   border-radius: var(--radius-default);
-  background-color: var(--color-primary);
-}
-.ds-brand__name {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--color-text-main);
+  background-color: var(--color-primary-contrast, #ffffff);
 }
 
-/* ===== メイン ===== */
-.ds-main {
+/* ヘッダーのページナビ（appHeaderNav スロット）。
+   ヘッダー地は primary（濃色）なので、文字は primary-contrast（既定=白）基調。
+   非アクティブは少し透かし、hover/active で不透明＆下地を敷いて区別する。 */
+.ds-nav {
+  padding: 0.375rem 0.75rem;
+  border-radius: var(--radius-default);
+  font-size: 0.875rem;
+  color: var(--color-primary-contrast, #ffffff);
+  opacity: 0.75;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: opacity 0.1s ease, background-color 0.1s ease;
+}
+.ds-nav:hover {
+  opacity: 1;
+  background-color: rgba(255, 255, 255, 0.15);
+}
+.ds-nav--active {
+  opacity: 1;
+  font-weight: 600;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* フッター（appShellFooter スロット） */
+.ds-footer {
+  padding: 1.5rem;
+  text-align: center;
+  font-size: 0.8125rem;
+  color: var(--color-text-sub);
+}
+
+/* ルーティングされたページの内側レイアウト:
+   router-outlet で表示される各ページは縦に積んだ ui-panel の並び。
+   ページ全体の最大幅・間隔をここで与える（AppShell の本文スロット内）。 */
+:host ::ng-deep router-outlet + * {
+  display: block;
   max-width: 960px;
   margin: 0 auto;
   padding: 2rem 1.5rem 3rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-.ds-hero__title {
-  font-size: 1.875rem;
-  font-weight: 700;
-  color: var(--color-text-main);
-  margin-bottom: 0.5rem;
-}
-.ds-hero__lead {
-  font-size: 1rem;
-  color: var(--color-text-sub);
-  line-height: 1.7;
-}
-.ds-hero__lead code {
-  font-family: "Noto Sans Mono", monospace;
-  font-size: 0.8125rem;
-  background-color: var(--color-primary-soft);
-  padding: 0.125rem 0.375rem;
-  border-radius: 4px;
 }
 
-/* ===== ショーケースの各セクション ===== */
-/* セクションの枠と見出しは ui-panel が持つ（title を内包）。
-   かつては手書きの .ds-section__title を各セクションに置いていたが、
-   Panel 化で見出しの格が全セクションで揃うため撤去した。 */
-
-/* Alert など縦に積む要素の間隔 */
-.ds-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-/* ===== メインカラー切替 ===== */
-.ds-swatch {
-  width: 2.25rem;
-  height: 2.25rem;
-  border-radius: var(--radius-default, 6px);
-  border: 2px solid var(--color-border);
-  cursor: pointer;
-  padding: 0;
-  transition: transform 0.1s ease, border-color 0.1s ease;
-}
-.ds-swatch:hover {
-  transform: scale(1.08);
-}
-.ds-swatch--active {
-  border-color: var(--color-text-main);
-  box-shadow: 0 0 0 2px var(--color-surface), 0 0 0 4px var(--color-text-main);
-}
-.ds-hex {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-.ds-hex__label {
-  font-size: 0.875rem;
-  color: var(--color-text-sub);
-}
-.ds-hex__input {
-  width: 8rem;
-  padding: 0.375rem 0.625rem;
-  font-family: "Noto Sans Mono", monospace;
-  font-size: 0.8125rem;
-  color: var(--color-text-main);
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-default, 6px);
-}
-.ds-hex__input:focus {
-  outline: none;
-  border-color: var(--color-primary);
-}
-
-/* ネイティブカラーピッカー（input[type=color]）の見た目を整える */
-.ds-picker {
-  width: 2.5rem;
-  height: 2.25rem;
-  padding: 0;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-default, 6px);
-  background-color: var(--color-surface);
-  cursor: pointer;
-}
-.ds-picker::-webkit-color-swatch-wrapper {
-  padding: 3px;
-}
-.ds-picker::-webkit-color-swatch {
-  border: none;
-  border-radius: 4px;
-}
-.ds-picker::-moz-color-swatch {
-  border: none;
-  border-radius: 4px;
-}
-
-/* 部品を横並びにする行 */
-.ds-row {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-}
-.ds-row + .ds-row {
-  margin-top: 0.75rem;
-}
-.ds-row--spaced {
-  gap: 1.5rem;
-}
-
-/* フォーム部品の2カラムグリッド */
-.ds-form-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-/* リソース一覧 */
-.ds-list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-}
-.ds-list li {
-  padding: 0.5rem 0;
-  border-bottom: 1px solid var(--color-border);
-  color: var(--color-text-main);
-  font-size: 0.875rem;
-}
-.ds-list li:last-child {
-  border-bottom: none;
-}
-.ds-list a {
-  color: var(--color-primary);
-}
-.ds-list code {
-  font-family: "Noto Sans Mono", monospace;
-  font-size: 0.8125rem;
-  background-color: var(--color-primary-soft);
-  padding: 0.125rem 0.375rem;
-  border-radius: 4px;
-}
-
-/* ===== デザイントークン展示 ===== */
-.ds-token-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 1rem;
-}
-.ds-swatch-card {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: 1rem;
-  text-align: center;
-  background-color: var(--color-surface);
-}
-.ds-swatch-chip {
-  width: 100%;
-  height: 56px;
-  border-radius: var(--radius-default);
-  border: 1px solid var(--color-border);
-  margin-bottom: 0.75rem;
-}
-.ds-radius-chip {
-  width: 72px;
-  height: 72px;
-  margin: 0 auto 0.75rem;
-  background-color: var(--color-primary);
-}
-.ds-shadow-card {
-  border-radius: var(--radius-md);
-  padding: 1.5rem 1rem;
-  text-align: center;
-  background-color: var(--color-surface);
-}
-.ds-token-label {
-  font-weight: 600;
-  font-size: 0.875rem;
-  color: var(--color-text-main);
-}
-.ds-token-var {
-  font-family: "Noto Sans Mono", monospace;
-  font-size: 0.75rem;
-  color: var(--color-text-sub);
-  word-break: break-all;
-}
-.ds-token-usage {
-  font-size: 0.75rem;
-  color: var(--color-text-sub);
-  margin-top: 0.25rem;
-}
-.ds-type-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-.ds-type-row {
-  display: flex;
-  align-items: baseline;
-  gap: 1rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid var(--color-border);
-  color: var(--color-text-main);
-}
-.ds-type-row:last-child {
-  border-bottom: none;
-}
-.ds-type-row > .ds-token-var {
-  min-width: 120px;
-  flex-shrink: 0;
-}
-
-@media (max-width: 640px) {
-  .ds-header__inner {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+/* 各ページ内の ui-panel を縦に積む間隔 */
+:host ::ng-deep router-outlet + * ui-panel {
+  display: block;
+  margin-bottom: 1.5rem;
 }

@@ -1,0 +1,54 @@
+<!-- テーブル -->
+<ui-panel title="テーブル" description="ソートは sortChange を emit するだけ。並べ替えは利用側が行います">
+  <ui-table [data]="tableData()">
+    <ng-template #nameTpl let-row>{{ row.name }}</ng-template>
+    <ng-container uiTableColumn="name" label="名前" [sortable]="true" [templateRef]="nameTpl" />
+
+    <ng-template #roleTpl let-row>{{ row.role }}</ng-template>
+    <ng-container uiTableColumn="role" label="職種" [templateRef]="roleTpl" />
+
+    <ng-template #statusTpl let-row>
+      @if (row.status === 'active') {
+        <ui-badge variant="success">稼働中</ui-badge>
+      } @else {
+        <ui-badge variant="neutral">停止中</ui-badge>
+      }
+    </ng-template>
+    <ng-container uiTableColumn="status" label="状態" align="center" [templateRef]="statusTpl" />
+  </ui-table>
+</ui-panel>
+
+<!-- Card（独立した「物」。影つき・overflow:hidden） -->
+<ui-panel title="カード（Card）" description="独立した「物」を浮かせて見せる器。影つき・角丸クリップあり（KPI・通知・一覧アイテム向け）">
+  <div class="ds-card-grid">
+    <ui-card padding="md">
+      <p class="ds-token-label">今月の売上</p>
+      <p class="text-3xl font-bold" style="color: var(--color-primary);">¥1,240,000</p>
+      <ui-badge variant="success">前月比 +12%</ui-badge>
+    </ui-card>
+    <ui-card padding="md">
+      <p class="ds-token-label">新規ユーザー</p>
+      <p class="text-3xl font-bold" style="color: var(--color-primary);">328</p>
+      <ui-badge variant="warning">前月比 −4%</ui-badge>
+    </ui-card>
+    <ui-card padding="md">
+      <p class="ds-token-label">稼働中タスク</p>
+      <p class="text-3xl font-bold" style="color: var(--color-primary);">57</p>
+      <ui-badge variant="neutral">変化なし</ui-badge>
+    </ui-card>
+  </div>
+</ui-panel>
+
+<!-- Card vs Panel の使い分け -->
+<ui-panel title="Card と Panel の使い分け">
+  <div class="ds-stack">
+    <p>
+      <strong>Card（物）</strong>：独立したオブジェクト。影で浮かせ、<code>overflow: hidden</code> で角丸クリップ。
+      KPI・通知・一覧アイテムなど「並ぶ・めくれる物」に。
+    </p>
+    <p>
+      <strong>Panel（領域）</strong>：ページ内の領域を見出しで区切る器。影なし、<code>overflow: visible</code>。
+      フォーム・詳細表示・設定群など「中にドロップダウンが開く領域」に。このページの各枠も Panel です。
+    </p>
+  </div>
+</ui-panel>
