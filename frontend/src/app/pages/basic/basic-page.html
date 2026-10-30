@@ -13,6 +13,11 @@
     <button ui-button [loading]="true">読込中</button>
     <button ui-button [disabled]="true">無効</button>
   </div>
+  <!-- 幅いっぱい（親を block にして w-full で横いっぱいに伸ばす） -->
+  <div class="ds-stack">
+    <button ui-button variant="primary" class="w-full">幅いっぱい（プライマリ）</button>
+    <button ui-button variant="outline" class="w-full">幅いっぱい（アウトライン）</button>
+  </div>
 </ui-panel>
 
 <!-- バッジ -->
