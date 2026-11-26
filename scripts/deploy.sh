@@ -89,6 +89,14 @@ if [ ! -f ".env" ]; then
     exit 1
 fi
 log_info "✅ 環境変数ファイルの確認完了"
+
+# 社内パッケージ（GitHub Packages）取得用トークンを .env から読み込む（Dockerビルドのsecretに渡す）
+NODE_AUTH_TOKEN=$(grep "^NODE_AUTH_TOKEN=" .env | cut -d '=' -f2- | tr -d ' ')
+if [ -z "$NODE_AUTH_TOKEN" ]; then
+    log_error ".envにNODE_AUTH_TOKENがありません（read:packages 権限のトークンが必要です）"
+    exit 1
+fi
+export NODE_AUTH_TOKEN
 echo ""
 
 # 3. Dockerイメージをビルド

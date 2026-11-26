@@ -4,10 +4,12 @@ FROM node:24-alpine AS builder
 WORKDIR /app
 
 # package.jsonとpackage-lock.jsonをコピー
-COPY frontend/package*.json ./
+COPY frontend/package*.json frontend/.npmrc ./
 
 # 依存パッケージをインストール
-RUN npm ci
+# 社内パッケージ（GitHub Packages）用のトークンは BuildKit の secret で渡す（イメージに残さない）
+RUN --mount=type=secret,id=npm_token \
+    NODE_AUTH_TOKEN="$(cat /run/secrets/npm_token)" npm ci
 
 # ソースコードをコピー
 COPY frontend/ ./
