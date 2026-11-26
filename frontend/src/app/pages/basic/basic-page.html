@@ -77,3 +77,62 @@
     <button ui-button variant="danger" (click)="showToast('error')">エラー</button>
   </div>
 </ui-panel>
+
+<!-- 折りたたみ -->
+<ui-panel title="折りたたみ（Collapse）" description="詳細条件など、普段は隠しておきたい領域に。[(open)] で開閉状態を双方向バインドできます">
+  <div class="ds-stack">
+    <ui-collapse title="詳細条件" [(open)]="collapseOpen">
+      <p class="ds-pad">ここに詳細な絞り込み条件などを置きます。</p>
+    </ui-collapse>
+    <ui-collapse [open]="false">
+      <span collapse-header>見出しスロット（初期状態は閉じる）</span>
+      <p class="ds-pad">見出しは自由なマークアップに差し替えられます。</p>
+    </ui-collapse>
+    <ui-collapse title="無効状態（開閉不可）" [disabled]="true">
+      <p class="ds-pad">開きません。</p>
+    </ui-collapse>
+    <p>現在の状態: {{ collapseOpen() ? '開いている' : '閉じている' }}</p>
+  </div>
+</ui-panel>
+
+<!-- ツールチップ -->
+<ui-panel title="ツールチップ（uiTooltip）" description="ホバーとキーボードフォーカスで表示し、Esc で閉じます">
+  <div class="ds-row">
+    <button ui-button variant="primary" uiTooltip="上に表示します" uiTooltipPosition="top">上</button>
+    <button ui-button variant="outline" uiTooltip="下に表示します" uiTooltipPosition="bottom">下</button>
+    <button ui-button variant="outline" uiTooltip="左に表示します" uiTooltipPosition="left">左</button>
+    <button ui-button variant="outline" uiTooltip="右に表示します" uiTooltipPosition="right">右</button>
+  </div>
+</ui-panel>
+
+<!-- チェックボックスの中間状態 -->
+<ui-panel title="チェックボックスの中間状態（indeterminate）" description="子の一部だけが選択されているとき、親を中間状態（aria-checked=mixed）にします">
+  <div class="ds-stack">
+    <ui-checkbox
+      label="すべて選択"
+      [indeterminate]="someChecked()"
+      [ngModel]="allChecked()"
+      (ngModelChange)="toggleAll($event)" />
+    <ui-checkbox label="項目 1" [ngModel]="childChecks()[0]" (ngModelChange)="toggleChild(0, $event)" />
+    <ui-checkbox label="項目 2" [ngModel]="childChecks()[1]" (ngModelChange)="toggleChild(1, $event)" />
+    <ui-checkbox label="項目 3" [ngModel]="childChecks()[2]" (ngModelChange)="toggleChild(2, $event)" />
+  </div>
+</ui-panel>
+
+<!-- ローディングの重ね表示 -->
+<ui-panel title="ローディングの重ね表示（Loading overlay）" description="中身の上に半透明の幕とスピナーを重ね、重ねている間は操作を受け付けません">
+  <div class="ds-stack">
+    <div class="ds-row">
+      <button ui-button variant="primary" (click)="overlayActive.set(!overlayActive())">
+        {{ overlayActive() ? '重ね表示を解除' : '重ね表示にする' }}
+      </button>
+    </div>
+    <ui-loading [overlay]="true" [active]="overlayActive()">
+      <ui-card padding="md">
+        <p class="ds-token-label">月間売上</p>
+        <p class="text-3xl font-bold" style="color: var(--color-primary);">¥1,284,000</p>
+        <button ui-button variant="outline">詳細を見る</button>
+      </ui-card>
+    </ui-loading>
+  </div>
+</ui-panel>

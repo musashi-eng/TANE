@@ -1,4 +1,4 @@
-import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import {
   PanelComponent,
   ButtonComponent,
@@ -7,6 +7,7 @@ import {
   TabGroupComponent,
   TabComponent,
   ModalComponent,
+  DialogService,
 } from '@musashi-eng/design-system';
 
 @Component({
@@ -35,4 +36,37 @@ export class NavigationPage {
 
   /** モーダルの開閉状態 */
   readonly modalOpen = signal(false);
+
+  private readonly dialog = inject(DialogService);
+
+  /** ダイアログの結果表示 */
+  readonly dialogResult = signal('（まだ操作していません）');
+
+  /** 確認ダイアログ（通常） */
+  async openConfirm(): Promise<void> {
+    const ok = await this.dialog.confirm({
+      title: '保存の確認',
+      message: '変更内容を保存しますか？',
+      okLabel: '保存する',
+      cancelLabel: 'やめる',
+    });
+    this.dialogResult.set(ok ? '「保存する」を選びました' : 'キャンセルしました');
+  }
+
+  /** 確認ダイアログ（削除など取り返しのつかない操作） */
+  async openDangerConfirm(): Promise<void> {
+    const ok = await this.dialog.confirm({
+      title: '削除の確認',
+      message: 'この操作は取り消せません。本当に削除しますか？',
+      okLabel: '削除する',
+      danger: true,
+    });
+    this.dialogResult.set(ok ? '削除を実行しました（デモ）' : '削除をキャンセルしました');
+  }
+
+  /** エラーダイアログ */
+  async openError(): Promise<void> {
+    await this.dialog.error({ title: 'エラー', message: '保存に失敗しました。時間をおいて再度お試しください。' });
+    this.dialogResult.set('エラーダイアログを閉じました');
+  }
 }
