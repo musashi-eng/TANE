@@ -10,6 +10,10 @@ jobs:
   frontend:
     name: フロントエンドのビルド・テスト
     runs-on: ubuntu-latest
+    # 社内パッケージ（GitHub Packages）の読み取りに必要
+    permissions:
+      contents: read
+      packages: read
 
     steps:
       - name: コードをチェックアウト
@@ -24,7 +28,13 @@ jobs:
 
       - name: 依存パッケージをインストール
         working-directory: frontend
-        run: npm ci
+        env:
+          # frontend/.npmrc が参照する。@musashi-eng のパッケージ取得用
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # .npmrc は git 管理外のため、環境変数参照だけのサンプルから作る
+        run: |
+          cp .npmrc.example .npmrc
+          npm ci
 
       - name: Lintチェック
         working-directory: frontend
