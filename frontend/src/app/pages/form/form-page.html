@@ -44,3 +44,51 @@
     <ui-readonly-field label="予定日" [value]="dateValue() || '（未選択）'" />
   </div>
 </ui-panel>
+
+<!-- 複数選択 -->
+<ui-panel title="複数選択（MultiSelect）" description="入力で絞り込み（ひらがな・カタカナ・全角半角を区別しない）、チップ表示、仮想スクロールで数千件でも軽量です">
+  <div class="ds-stack">
+    <ui-multi-select
+      label="得意先"
+      placeholder="得意先を選択"
+      [options]="multiOptions"
+      [searchKeys]="multiSearchKeys"
+      [maxChips]="2"
+      [(ngModel)]="multiValues" />
+    <p>選択値: {{ multiValues().join(', ') || '（未選択）' }}</p>
+  </div>
+</ui-panel>
+
+<!-- 月・期間選択 -->
+<ui-panel title="月・期間選択（MonthPicker / DateRangePicker / MonthRangePicker）" description="既存の DatePicker とは別部品です。値は月が yyyy-MM、期間が開始・終了の組です">
+  <div class="ds-form-grid">
+    <div class="ds-stack">
+      <p class="ds-token-label">月選択</p>
+      <ui-month-picker ariaLabel="対象月" [(ngModel)]="monthValue" />
+      <p>値: {{ monthValue() || '（未選択）' }}</p>
+    </div>
+    <div class="ds-stack">
+      <p class="ds-token-label">期間選択</p>
+      <ui-date-range-picker startLabel="開始日" endLabel="終了日" [(ngModel)]="dateRange" />
+      <p>値: {{ dateRange().start || '—' }} 〜 {{ dateRange().end || '—' }}</p>
+    </div>
+    <div class="ds-stack">
+      <p class="ds-token-label">月の期間選択</p>
+      <ui-month-range-picker startLabel="開始月" endLabel="終了月" [(ngModel)]="monthRange" />
+      <p>値: {{ monthRange().start || '—' }} 〜 {{ monthRange().end || '—' }}</p>
+    </div>
+  </div>
+</ui-panel>
+
+<!-- ファイルドロップ -->
+<ui-panel title="ファイルドロップ（FileDrop）" description="ドラッグ＆ドロップまたは参照ボタンで選択します。形式に合わないファイルは拒否側に出ます">
+  <div class="ds-stack">
+    <ui-file-drop
+      accept=".xlsx,.xls,.csv"
+      [multiple]="true"
+      (filesSelected)="onFilesSelected($event)"
+      (filesRejected)="onFilesRejected($event)" />
+    <p>受理: {{ acceptedFiles().join(', ') || '（なし）' }}</p>
+    <p>拒否: {{ rejectedFiles().join(', ') || '（なし）' }}</p>
+  </div>
+</ui-panel>

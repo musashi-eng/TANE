@@ -32,3 +32,15 @@
     <button ui-button variant="danger" (click)="modalOpen.set(false)">削除</button>
   </div>
 </ui-modal>
+
+<!-- ダイアログサービス -->
+<ui-panel title="ダイアログ（DialogService）" description="コード側から await で結果を受け取る確認・エラーダイアログ。テンプレートに ui-modal を書かずに使えます">
+  <div class="ds-stack">
+    <div class="ds-row">
+      <button ui-button variant="primary" (click)="openConfirm()">確認ダイアログ</button>
+      <button ui-button variant="danger" (click)="openDangerConfirm()">削除確認（danger）</button>
+      <button ui-button variant="outline" (click)="openError()">エラーダイアログ</button>
+    </div>
+    <p>結果: {{ dialogResult() }}</p>
+  </div>
+</ui-panel>

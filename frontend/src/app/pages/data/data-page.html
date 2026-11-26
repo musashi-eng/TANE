@@ -52,3 +52,24 @@
     </p>
   </div>
 </ui-panel>
+
+<!-- グループ表 -->
+<ui-panel title="グループ表（GroupTable）" description="グループ見出し・小計・総合計・行選択・金額の行内編集・グループ折りたたみ・仮想スクロール付きの表です">
+  <ui-group-table
+    ariaLabel="売上明細"
+    groupBy="customer"
+    rowKey="id"
+    [data]="salesData()"
+    [selectable]="true"
+    [(selected)]="salesSelected"
+    [(collapsed)]="salesCollapsed"
+    [rowLabel]="salesRowLabel"
+    [viewportHeight]="320"
+    editHint="数量と金額をクリックして編集できます"
+    (cellEdited)="onSalesEdited($event)">
+    <ng-container uiGroupColumn="product" label="商品" />
+    <ng-container uiGroupColumn="quantity" label="数量" [sum]="true" [editable]="true" format="number" />
+    <ng-container uiGroupColumn="amount" label="金額" [sum]="true" [editable]="true" format="number" negative="triangle" />
+  </ui-group-table>
+  <p class="ds-pad">選択中: {{ salesSelected().size }} 行 / 閉じているグループ: {{ salesCollapsed().size }}</p>
+</ui-panel>
