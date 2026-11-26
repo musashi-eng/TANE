@@ -4,7 +4,9 @@ FROM node:24-alpine AS builder
 WORKDIR /app
 
 # package.jsonとpackage-lock.jsonをコピー
-COPY frontend/package*.json frontend/.npmrc ./
+# .npmrc は git 管理外のため、環境変数参照だけのサンプルを .npmrc として使う
+COPY frontend/package*.json ./
+COPY frontend/.npmrc.example ./.npmrc
 
 # 依存パッケージをインストール
 # 社内パッケージ（GitHub Packages）用のトークンは BuildKit の secret で渡す（イメージに残さない）

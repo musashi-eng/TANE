@@ -31,7 +31,10 @@ jobs:
         env:
           # frontend/.npmrc が参照する。@musashi-eng のパッケージ取得用
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npm ci
+        # .npmrc は git 管理外のため、環境変数参照だけのサンプルから作る
+        run: |
+          cp .npmrc.example .npmrc
+          npm ci
 
       - name: Lintチェック
         working-directory: frontend
